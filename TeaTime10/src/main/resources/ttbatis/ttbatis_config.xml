@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE configuration
+    PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<typeAliases><!-- alias="결과 값 저장할 객체" -->
+		<typeAlias alias="memdto" type="com.care.modelDTO.MemberDTO" />
+		<typeAlias alias="catdto" type="com.care.modelDTO.CategoryDTO" />
+		<typeAlias alias="mfdto" type="com.care.modelDTO.MyFriendDTO" />
+		<typeAlias alias="podto" type="com.care.modelDTO.PostDTO" />
+		<typeAlias alias="redto" type="com.care.modelDTO.ReplyDTO" />
+		<typeAlias alias="ndto" type="com.care.modelDTO.NaverDTO"/>
+		<typeAlias alias="kdto" type="com.care.modelDTO.KakaoDTO"/>
+	</typeAliases>
+
+</configuration>

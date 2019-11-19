@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.care.ttbatis.ttMapper">
+	<insert id="regmember" parameterType="memdto">
+		insert into member (m_id,m_pw, m_name, m_idnum, m_gender, m_tel, m_mail, m_pic) values
+		(#{m_id},#{m_pw},#{m_name},#{m_idnum},#{m_gender},#{m_tel},#{m_mail}, #{m_pic})
+	</insert>
+	<!-- 아이디 중복 체크 -->
+	<select id="idchk" resultType="String">
+		select m_id from member where m_id
+		= #{m_id}
+	</select>
+	<!-- 전화번호 중복 체크 -->
+	<select id="telchk" resultType="String">
+		select m_tel from member where
+		m_tel = #{m_tel}
+	</select>
+	<!-- 이메일 중복 체크 -->
+	<select id="mailchk" resultType="String">
+		select m_mail from member where
+		m_mail = #{m_mail}
+	</select>
+
+	<!-- 카테고리 insert -->
+	<insert id="category_insert" parameterType="catdto">
+		insert into category
+		values(
+		#{m_id},
+		#{c_sports}, #{c_news },#{c_food },#{c_language },#{c_people },
+		#{c_animal
+		},#{c_fashion },#{c_love },#{c_movie },#{c_religion },
+		#{c_knowledge
+		},#{c_travel },#{c_cartoon },#{c_game },#{c_it },
+		#{c_weather
+		},#{c_music },#{c_car },#{c_economy },#{c_etc },
+		#{c_job },#{c_living
+		},#{c_book },#{c_festival },#{c_health })
+	</insert>
+
+	<!-- 이상호 -->
+	<!-- 일반 로그인임. -->
+	<select id="loginchk" resultType="memdto" parameterType="String">
+		select * from member where m_id=#{m_id}
+	</select>
+	
+	  <!-- 카카오 로그인 관련 -->
+   <select id="kakaologinchk" resultType="kdto">
+		select * from kmember where k_id=#{k_id}   
+   </select>
+   
+   <!-- 카카오 첫 로그인이면 회원가입 -->
+   <select id="regkakao" parameterType="kdto" resultType="kdto">
+   		insert into kmember values(#{k_id})
+   </select>
+   
+  <!-- 카카오 로그인 후 카테고리 가져오기 -->
+  <select id="kakaocategorychk" parameterType="kdto" resultType="catdto">
+   		select * from category where id=#{k_id}
+   </select>
+   
+  
+   <!-- 네이버 아이디가 등록되어있는지 확인 -->
+   <select id="naverloginchk" resultType="ndto" parameterType="ndto">
+   		select * from nmember where n_id=#{n_id}
+   </select>
+   
+   <!-- 네이버 첫 로그인이면 회원가입 -->
+   <select id="regnaver" parameterType="ndto">
+   		insert into nmember values(#{n_id},#{n_name},#{n_email},#{n_gender})
+   </select>
+
+   <!-- 네이버 아이디로 카테고리 가져오기    -->
+   <select id="navercategorychk" parameterType="ndto" resultType="catdto">
+   		select * from category where id=#{n_id}
+   </select>
+   
+   <!-- 이상호 끝 -->
+	
+	<!-- John(11/14): 사람 조회 select 문 -->
+	<select id="userLookUp" resultType="memdto" parameterType="String">
+		SELECT * FROM member WHERE m_id=#{m_id}
+	</select>
+	<!-- John(11/15): 친구인지 확인 문 -->
+	<select id="checkIfFriend" resultType="Integer" parameterType="mfdto">
+		SELECT f_isfriend FROM myfriend WHERE m_id=#{m_id} AND
+		f_id=#{f_id}
+	</select>
+	<select id="getUserPosts" resultType="podto" parameterType="String">
+		SELECT * FROM post WHERE m_id=#{m_id}
+	</select>
+	<!-- John 긑 -->
+	
+	
+	<!-- yang -->
+	<!-- 내정보 가져오기 -->
+   <select id="my_info" resultType="memdto" parameterType="String">
+   		select * from member where m_id=#{my_id}
+   </select>
+   <select id="my_cat" resultType="catdto" parameterType="String">
+   		select * from category where m_id=#{my_id}
+   </select>
+</mapper>
