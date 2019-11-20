@@ -58,7 +58,7 @@
    
   <!-- 카카오 로그인 후 카테고리 가져오기 -->
   <select id="kakaocategorychk" parameterType="kdto" resultType="catdto">
-   		select * from category where id=#{k_id}
+   		select * from category where m_id=#{k_id}
    </select>
    
   
@@ -74,7 +74,7 @@
 
    <!-- 네이버 아이디로 카테고리 가져오기    -->
    <select id="navercategorychk" parameterType="ndto" resultType="catdto">
-   		select * from category where id=#{n_id}
+   		select * from category where m_id=#{n_id}
    </select>
    
    <!-- 이상호 끝 -->
