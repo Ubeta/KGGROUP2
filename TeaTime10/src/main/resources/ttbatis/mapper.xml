@@ -84,12 +84,45 @@
 		SELECT * FROM member WHERE m_id=#{m_id}
 	</select>
 	<!-- John(11/15): 친구인지 확인 문 -->
-	<select id="checkIfFriend" resultType="Integer" parameterType="mfdto">
+	<select id="checkFriendStatus1" resultType="Integer" parameterType="mfdto">
+		SELECT f_isfriend FROM myfriend WHERE m_id=#{m_id} AND
+		f_id=#{f_id}
+	</select>
+	<select id="checkFriendStatus2" resultType="Integer" parameterType="mfdto">
 		SELECT f_isfriend FROM myfriend WHERE m_id=#{m_id} AND
 		f_id=#{f_id}
 	</select>
 	<select id="getUserPosts" resultType="podto" parameterType="String">
 		SELECT * FROM post WHERE m_id=#{m_id}
+	</select>
+	
+	<insert id="sendFriendRequest1" parameterType="mfdto">
+		INSERT INTO myfriend (m_id, f_id, f_isfriend) VALUES (#{m_id}, #{f_id}, #{f_isfriend})
+	</insert>
+	<insert id="sendFriendRequest2" parameterType="mfdto">
+		INSERT INTO myfriend (m_id, f_id, f_isfriend) VALUES (#{f_id}, #{m_id}, #{f_isfriend})
+	</insert>
+	<delete id="cancelFriendRequest1" parameterType="mfdto">
+		DELETE FROM myfriend WHERE m_id=#{m_id} AND f_id=#{f_id}
+	</delete>
+	<delete id="cancelFriendRequest2" parameterType="mfdto">
+		DELETE FROM myfriend WHERE m_id=#{f_id} AND f_id=#{m_id}
+	</delete>
+	<update id="acceptFriendRequest1" parameterType="mfdto">
+		UPDATE myfriend SET f_isfriend=#{f_isfriend} WHERE m_id=#{m_id} AND f_id=#{f_id}
+	</update>
+	<update id="acceptFriendRequest2" parameterType="mfdto">
+		UPDATE myfriend SET f_isfriend=#{f_isfriend} WHERE m_id=#{f_id} AND f_id=#{m_id}
+	</update>
+	<delete id="removeFriend1" parameterType="mfdto">
+		DELETE FROM myfriend WHERE m_id=#{m_id} AND f_id=#{f_id}
+	</delete>
+	<delete id="removeFriend2" parameterType="mfdto">
+		DELETE FROM myfriend WHERE m_id=#{f_id} AND f_id=#{m_id}
+	</delete>
+	<select id="getFriendRequests" resultType="memdto" parameterType="mfdto">
+		SELECT a.* FROM member a JOIN myfriend b ON a.m_id=b.f_id WHERE b.f_isfriend=1 
+			AND b.m_id=#{m_id}
 	</select>
 	<!-- John 긑 -->
 	

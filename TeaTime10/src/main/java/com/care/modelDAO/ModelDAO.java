@@ -1,5 +1,6 @@
 package com.care.modelDAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -77,14 +78,89 @@ public class ModelDAO {
 	}
 
 	//John DAO ==================================
-	public int checkIfFriend(MyFriendDTO mfdto) {
-		int ifFriend = 0;
+	public int checkFriendStatus(MyFriendDTO mfdto) {
+		int friendStatus = 0;
 		try {
-			ifFriend = sqlSession.selectOne(namespace + ".checkIfFriend", mfdto);
+			friendStatus = sqlSession.selectOne(namespace + ".checkFriendStatus1", mfdto);
 		} catch (Exception e){
-			
+			e.printStackTrace();
+			System.out.println("checkFriendStatus catch 1");
 		}
-		return ifFriend;
+		try {
+			friendStatus = sqlSession.selectOne(namespace + ".checkFriendStatus2", mfdto);
+		} catch (Exception e){
+			System.out.println("checkFriendStatus catch 2");
+		}
+		return friendStatus;
+	}
+	
+	public int sendFriendRequest(MyFriendDTO mfdto) {
+		int result = 0;
+		try {
+			result = sqlSession.insert(namespace + ".sendFriendRequest1", mfdto);
+		} catch (Exception e) {
+			System.out.println("sendFriendRequest catch 1");
+		}
+		try {
+			result = sqlSession.insert(namespace + ".sendFriendRequest2", mfdto);
+		} catch (Exception e) {
+			System.out.println("sendFriendRequest catch 1");
+		}
+		return result;
+	}
+	
+	public int cancelFriendRequest(MyFriendDTO mfdto) {
+		int result = 0;
+		try {
+			result = sqlSession.update(namespace + ".cancelFriendRequest1", mfdto);
+		} catch (Exception e) {
+			System.out.println("cancelFriendRequest catch 1");
+		}
+		try {
+			result = sqlSession.update(namespace + ".cancelFriendRequest2", mfdto);
+		} catch (Exception e) {
+			System.out.println("cancelFriendRequest catch 1");
+		}
+		return result;
+	}
+	public int acceptFriendRequest(MyFriendDTO mfdto) {
+		int result = 0;
+		try {
+			result = sqlSession.update(namespace + ".acceptFriendRequest1", mfdto);
+		} catch (Exception e) {
+			System.out.println("acceptFriendRequest catch 1");
+		}
+		try {
+			result = sqlSession.update(namespace + ".acceptFriendRequest2", mfdto);
+		} catch (Exception e) {
+			System.out.println("acceptFriendRequest catch 2");
+		}
+		return result;
+	}
+	public int removeFriend(MyFriendDTO mfdto) {
+		int result = 0;
+		try {
+			result = sqlSession.update(namespace + ".removeFriend1", mfdto);
+		} catch (Exception e) {
+			System.out.println("removeFriend 1 catch");
+		}
+		try {
+			result = sqlSession.update(namespace + ".removeFriend2", mfdto);
+		} catch (Exception e) {
+			System.out.println("removeFriend 2 catch");
+		}
+		return result;
+		
+	}
+	
+	public List<MemberDTO> getFriendRequests(MyFriendDTO mfdto) {
+		List<MemberDTO> members = new ArrayList<MemberDTO>();
+		try {
+			members = sqlSession.selectList(namespace + ".getFriendRequests", mfdto);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return members;
 	}
 
 	public MemberDTO userLookUp(String m_id) {
