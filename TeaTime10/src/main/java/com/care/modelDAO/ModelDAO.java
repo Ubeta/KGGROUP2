@@ -182,11 +182,12 @@ public class ModelDAO {
 	}
 	//===================================
 
-	public List<MyFriendDTO> friendLists() {
-		return sqlSession.selectList(namespace+".friendLists");
+	public List<MemberDTO> friendLists(String m_id) {
+		return sqlSession.selectList(namespace+".friendLists",m_id);
 	}
 	
 	public CategoryDTO mcategorychk(String m_id) {
 		return sqlSession.selectOne(namespace+".mcategorychk",m_id);
 	}
+	
 }

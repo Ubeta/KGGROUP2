@@ -141,4 +141,5 @@
    <select id="my_cat" resultType="catdto" parameterType="String">
    		select * from category where m_id=#{my_id}
    </select>
+   
 </mapper>

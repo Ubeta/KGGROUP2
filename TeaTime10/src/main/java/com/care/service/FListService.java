@@ -12,7 +12,7 @@ public class FListService implements IService{
 	
 	@Override
 	public void execute(Model model) {
-		model.addAttribute("flist", mdao.friendLists());
+//		model.addAttribute("flist", mdao.friendLists());
 	}
 
 }
