@@ -83,7 +83,6 @@ public class ModelDAO {
 		try {
 			friendStatus = sqlSession.selectOne(namespace + ".checkFriendStatus1", mfdto);
 		} catch (Exception e){
-			e.printStackTrace();
 			System.out.println("checkFriendStatus catch 1");
 		}
 		try {

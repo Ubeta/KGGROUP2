@@ -74,6 +74,10 @@ public class HomeController {
 	public String my_header() {
 		return "/header/my_header";
 	}
+	@RequestMapping("/header/u_header")
+	public String u_header() {
+		return "/header/u_header";
+	}
 	@RequestMapping("login")
 	public String login() {
 		return "login";
