@@ -195,10 +195,10 @@ a {
 		frm.submit();
 	}
 	function friendpage(){
-		location.href="#";
+		location.href="f_page";
 	}
 	function mypage(){
-		location.href="#";
+		location.href="mypage";
 	}
 	function logout(){
 		location.href="everylogout";
@@ -233,10 +233,10 @@ a {
 		
 		<div class="list-container">
 			<div class="friend-page" onclick="friendpage()">
-				<a href="#">친구 페이지</a>
+				<a href="f_page">친구 페이지</a>
 			</div>
 			<div class="my-page" onclick="mypage()">
-				<a href="#">마이 페이지</a>
+				<a href="mypage">마이 페이지</a>
 			</div>
 			<div class="logout" onclick="logout()">
 				<a href="everylogout">로그아웃</a>
