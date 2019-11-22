@@ -141,4 +141,24 @@
    <select id="my_cat" resultType="catdto" parameterType="String">
    		select * from category where m_id=#{my_id}
    </select>
+   
+   <!-- 친구 목록 -->
+   <select id="friendLists" resultType="memdto" parameterType="String">
+   		select m_id, m_pic 
+   		from member A 
+		where A.m_id in(select B.f_id 
+						from myfriend B 
+						where B.m_id = #{m_id} and B.f_isfriend = 2)
+   	</select>
+   	
+   	<!-- 친구들이 등록한 포스트만 추출 -->
+   	<select id="friendPost" resultType="podto" parameterType="String">
+   		select * 
+   		from post C 
+   		where C.m_id in(select m_id 
+   						from member A 
+						where A.m_id in(select B.f_id 
+										from myfriend B 
+										where B.m_id = #{m_id} and B.f_isfriend = 2) or C.m_id= #{m_id})
+   	</select>
 </mapper>
