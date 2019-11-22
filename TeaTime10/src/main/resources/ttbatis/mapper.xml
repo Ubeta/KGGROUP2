@@ -133,14 +133,7 @@
 	<!-- John 긑 -->
 	
 	
-	<!-- yang -->
-	<!-- 내정보 가져오기 -->
-   <select id="my_info" resultType="memdto" parameterType="String">
-   		select * from member where m_id=#{my_id}
-   </select>
-   <select id="my_cat" resultType="catdto" parameterType="String">
-   		select * from category where m_id=#{my_id}
-   </select>
+	
    
    <!-- 친구 목록 -->
    <select id="friendLists" resultType="memdto" parameterType="String">
@@ -161,4 +154,33 @@
 										from myfriend B 
 										where B.m_id = #{m_id} and B.f_isfriend = 2) or C.m_id= #{m_id})
    	</select>
+   	<!-- yang -->
+	<!-- 내정보 가져오기 -->
+   <select id="my_info" resultType="memdto" parameterType="String">
+   		select * from member where m_id=#{my_id}
+   </select>
+   <select id="my_cat" resultType="catdto" parameterType="String">
+   		select * from category where m_id=#{my_id}
+   </select>
+   <!-- 친구정보 가져오기 -->
+   <select id="f_info" resultType="memdto" parameterType="String">
+   		select * from member where m_id=#{f_id}
+   </select>
+   <!-- 내정보 수정 -->
+   <update id="info_fix" parameterType="memdto">
+		update member set m_name=#{m_name}, m_tel=#{m_tel}, m_mail=#{m_mail} where m_id=#{m_id}
+	</update>
+	<!-- 친구 추가 -->
+	<insert id="friend_add" parameterType="mfdto">
+		insert into myfriend (m_id, f_id) values(#{m_id}, #{f_id})
+	</insert>
+	<!-- 글쓰기 -->
+	<insert id="write_board" parameterType="podto">
+		insert into post (m_id, p_num, p_title, p_content, p_img, p_cat, p_hash, p_idgroup, p_scope, p_like)
+		values(#{m_id}, p_num_seq.nextval, #{p_title}, #{p_content}, #{p_img}, #{p_cat}, #{p_hash}, p_num_seq.currval, #{p_scope}, #{p_like})
+	</insert>
+	<!-- 글리스트 가져오기 -->
+	<select id="board_list" resultType="podto" parameterType="String">
+		select * from post where m_id=#{m_id} order by p_date desc
+	</select>
 </mapper>

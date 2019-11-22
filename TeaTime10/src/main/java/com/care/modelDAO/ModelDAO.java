@@ -194,14 +194,12 @@ public class ModelDAO {
 	}
 	//===================================
 
-	public List<MyFriendDTO> friendLists() {
-		return sqlSession.selectList(namespace+".friendLists");
-	}
 	
 	public CategoryDTO mcategorychk(String m_id) {
 		return sqlSession.selectOne(namespace+".mcategorychk",m_id);
 	}
 	
+
 	/*친구 목록 */
 	public List<MemberDTO> friendLists(String m_id) {
 		return sqlSession.selectList(namespace+".friendLists", m_id);
@@ -210,4 +208,5 @@ public class ModelDAO {
 	public List<PostDTO> friendPost(String m_id){
 		return sqlSession.selectList(namespace+".friendPost", m_id);
 	}
+
 }
