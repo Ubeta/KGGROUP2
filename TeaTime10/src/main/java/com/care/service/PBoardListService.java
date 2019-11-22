@@ -2,28 +2,28 @@ package com.care.service;
 
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.care.modelDAO.ModelDAO;
-@Service
-public class FListService implements IService{
 
+@Service
+public class PBoardListService implements IService{
 	@Autowired
-	ModelDAO mdao;
+	private ModelDAO mdao;
 	
 	@Override
 	public void execute(Model model) {
+		
 		Map<String, Object> map = model.asMap();
-		HttpSession request = (HttpSession)map.get("friendLists");
-		String myId = (String)request.getAttribute("mid");
-		System.out.println("세션 : " + myId);
-	//	System.out.println("아이디 : " + my_id);
-	//	System.out.println(mdao.friendId(my_id));
-		model.addAttribute("flist", mdao.friendLists(myId));
+		String sessionid = (String)map.get("sessionid");
+				
+		model.addAttribute("board_list", mdao.board_list(sessionid));
 	}
 
 }
