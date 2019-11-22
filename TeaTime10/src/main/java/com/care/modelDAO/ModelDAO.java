@@ -177,8 +177,20 @@ public class ModelDAO {
 	public CategoryDTO my_cat(String my_id) {
 		return sqlSession.selectOne(namespace+".my_cat", my_id);
 	}
-	public MemberDTO f_info(String my_id) {
-		return sqlSession.selectOne(namespace+".my_info", my_id);
+	public MemberDTO f_info(String f_id) {
+		return sqlSession.selectOne(namespace+".f_info", f_id);
+	}
+	public void info_fix(MemberDTO mdto) {
+		sqlSession.update(namespace+".info_fix", mdto);
+	}
+	public void friend_add(MyFriendDTO mfdto) {
+		sqlSession.insert(namespace+".friend_add", mfdto);
+	}
+	public void write_board(PostDTO pdto) {
+		sqlSession.insert(namespace+".write_board", pdto);
+	}
+	public List<PostDTO> board_list(String m_id) {
+		return sqlSession.selectList(namespace+".board_list", m_id);
 	}
 	//===================================
 
