@@ -61,6 +61,7 @@
    		select * from category where m_id=#{k_id}
    </select>
    
+
   
    <!-- 네이버 아이디가 등록되어있는지 확인 -->
    <select id="naverloginchk" resultType="ndto" parameterType="ndto">
@@ -75,6 +76,11 @@
    <!-- 네이버 아이디로 카테고리 가져오기    -->
    <select id="navercategorychk" parameterType="ndto" resultType="catdto">
    		select * from category where m_id=#{n_id}
+   </select>
+   
+   <!-- 11월21일 추가 일반로그인 카테고리 가져오기 -->
+   <select id="mcategorychk" parameterType="String" resultType="catdto">
+   		select * from category where m_id=#{m_id}
    </select>
    
    <!-- 이상호 끝 -->
