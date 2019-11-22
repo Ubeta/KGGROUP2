@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.care.modelDTO.MemberDTO;
 import com.care.service.FListService;
+import com.care.service.FriendPostService;
 import com.care.service.IService;
 import com.care.service.MCategoryService;
 import com.care.service.MLoginPostService;
@@ -83,10 +84,13 @@ public class MainController {
 		return "mypage";
 	}
 	//친구 게시글만 보는 페이지 
-		@RequestMapping("f_page")
-		public String f_page(Model model) {
-			ser = context.getBean("FListService", FListService.class);
-			ser.execute(model);
-			return "f_page";
-		}
+	@RequestMapping("f_page")
+	public String f_page(Model model, HttpSession session) {
+		model.addAttribute("friendLists", session);
+		ser = context.getBean("FListService", FListService.class);
+		ser.execute(model);
+		ser = context.getBean("friendPostService", FriendPostService.class);
+		ser.execute(model);
+		return "f_page";
+	}
 }

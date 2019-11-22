@@ -182,12 +182,19 @@ public class ModelDAO {
 	}
 	//===================================
 
-	public List<MemberDTO> friendLists(String m_id) {
-		return sqlSession.selectList(namespace+".friendLists",m_id);
-	}
 	
 	public CategoryDTO mcategorychk(String m_id) {
 		return sqlSession.selectOne(namespace+".mcategorychk",m_id);
 	}
 	
+
+	/*친구 목록 */
+	public List<MemberDTO> friendLists(String m_id) {
+		return sqlSession.selectList(namespace+".friendLists", m_id);
+	}
+	/*친구 게시글만 추출*/
+	public List<PostDTO> friendPost(String m_id){
+		return sqlSession.selectList(namespace+".friendPost", m_id);
+	}
+
 }
