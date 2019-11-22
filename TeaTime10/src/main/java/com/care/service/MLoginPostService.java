@@ -40,7 +40,7 @@ public class MLoginPostService implements IService{
 		
 		CategoryDTO catedto = mdao.mcategorychk(m_id);
 		ArrayList<String> list = new ArrayList<String>();
-		System.out.println(catedto.getM_id()+": MLoginPost에서 카테고리가져옴");
+		//System.out.println(catedto.getM_id()+": MLoginPost에서 카테고리가져옴");
 		if (catedto.getC_sports().equals("Y")) {
 			list.add("sports");
 			System.out.println(catedto.getC_sports()+":sports");

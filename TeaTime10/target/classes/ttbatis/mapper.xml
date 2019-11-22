@@ -95,8 +95,8 @@
 		f_id=#{f_id}
 	</select>
 	<select id="checkFriendStatus2" resultType="Integer" parameterType="mfdto">
-		SELECT f_isfriend FROM myfriend WHERE m_id=#{m_id} AND
-		f_id=#{f_id}
+		SELECT f_isfriend FROM myfriend WHERE m_id=#{f_id} AND
+		f_id=#{m_id}
 	</select>
 	<select id="getUserPosts" resultType="podto" parameterType="String">
 		SELECT * FROM post WHERE m_id=#{m_id}
@@ -127,8 +127,8 @@
 		DELETE FROM myfriend WHERE m_id=#{f_id} AND f_id=#{m_id}
 	</delete>
 	<select id="getFriendRequests" resultType="memdto" parameterType="mfdto">
-		SELECT a.* FROM member a JOIN myfriend b ON a.m_id=b.f_id WHERE b.f_isfriend=1 
-			AND b.m_id=#{m_id}
+		SELECT a.* FROM member a JOIN myfriend b ON a.m_id=b.m_id WHERE b.f_isfriend=1 
+			AND b.f_id=#{m_id}
 	</select>
 	<!-- John 긑 -->
 	

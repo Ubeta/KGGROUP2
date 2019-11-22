@@ -124,7 +124,7 @@ html, body {
 }
 
 .addFriendButton:hover {
-	background-color: #33CCFF;
+	background-color: #8ec3eb;
 }
 
 .button {

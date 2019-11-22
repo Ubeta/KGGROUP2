@@ -84,11 +84,13 @@ public class ModelDAO {
 			friendStatus = sqlSession.selectOne(namespace + ".checkFriendStatus1", mfdto);
 		} catch (Exception e){
 			System.out.println("checkFriendStatus catch 1");
+			e.printStackTrace();
 		}
 		try {
 			friendStatus = sqlSession.selectOne(namespace + ".checkFriendStatus2", mfdto);
 		} catch (Exception e){
 			System.out.println("checkFriendStatus catch 2");
+			e.printStackTrace();
 		}
 		return friendStatus;
 	}
@@ -100,18 +102,18 @@ public class ModelDAO {
 		} catch (Exception e) {
 			System.out.println("sendFriendRequest catch 1");
 		}
-		try {
-			result = sqlSession.insert(namespace + ".sendFriendRequest2", mfdto);
-		} catch (Exception e) {
-			System.out.println("sendFriendRequest catch 1");
-		}
+//		try {
+//			result = sqlSession.insert(namespace + ".sendFriendRequest2", mfdto);
+//		} catch (Exception e) {
+//			System.out.println("sendFriendRequest catch 1");
+//		}
 		return result;
 	}
 	
 	public int cancelFriendRequest(MyFriendDTO mfdto) {
 		int result = 0;
 		try {
-			result = sqlSession.update(namespace + ".cancelFriendRequest1", mfdto);
+			result = sqlSession.delete(namespace + ".cancelFriendRequest1", mfdto);
 		} catch (Exception e) {
 			System.out.println("cancelFriendRequest catch 1");
 		}
@@ -124,11 +126,11 @@ public class ModelDAO {
 	}
 	public int acceptFriendRequest(MyFriendDTO mfdto) {
 		int result = 0;
-		try {
-			result = sqlSession.update(namespace + ".acceptFriendRequest1", mfdto);
-		} catch (Exception e) {
-			System.out.println("acceptFriendRequest catch 1");
-		}
+//		try {
+//			result = sqlSession.update(namespace + ".acceptFriendRequest1", mfdto);
+//		} catch (Exception e) {
+//			System.out.println("acceptFriendRequest catch 1");
+//		}
 		try {
 			result = sqlSession.update(namespace + ".acceptFriendRequest2", mfdto);
 		} catch (Exception e) {

@@ -194,13 +194,13 @@ a {
 		frm.submit();
 	}
 	function mainpage(){
-		location.href="#";
+		location.href="main";
 	}
 	function friendpage(){
-		location.href="#";
+		location.href="f_page";
 	}
 	function logout(){
-		location.href="#";
+		location.href="everylogout";
 	}
 </script>
 
@@ -230,13 +230,13 @@ a {
 		
 		<div class="list-container">
 			<div class="main-page" onclick="mainpage()">
-				<a href="#">메인 페이지</a>
+				<a href="main">메인 페이지</a>
 			</div>
 			<div class="friend-page" onclick="friendpage()">
-				<a href="#">친구 페이지</a>
+				<a href="f_page">친구 페이지</a>
 			</div>
 			<div class="logout" onclick="logout()">
-				<a href="#">로그아웃</a>
+				<a href="everylogout">로그아웃</a>
 			</div>
 		</div>
 

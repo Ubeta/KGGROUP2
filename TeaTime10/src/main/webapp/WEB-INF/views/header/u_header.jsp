@@ -198,13 +198,13 @@ a {
 		frm.submit();
 	}
 	function mainpage(){
-		location.href="#";
+		location.href="main";
 	}
 	function mypage(){
-		location.href="#";
+		location.href="mypage";
 	}
 	function logout(){
-		location.href="#";
+		location.href="everylogout";
 	}
 </script>
 
@@ -237,13 +237,13 @@ a {
 		
 		<div class="list-container">
 			<div class="main-page" onclick="mainpage()">
-				<a href="#">메인</a>
+				<a href="main">메인</a>
 			</div>
 			<div class="my-page" onclick="mypage()">
-				<a href="#">마이</a>
+				<a href="mypage">마이</a>
 			</div>
 			<div class="logout" onclick="logout()">
-				<a href="#">로그아웃</a>
+				<a href="everylogout">로그아웃</a>
 			</div>
 		</div>
 

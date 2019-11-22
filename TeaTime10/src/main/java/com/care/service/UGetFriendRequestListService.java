@@ -27,10 +27,7 @@ public class UGetFriendRequestListService implements IService {
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		HttpSession session = request.getSession();
 		
-		//String f_id = session.getAttribute("sid");
-		
-		//***Need to put session id here or it wont work
-		String m_id = "abc";
+		String m_id = (String)session.getAttribute("mid");
 		
 		MyFriendDTO mfdto = new MyFriendDTO();
 		
