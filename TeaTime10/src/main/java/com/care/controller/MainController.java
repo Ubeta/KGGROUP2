@@ -52,10 +52,14 @@ public class MainController {
 		ser.execute(model);
 		Map<String, Object> map = model.asMap();
 		String result = (String)map.get("login");
-		if(result.equals(2)) {
+		System.out.println("loginchk : " + result );
+		if(result.equals("2")) {
+			System.out.println("result값 : " + result);
 			HttpSession session = request.getSession();
 			session.setAttribute("sid", request.getParameter("id"));
 			session.setAttribute("mid", request.getParameter("id"));
+			System.out.println(session.getAttribute("sid"));
+			System.out.println(session.getAttribute("mid"));
 		}
 		return "loginchk";
 	}
@@ -63,6 +67,7 @@ public class MainController {
 	
 	@RequestMapping("main")
 	public String main(Model model,HttpServletRequest request,HttpSession session) {
+		System.out.println(session.getAttribute("mid") + " : main들어갈 때");
 		if(session.getAttribute("mid")==null) {
 			return "main";
 		}
