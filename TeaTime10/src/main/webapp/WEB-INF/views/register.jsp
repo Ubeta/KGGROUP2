@@ -205,6 +205,7 @@
 					<td><font size="4em">비밀번호 확인</font></td><th><input type="password" name="m_pkchk" id="m_pwchk" placeholder="비밀번호를 다시입력하세요" style="width: 300px; height: 60px;"></th>
 				</tr>
 				<tr>
+				
 					<td><font size="4em">이름</font></td><th><input type="text" name="m_name" id="m_name" placeholder="이름을 입력하세요" style="width: 300px; height: 60px;"></th>
 				</tr>
 				<tr>

@@ -23,8 +23,8 @@ public class MCategoryService implements IService{
 		Map<String, Object> map = model.asMap();
 		HttpServletRequest request = (HttpServletRequest)map.get("register");
 		CategoryDTO cdto = new CategoryDTO();
+		System.out.println(request.getParameter("m_id") + " : MCategory서비스임");
 		cdto.setM_id(request.getParameter("m_id"));
-		System.out.println(request.getParameter("m_id"));
 		cdto.setC_sports(request.getParameter("c_sports"));
 		cdto.setC_news(request.getParameter("c_news"));
 		cdto.setC_food(request.getParameter("c_food"));
@@ -50,7 +50,9 @@ public class MCategoryService implements IService{
 		cdto.setC_living(request.getParameter("c_living"));
 		cdto.setC_festival(request.getParameter("c_festival"));
 		cdto.setC_health(request.getParameter("c_health"));
+		System.out.println("mdao.category전");
 		model.addAttribute("catchk",mdao.category(cdto));	
+		System.out.println("mdao.category후");
 		//test file
 	}
 	

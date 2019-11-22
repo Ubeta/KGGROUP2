@@ -1,5 +1,7 @@
 package com.care.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,37 +12,36 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.care.modelDAO.ModelDAO;
+import com.care.modelDTO.MemberDTO;
 import com.care.modelDTO.MyFriendDTO;
 
 @Service
-public class UCheckFriendService implements IService {
+public class UGetFriendRequestListService implements IService {
 
 	@Autowired
 	ModelDAO dao;
 	
 	@Override
 	public void execute(Model model) {
-		
-		int friendStatus = 0;
 		Map<String, Object> map = model.asMap();
 		HttpServletRequest request = (HttpServletRequest) map.get("request");
 		HttpSession session = request.getSession();
 		
-		String u_id = request.getParameter("u_id");
-		//String m_id = session.getAttribute("sid");
-		String m_id = "david";
+		//String f_id = session.getAttribute("sid");
+		
+		//***Need to put session id here or it wont work
+		String m_id = "abc";
 		
 		MyFriendDTO mfdto = new MyFriendDTO();
 		
 		mfdto.setM_id(m_id);
-		mfdto.setF_id(u_id);
-		friendStatus = dao.checkFriendStatus(mfdto);
-		if (friendStatus == 2) {
-			model.addAttribute("isFriend", "2");
-		} else if (friendStatus == 1) {
-			model.addAttribute("isFriend", "1");
+		
+		List<MemberDTO> friendRequests = new ArrayList<MemberDTO>();
+		friendRequests = dao.getFriendRequests(mfdto);
+		if (!friendRequests.isEmpty()) {
+			model.addAttribute("friendRequests", friendRequests);
 		} else {
-			model.addAttribute("isFriend", "0");
+			model.addAttribute("noFriendRequests", true);
 		}
 		
 	}

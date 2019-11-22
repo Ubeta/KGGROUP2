@@ -73,8 +73,7 @@
 						aaa = JSON.stringify(res);
 						id = res.id;
 						nickname = res.properties.nickname;
-						location.href = "kakao_loginchk?id=" + id
-								+ "&nickname=" + nickname;
+						location.href = "kakao_loginchk?id=" + id;
 						alert(aaa);
 					},
 					fail : function(errorObj) {
@@ -132,6 +131,9 @@
 			<div>
 				<a href="javascript:kakaologin();"><img width="300"
 					src="${kakao }"></a>
+			</div>
+			<div>
+				<input type="button" onclick="location.href='register'" value="회원가입">
 			</div>
 		</c:otherwise>
 	</c:choose>

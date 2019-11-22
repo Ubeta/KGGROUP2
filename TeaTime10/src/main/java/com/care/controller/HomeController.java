@@ -3,6 +3,7 @@ package com.care.controller;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,8 +18,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.care.service.IService;
+import com.care.service.UAcceptFriendRequestService;
+import com.care.service.UCancelFriendRequestService;
+import com.care.service.UCheckFriendService;
+import com.care.service.UGetFriendRequestListService;
 import com.care.service.ULookUpService;
 import com.care.service.UPostService;
+import com.care.service.URemoveFriendService;
+import com.care.service.USendFriendRequestService;
 
 /**
  * Handles requests for the application home page.
@@ -67,6 +74,10 @@ public class HomeController {
 	public String my_header() {
 		return "/header/my_header";
 	}
+	@RequestMapping("/header/u_header")
+	public String u_header() {
+		return "/header/u_header";
+	}
 	@RequestMapping("login")
 	public String login() {
 		return "login";
@@ -78,23 +89,59 @@ public class HomeController {
 		ser.execute(model);
 		ser = context.getBean("UPostService", UPostService.class);
 		ser.execute(model);
+		ser = context.getBean("UCheckFriendService", UCheckFriendService.class);
+		ser.execute(model);
+		ser = context.getBean("UGetFriendRequestListService", UGetFriendRequestListService.class);
+		ser.execute(model);
 		return "u_page";
 	}
 	
 	@ResponseBody
-	@RequestMapping(value="u_page_friendAdd")
-	public String u_page_friendAdd() {
-		return "a";
+	@RequestMapping(value="u_page_friendsend")
+	public String u_page_friendAdd(Model model, HttpServletRequest request) {
+		model.addAttribute("request", request);
+		
+		ser = context.getBean("USendFriendRequestService", USendFriendRequestService.class);
+		ser.execute(model);
+		
+		Map<String, Object> map = model.asMap();
+		String result = (String) map.get("result");
+		
+		return result;
+		
 	}
 	@ResponseBody
 	@RequestMapping(value="u_page_friendCancel")
-	public String u_page_friendCancel() {
-		return "a";
+	public String u_page_friendCancel(Model model, HttpServletRequest request) {
+		model.addAttribute("request", request);
+		
+		ser = context.getBean("UCancelFriendRequestService", UCancelFriendRequestService.class);
+		ser.execute(model);
+		
+		Map<String, Object> map = model.asMap();
+		String result = (String) map.get("result");
+		
+		return result;
 	}
 	@ResponseBody
 	@RequestMapping(value="u_page_friendRemove")
-	public String u_page_friendRemove() {
-		return "a";
+	public String u_page_friendRemove(Model model, HttpServletRequest request) {
+		model.addAttribute("request", request);
+		ser = context.getBean("URemoveFriendService", URemoveFriendService.class);
+		ser.execute(model);
+		Map<String, Object> map = model.asMap();
+		String result = (String) map.get("removeFriendSuccess");
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping(value="u_page_friendAccept")
+	public String u_page_friendAccept(Model model, HttpServletRequest request) {
+		model.addAttribute("request", request);
+		ser = context.getBean("UAcceptFriendRequestService", UAcceptFriendRequestService.class);
+		ser.execute(model);
+		Map<String, Object> map = model.asMap();
+		String result = (String) map.get("addFriendSuccess");
+		return result;
 	}
 
 }

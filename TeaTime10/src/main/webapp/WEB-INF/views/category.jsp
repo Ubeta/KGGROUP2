@@ -67,6 +67,7 @@
 				<td colspan="5" style="text-align: center;">
 				<input type="hidden" value="${result }" name="m_id">
 				<input type="submit" value="등록">
+				${result }
 				</td>
 			</tr>
 		</table>

@@ -10,8 +10,10 @@
 <body>
 <c:if test="${sid == null }">
 	<script>
+		alert("로그아웃 되었습니다.");
 		location.href="login";
 	</script>
 </c:if>
+
 </body>
 </html>

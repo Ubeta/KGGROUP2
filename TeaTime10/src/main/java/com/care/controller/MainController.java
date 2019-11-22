@@ -1,6 +1,9 @@
 package com.care.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -14,6 +17,7 @@ import com.care.modelDTO.MemberDTO;
 import com.care.service.FListService;
 import com.care.service.IService;
 import com.care.service.MCategoryService;
+import com.care.service.MLoginPostService;
 //import com.care.service.MCategoryService;
 import com.care.service.MLoginService;
 import com.care.service.MRegisterService;
@@ -46,13 +50,32 @@ public class MainController {
 		model.addAttribute("request", request);
 		ser = context.getBean("MLoginService", MLoginService.class);
 		ser.execute(model);
+		Map<String, Object> map = model.asMap();
+		String result = (String)map.get("login");
+		if(result.equals(2)) {
+			HttpSession session = request.getSession();
+			session.setAttribute("sid", request.getParameter("id"));
+			session.setAttribute("mid", request.getParameter("id"));
+		}
 		return "loginchk";
 	}
+	/////////////////////////////////////////////////////////////////////////
+	
 	@RequestMapping("main")
-	public String main(Model model,HttpServletRequest request) {
-		System.out.println("abc"+request.getAttribute("id"));
+	public String main(Model model,HttpServletRequest request,HttpSession session) {
+		if(session.getAttribute("mid")==null) {
+			return "main";
+		}
+		model.addAttribute("session",session);
+		ser = context.getBean("MLoginPostService",MLoginPostService.class);
+		ser.execute(model);
+		//여기서 포스트글 가져와야 됨. 시발
 		return "main";
 	}
+	
+	
+	
+	///////////////////////////////////////////////////////////////////////
 	@RequestMapping(value = "mypage")
 	public String mypage(){
 		return "mypage";

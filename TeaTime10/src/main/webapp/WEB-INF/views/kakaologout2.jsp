@@ -1,19 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
+<script>
+function kakao_logout() {
+	if (confirm('로그아웃 하시겠습니까?')) {
+		location.href="kakaologout";
+	} else
+		history.back();
+}
+</script>
 </head>
-<body>
-<c:if test="${kid==null }">
-	<script>
-		alert("로그아웃 되었습니다.");
-		location.href="main";
-	</script>
-</c:if>
+<body onload="kakao_logout()">
+
 </body>
 </html>

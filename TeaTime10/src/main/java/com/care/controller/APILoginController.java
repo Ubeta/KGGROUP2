@@ -2,6 +2,7 @@ package com.care.controller;
 
 import org.springframework.stereotype.Controller;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.care.modelDTO.CategoryDTO;
-import com.care.modelDTO.NaverDTO;
+import com.care.modelDTO.PostDTO;
 import com.care.service.IService;
 import com.care.service.KakaoLoginService;
 import com.care.service.MCategoryService;
+import com.care.service.MLoginPostService;
 import com.care.service.NaverLoginBO;
 import com.care.service.NaverLoginService;
 import com.care.service.kakaoapi;
@@ -82,8 +83,9 @@ public class APILoginController {
 		if(result.equals("ok")) {
 			//response의 id값 파싱
 			//4.파싱 닉네임 세션으로 저장
-			session.setAttribute("nid" , id); //세션 생성
-			return "main";
+			session.setAttribute("nid", id); //세션 생성
+			session.setAttribute("mid", id);
+			return "redirect:main";
 			
 		}else {
 			session.setAttribute("nid", id);
@@ -103,11 +105,10 @@ public class APILoginController {
 
 	@RequestMapping(value="kakaologout")
 	public String kakaologout(HttpSession session) {
-		kakao.kakaoLogout((String)session.getAttribute("kid"));
+//		kakao.kakaoLogout((String)session.getAttribute("kid"));
 		session.removeAttribute("kid");
 		return "redirect:login";
 	}
-
 
 
 	@RequestMapping("kakao_loginchk")
@@ -120,11 +121,10 @@ public class APILoginController {
 		HttpSession session = request.getSession();
 		if(result.equals("ok")) { // 이미 있는 아이디
 			session.setAttribute("kid", request.getParameter("id"));
-			session.setAttribute("sessiont", "kakao");
-			return "main";
-			
+			session.setAttribute("mid", request.getParameter("id"));
+			return "redirect:main";
 		}else {
-			session.setAttribute("kid", request.getParameter("id"));
+			System.out.println(request.getParameter("id") + " : 컨트롤러 로그인체크임 여기되면 카테고리로 넘어감" );
 			return "category";
 		}
 	}
@@ -133,26 +133,67 @@ public class APILoginController {
 	@RequestMapping("categoryregister")
 	public String categoryregister(HttpServletRequest request,Model model) {
 		model.addAttribute("register",request);
-		System.out.println(request.getParameter("m_id"));
+		System.out.println(request.getParameter("m_id")+": 카테고리레지스터 이제 카카오 첫회원 카테고리등록으로 감");
 		ser = context.getBean("MCategoryService", MCategoryService.class);
 		ser.execute(model);
-		model.addAttribute("du","regiOk");
-		System.out.println("registerchk전임 여기까진 잘 됨.");
-		/*
-		 * 
-		 * 여기서 디비에서 카테고리 내가 선택한 카테고리 내용을 가져오고
-		 * 다시 한번 디비에서 내가 선택한 카테고리의 게시글들을 가져온 후
-		 * 리스트에 담아서 아래처럼 담아서 넘겨줌 ???는 글의 정보를 넣어야 함 
-		 * posts는 
-		   ArrayList<PostDTO> posts = new ArrayList<PostDTO>();
-		      각 posts마다 하나의 글을 보내고
-		   model.addAttribute("posts",posts);
-		      로 넘겨주고 메인이든 어디든 출력한다.
-		 * */
-		return "registerchk";
+		return "redirect:premain?id="+request.getParameter("m_id");
+	}
+	
+	@RequestMapping("premain")
+	public String premain(Model model, HttpServletRequest request) {
+		System.out.println("premain임");
+		System.out.println(request.getParameter("id")); // 잘 됨
+		model.addAttribute("request",request);
+		HttpSession session = request.getSession();
+		if(session.getAttribute("nid")!=null) {
+			model.addAttribute("lo","login");
+			return "redirect:userpost";
+		}
+		ser = context.getBean("kakaoLoginService", KakaoLoginService.class);
+		ser.execute(model);
+		Map<String, Object> map = model.asMap();
+		String result = (String)map.get("result");
+		
+		if(result.equals("ok")) { 
+			model.addAttribute("du","regiOk");
+			model.addAttribute("catchk","catOk");
+			return "registerchk";
+		}else {
+			return "category";
+		}
+	}
+	
+	@RequestMapping("userpost")
+	public String userpost(Model model, HttpSession session) {
+		model.addAttribute("session",session);
+		ser = context.getBean("MLoginPostService",MLoginPostService.class);
+		ser.execute(model);
+		if(session.getAttribute("nid")!=null) {
+			model.addAttribute("lo","login");
+			return "naversessionend";
+		}
+		return "main";
+	}
+	@RequestMapping("everylogout")
+	public String everylogout(HttpSession session,Model model) {
+		if(session.getAttribute("sid")!=null) {
+			System.out.println(session.getAttribute("sid") + ": every sid");
+			return "logout2";
+		}else if(session.getAttribute("nid")!=null) {
+			System.out.println(session.getAttribute("nid") + ": every nid");
+			model.addAttribute("lo","logout");
+			return "naversessionend";
+		}else {
+			System.out.println(session.getAttribute("kid") + ": every kid");
+			return "kakaologout2";
+		}
+		
 	}
 
-
+	@RequestMapping("asdf")
+	public String asdf() {
+		return "asdf";
+	}
 
 
 }

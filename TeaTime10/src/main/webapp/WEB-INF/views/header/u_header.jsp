@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>m_header.jsp</title>
+<title>f_header.jsp</title>
 
 <spring:url value="/resources/css/basic.css" var="basicCss" />
 <spring:url value="/resources/images/logo2.png" var="logo" />
@@ -19,7 +18,7 @@
 <style>
 .headerbody {
 	display: flex;
-	width: 1950px;
+	width: 100%;
 }
 
 .wrapper {
@@ -37,7 +36,7 @@
 	left: 0;
 	right: 0;
 	background-color: #66CCCC;
-	height: 80px;
+	height: 8%;
 	display: flex;
 	flex-flow: row;
 	border-bottom-style: solid;
@@ -46,14 +45,16 @@
 	flex: 1 0 100%;
 }
 
-.img-container: {
+.img-container {
 	order: 1;
 	display: flex;
+	margin-left: 5%;
+	margin-top: 1%;
 }
 
 .logo {
-	margin: 15px;
-	margin-left: 3.75rem;
+	display: block;
+	margin: 0 auto;
 	border-radius: 5px;
 	flex: 1 1 auto;
 }
@@ -64,8 +65,8 @@
 
 .title-container {
 	order: 2;
-	margin-top: 12px;
-	margin-left: 2.625rem;
+	margin-top: 1%;
+	margin-left: 3.5%;
 	display: flex;
 }
 
@@ -82,37 +83,42 @@
 
 .search-container {
 	order: 3;
+	display: flex;
+	flex-flow: row;
 }
 
 #sFrm {
+	order: 1;
 	display: flex;
 	flex-flow: row;
 }
 
 .search-bar-container {
 	order: 1;
-	margin-left: 20.5rem;
-	margin-top: 15px;
+	width: 40%;
+	margin-left: 35%;
+	margin-top: 1.5%;
 	flex: 0 1 auto;
 }
 
 .search-bar {
 	height: 30px;
-	width: 30.75rem; 
+	width: 30.75rem;
 	font-size: 16pt;
 }
 
 .search-button-container {
 	order: 2;
-	margin-top: 24px;
+	margin-top: 3%;
+	margin-left: 53.5%;
 	background-color: #DCDCDC;
 	width: 34px;
 	height: 34px;
 }
 
 .search-button {
-	margin-top: 3px;
-	margin-left: 0.1rem;
+	margin-top: 3%;
+	margin-left: 2%;
 	width: 30px;
 	height: 30px;
 	flex: 0 1 auto;
@@ -136,36 +142,33 @@ a {
 	order: 4;
 	display: flex;
 	flex-flow: row;
-	right: 0;
-	margin-left: 16rem;
-	margin-right: 1rem;
-	margin-top: 6px;
-	height: 60px;
-	width: 26rem;
+	margin-top: 0.4%;
+	margin-right: 5%;
+	height: 80%;
+	width: 25%;
 	background-color: #2F4F4F;
 	line-height: 50px;
 	border-radius: 3px;
 	border-style: solid;
 	border-color: black;
 	text-align: center;
-	flex: 0 1 auto;
 	
 }
-.friend-page {
+.main-page {
 	order: 1;
-	margin-left: 0.75rem;
+	margin-left: 1%;
 	flex: 1 1 auto;
 }
-.friend-page:hover {
+.main-page:hover {
 	font-weight: bold;
 	cursor: pointer;
 }
 .my-page {
 	order: 2;
-	padding-left: 0.625rem;
-	padding-right: 0.625rem;
-	margin-left: 1rem;
-	margin-right: 1rem;
+	padding-left: 1%;
+	padding-right: 1%;
+	margin-left: 2%;
+	margin-right: 2%;
 	border-left-style: solid;
 	border-left-color: grey;
 	border-left-width: 2px;
@@ -180,7 +183,7 @@ a {
 }
 .logout {
 	order: 3;
-	margin-right: 0.75rem;
+	margin-right: 1%;
 	flex: 1 1 auto;
 }
 .logout:hover {
@@ -194,22 +197,23 @@ a {
 		var frm = document.getElementById("sFrm");
 		frm.submit();
 	}
-	function friendpage(){
+	function mainpage(){
 		location.href="#";
 	}
 	function mypage(){
 		location.href="#";
 	}
 	function logout(){
-		location.href="everylogout";
+		location.href="#";
 	}
 </script>
-<script type="text/javascript" src="resources/jquery-3.2.1.min.js"></script>
 
 </head>
 <body>
 
 <div class="headerbody">
+
+<div class="wrapper">
 	<div class="header-wrapper">
 
 		<div class="img-container">
@@ -232,18 +236,21 @@ a {
 		</div>
 		
 		<div class="list-container">
-			<div class="friend-page" onclick="friendpage()">
-				<a href="#">친구 페이지</a>
+			<div class="main-page" onclick="mainpage()">
+				<a href="#">메인</a>
 			</div>
 			<div class="my-page" onclick="mypage()">
-				<a href="#">마이 페이지</a>
+				<a href="#">마이</a>
 			</div>
 			<div class="logout" onclick="logout()">
-				<a href="everylogout">로그아웃</a>
+				<a href="#">로그아웃</a>
 			</div>
 		</div>
 
 	</div>
 </div>
+
+</div>
+
 </body>
 </html>
