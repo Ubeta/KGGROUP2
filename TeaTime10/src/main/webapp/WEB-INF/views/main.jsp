@@ -45,39 +45,6 @@
    }
 </style>
 <script type="text/javascript" src="resources/jquery-3.2.1.min.js"></script>
-<script>
-	// 네이버와 그냥 회원 둘 다 로그아웃 
-	// 네이버의 경우 아래의 ajax를 통해서 네이버 자체의 세션을 지우고나서 logout 맵핑에 따라 세션이 지워짐.
-	function click_logout() {
-		if (confirm('로그아웃 하시겠습니까?')) {
-			$.ajax({
-				type : "POST",
-				dataType : 'text',
-				url : "http://nid.naver.com/nidlogin.logout",
-				crossDomain : true,
-				xhrFields : {
-					withCredentials : true
-				}
-			}).done(function(data) {
-
-				$('#logout').submit();
-			}).fail(function(xhr, textStatus, errorThrown) {
-
-				$('#logout').submit();
-			});
-			location.href = "logout";
-		} else
-			location.href = "main";
-	}
-	
-	// 카카오 로그아웃 kakaologout 맵핑에 따라 세션을 지움
-	function kakao_logout() {
-		if (confirm('로그아웃 하시겠습니까?')) {
-			location.href = "kakaologout";
-		} else
-			location.href = "main";
-	}
-</script>
 
 <body>
 	<!-- 카카오로 로그인 했을 경우 -->
@@ -122,11 +89,22 @@
 		<br>
 		<br>
 	</c:if>
-	<c:if test="${mid==null}">
+	<c:if test="${mid==null and nid!=null}">
 		<script>
-			alert("로그인 해 주세요");
+			location.href = "userpost";
+		</script>
+	</c:if>
+	<c:if test="${mid==null and kid!=null }">
+		<script>
+			location.href = "kakaologout";
+		</script>
+	</c:if>
+	<c:if test="${mid==null and kid==null and nid==null}">
+		<script>
+			alert("로그인 해주세요")
 			location.href = "login";
 		</script>
 	</c:if>
+	</div>
 </body>
 </html>

@@ -51,9 +51,9 @@ public class MainController {
 		model.addAttribute("register", request);
 		//model.addAttribute("multipartRequest", multipartRequest);
 		ser = context.getBean("MRegisterService", MRegisterService.class);
-		ser.execute(model);
+		ser.execute(model); // du = ok
 		ser = context.getBean("MCategoryService", MCategoryService.class);
-		ser.execute(model);
+		ser.execute(model); //
 		return "registerchk";
 	}
 	@RequestMapping("loginchk")
@@ -66,8 +66,8 @@ public class MainController {
 		if(result.equals("2")) {
 			System.out.println("result값 : " + result);
 			HttpSession session = request.getSession();
-			session.setAttribute("sid", request.getParameter("id"));
 			session.setAttribute("mid", request.getParameter("id"));
+			System.out.println("깃허브테스트때문에 쓴거임");
 		}
 		return "loginchk";
 	}
@@ -103,11 +103,15 @@ public class MainController {
 	ArrayList<PostDTO> list = new ArrayList<PostDTO>();
 	@RequestMapping(value = "mypage")
 	public String mypage(Model model,HttpSession session){
+		System.out.println(session.getAttribute("mid") + ": mypage들어왔을 때");
 		model.addAttribute("sessionid",session.getAttribute("mid"));
 		ser = context.getBean("PBoardListService", PBoardListService.class);
 		ser.execute(model);
 		Map<String, Object> map = model.asMap();
-		list = (ArrayList<PostDTO>) map.get("board_list");
+		list = (ArrayList<PostDTO>)map.get("board_list");
+		System.out.println("=============");
+		System.out.println(list);
+		System.out.println("=============");
 		return "mypage";
 	}
 	@RequestMapping(value = "fix_myinfo" , method = RequestMethod.POST)
@@ -170,17 +174,17 @@ public class MainController {
 		ser = context.getBean("PWriteBoardService", PWriteBoardService.class);
 		ser.execute(model);
 	}
+	
 	public static int cnt=0;
 	@ResponseBody
 	@RequestMapping(value = "test")
 	public Map<String, Object> test(Model model, PostDTO podto) {
-		
 		Map<String, Object> test_map = new HashMap<String, Object>();
 		int i = cnt;
 		if(i<list.size()) {
-			list.get(cnt);
+			list.get(i);
 			test_map.put("chk", "true");
-			test_map.put("b_test", list.get(cnt));
+			test_map.put("b_test", list.get(i));
 			++cnt;
 			return test_map;
 		}else {

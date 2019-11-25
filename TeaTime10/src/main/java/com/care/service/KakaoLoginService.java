@@ -32,10 +32,8 @@ public class KakaoLoginService implements IService{
 		if(dto1==null) {
 			kdao.resgister(dto); // kmember에 등록함
 			dto1 = kdao.kakaologinchk(dto);// kmember에 등록된 정보를 가져옴
-//			catedto.setM_id(dto1.getK_id()); // 카테고리에 아이디만셋팅
-			                                 // 여기있는세트가 안넘어갈 수도 있음
-//			model.addAttribute("result",1);
 			model.addAttribute("result",dto1.getK_id()); //result값으로 아이디 넘겨줌
+			model.addAttribute("kakaoInform",dto1);
 		}else {
 			model.addAttribute("result","ok");
 		}
