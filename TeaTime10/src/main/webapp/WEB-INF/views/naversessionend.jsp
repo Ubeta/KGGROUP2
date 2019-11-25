@@ -12,7 +12,6 @@
 	<c:set var="aa" value="${lo }"/>
 	<c:if test="${aa=='login' }">
 		<script>
-		alert("회원가입을 축하합니다. 다시 로그인 해 주세요!")
 		if (true) {
 			$.ajax({
 				type : "POST",

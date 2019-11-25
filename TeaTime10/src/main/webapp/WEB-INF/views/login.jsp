@@ -5,9 +5,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport"
-	content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width" />
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script type="text/javascript" src="resources/jquery-3.2.1.min.js"></script>
 <meta charset="UTF-8">
@@ -74,7 +71,6 @@
 						id = res.id;
 						nickname = res.properties.nickname;
 						location.href = "kakao_loginchk?id=" + id;
-						alert(aaa);
 					},
 					fail : function(errorObj) {
 						alert(JSON.stringify(error));
@@ -88,20 +84,10 @@
 </head>
 <body>
 	<c:choose>
-		<c:when test="${sid != null}">
-			<script type="text/javascript">
-				location.href = "main";
-			</script>
-		</c:when>
-		<c:when test="${kid != null }">
+		<c:when test="${mid != null}">
 			<script>
-				location.href = "main";
-			</script>
-		</c:when>
-		<c:when test="${nid != null }">
-			<script>
-				location.href = "main";
-			</script>
+				location.href="main";
+			</script>			
 		</c:when>
 		<c:otherwise>
 			<form action="loginchk" method="post" name="frm"

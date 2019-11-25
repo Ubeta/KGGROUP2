@@ -29,10 +29,12 @@ public class NaverLoginService implements IService{
 		CategoryDTO catedto = new CategoryDTO();
 		map = model.asMap();
 		JSONObject response_obj = (JSONObject)map.get("response_obj");
+		System.out.println(response_obj);
 		String id = (String)response_obj.get("id");
 		String name = (String)response_obj.get("name");
 		String email = (String)response_obj.get("email");
 		String gen = (String)response_obj.get("gender");
+		String idnum = (String)response_obj.get("");
 		int gender = 2;
 		if(gen.equals("M")) {
 			gender = 1;
@@ -50,6 +52,7 @@ public class NaverLoginService implements IService{
 			dto1 = ndao.naverloginchk(dto);
 //			catedto.setM_id(dto1.getN_id()); // 카테고리에 아이디만 셋팅
 			model.addAttribute("result",dto1.getN_id());
+			model.addAttribute("naverInform",dto1);
 		}else {
 			//정보가 있음
 			model.addAttribute("result","ok");

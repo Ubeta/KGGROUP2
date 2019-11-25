@@ -16,12 +16,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.care.modelDTO.PostDTO;
 import com.care.service.IService;
 import com.care.service.KakaoLoginService;
 import com.care.service.MCategoryService;
 import com.care.service.MLoginPostService;
+import com.care.service.MRegisterService;
 import com.care.service.NaverLoginBO;
 import com.care.service.NaverLoginService;
 import com.care.service.kakaoapi;
@@ -75,6 +77,9 @@ public class APILoginController {
 		JSONObject response_obj = (JSONObject)jsonObj.get("response");
 		// 회원된 아이디가 있는지 확인
 		model.addAttribute("response_obj",response_obj);
+		//
+//		   아래의 네이버 로그인서비스도 필요없어진다. 그냥 멤버테이블에서 찾으면 됨.
+		//
 		ser = context.getBean("naverLoginService", NaverLoginService.class);
 		ser.execute(model);
 		Map<String, Object> map = model.asMap();
@@ -89,7 +94,7 @@ public class APILoginController {
 			
 		}else {
 			session.setAttribute("nid", id);
-			return "category";
+			return "naverRegister";
 		}
 	}
 
@@ -105,7 +110,6 @@ public class APILoginController {
 
 	@RequestMapping(value="kakaologout")
 	public String kakaologout(HttpSession session) {
-//		kakao.kakaoLogout((String)session.getAttribute("kid"));
 		session.removeAttribute("kid");
 		return "redirect:login";
 	}
@@ -124,55 +128,21 @@ public class APILoginController {
 			session.setAttribute("mid", request.getParameter("id"));
 			return "redirect:main";
 		}else {
-			System.out.println(request.getParameter("id") + " : 컨트롤러 로그인체크임 여기되면 카테고리로 넘어감" );
-			return "category";
+			System.out.println("kakao_loginchk : " + "새로가입");
+			return "kakaoFirstRegister";
 		}
 	}
 
 	
-	@RequestMapping("categoryregister")
-	public String categoryregister(HttpServletRequest request,Model model) {
-		model.addAttribute("register",request);
-		System.out.println(request.getParameter("m_id")+": 카테고리레지스터 이제 카카오 첫회원 카테고리등록으로 감");
-		ser = context.getBean("MCategoryService", MCategoryService.class);
-		ser.execute(model);
-		return "redirect:premain?id="+request.getParameter("m_id");
-	}
-	
-	@RequestMapping("premain")
-	public String premain(Model model, HttpServletRequest request) {
-		System.out.println("premain임");
-		System.out.println(request.getParameter("id")); // 잘 됨
-		model.addAttribute("request",request);
-		HttpSession session = request.getSession();
-		if(session.getAttribute("nid")!=null) {
-			model.addAttribute("lo","login");
-			return "redirect:userpost";
-		}
-		ser = context.getBean("kakaoLoginService", KakaoLoginService.class);
-		ser.execute(model);
-		Map<String, Object> map = model.asMap();
-		String result = (String)map.get("result");
-		
-		if(result.equals("ok")) { 
-			model.addAttribute("du","regiOk");
-			model.addAttribute("catchk","catOk");
-			return "registerchk";
-		}else {
-			return "category";
-		}
-	}
 	
 	@RequestMapping("userpost")
 	public String userpost(Model model, HttpSession session) {
 		model.addAttribute("session",session);
-		ser = context.getBean("MLoginPostService",MLoginPostService.class);
-		ser.execute(model);
 		if(session.getAttribute("nid")!=null) {
 			model.addAttribute("lo","login");
 			return "naversessionend";
 		}
-		return "main";
+		return "login";
 	}
 	@RequestMapping("everylogout")
 	public String everylogout(HttpSession session,Model model) {
@@ -188,11 +158,6 @@ public class APILoginController {
 			return "kakaologout2";
 		}
 		
-	}
-
-	@RequestMapping("asdf")
-	public String asdf() {
-		return "asdf";
 	}
 
 

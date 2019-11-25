@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import com.care.modelDAO.KakaoDAO;
 import com.care.modelDAO.ModelDAO;
 import com.care.modelDTO.CategoryDTO;
+import com.care.modelDTO.MemberDTO;
 import com.care.modelDTO.MyFriendDTO;
 
 @Service
@@ -36,11 +37,16 @@ public class MLoginPostService implements IService{
 			m_id = (String)session.getAttribute("kid");
 		
 		
-//		MyFriendDTO frienddto = mdao.myfriend(m_id);
+		ArrayList<String> flist = new ArrayList<String>();
+		java.util.List<MemberDTO> frienddto = mdao.friendLists(m_id);
+		for (int i = 0; i < frienddto.size(); i++) {
+			flist.add(frienddto.get(i).getM_id());
+			System.out.println(frienddto.get(0).getM_id());
+		}
 		
 		CategoryDTO catedto = mdao.mcategorychk(m_id);
 		ArrayList<String> list = new ArrayList<String>();
-		//System.out.println(catedto.getM_id()+": MLoginPost에서 카테고리가져옴");
+
 		if (catedto.getC_sports().equals("Y")) {
 			list.add("sports");
 			System.out.println(catedto.getC_sports()+":sports");
@@ -145,6 +151,6 @@ public class MLoginPostService implements IService{
 			System.out.println(list.get(i));
 		}
 		
-		model.addAttribute("postlist",kdao.post(list));
+		model.addAttribute("postlist",kdao.post(list,flist));
 	}
 }
