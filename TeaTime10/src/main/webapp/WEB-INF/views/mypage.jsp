@@ -35,6 +35,7 @@
 	         width: 60%;
 	         height: 100%;
 	         border: 1px solid yellow;
+	         margin-bottom: 30px;
 	      }
 	      .right{
 	         float: left;
@@ -111,24 +112,29 @@
 	      
 	      .board{
 	      	background-color: lightyellow;
+	      	height: 650px;
 	      	margin-left: 10px;
 	      	margin-right: 10px;
+	      	margin-bottom: 50px;
 	      }
 	      .board table{
 	      	margin-left: auto;
 	      	margin-right: auto;
+	      	margin-bottom: 50px;
 	      }
 	      .add{
 		      width: 100%;
 		      background-color: gray;
-		      height: 500px;
+		      height: 400px;
 		      border-top: 1px solid black;
+		      margin-bottom: 50px;
 	      }
 	      .add table{
 		      width: 100%;
 		      background-color: gray;
-		      height: 500px;
+		      height: 300px;
 		      border-top: 1px solid black;
+		      margin-bottom: 50px;
 	      }
 	      
 	</style>
@@ -136,26 +142,42 @@
 	<jsp:useBean id="dao" class="com.care.modelDAO.ModelDAO"/>
 	
 	<script type="text/javascript">
+		window.onload = function(){
+			setTimeout (function(){
+				scrollTo(0,0);
+			},100);
+		}	
+	
+	
+		$(document).ready(function() {
+		       $('.my_info_btn').show(); 
+		       $('.my_info').hide(); 
+		       $('.my_info_btn').click(function(){ 
+		       $ ('.my_info_btn').hide(); 
+		       $ ('.my_info').show();
+		       return false;
+		     }); 
+		});
 		
 	    $(window).scroll(function() {
 	    	if ($(window).scrollTop() == $(document).height() - $(window).height()) {
 	        	$.ajax({
-					url:"test",
+					url:"boardlist",
 					type:"POST",
 					dataType: "json",
 					cache 	: false,
 					success: function(data){
 						console.log(data);
-						
+						console.log(data.boardlist.p_date);
 						if(data.chk=="true"){
 							
-					    var id = data.b_test.m_id;
-				    	var title = data.b_test.p_title;
-				    	var cat = data.b_test.p_cat;
-				    	var hash = data.b_test.p_hash;
-				    	var content = data.b_test.p_content;
-				    	var img = data.b_test.p_img;
-				    	var date = data.b_test.p_date;
+					    var id = data.boardlist.m_id;
+				    	var title = data.boardlist.p_title;
+				    	var cat = data.boardlist.p_cat;
+				    	var hash = data.boardlist.p_hash;
+				    	var content = data.boardlist.p_content;
+				    	var img = data.boardlist.p_img;
+				    	var date = data.boardlist.p_date;
 				    	
 				    	$(".add").append("<table border='1'>"+
 				    			"<tr><td>아이디</td><td>"+id+"</td></tr>"+
@@ -172,53 +194,34 @@
 						}
 					},
 					error:function(){
-						alert("마지막 글입니다.")
+						alert("에러.")
 					}
 				});
 	          
 	
 	        }
 	    });
-		
-		
-	
-		$(document).ready(function() {
-		       $('.my_info_btn').show(); 
-		       $('.my_info').hide(); 
-		       $('.my_info_btn').click(function(){ 
-		       $ ('.my_info_btn').hide(); 
-		       $ ('.my_info').show();
-		       return false;
-		     }); 
-		  });
-		
-		function my_info(){
-			var session_id = "1";
-			var form = {
-					m_id : session_id
-			}
-			console.log(form);
+	    
+	    
+	    function my_info(){
 			$.ajax({
 				url:"my_info",
 				type:"POST",
-				data: form,
 				dataType: "json",
 				cache 	: false,
 				success: function(data){
-					console.log(data);
-					$('#my_id').val(data.dto.m_id);
-					$('#my_name').val(data.dto.m_name);
-					$('#my_idnum').val(data.dto.m_idnum);
+					$('#my_id').val(data.memdto.m_id);
+					$('#my_name').val(data.memdto.m_name);
+					$('#my_idnum').val(data.memdto.m_idnum);
 					var gender=null;
-					console.log(gender);
-					if(data.dto.m_gender==1){
+					if(data.memdto.m_gender==1){
 						gender="남자";
 					}else{
 						gender="여자";
 					}
 					$('#my_gender').val(gender);
-					$('#my_tel').val(data.dto.m_tel);
-					$('#my_mail').val(data.dto.m_mail);
+					$('#my_tel').val(data.memdto.m_tel);
+					$('#my_mail').val(data.memdto.m_mail);
 				},
 				error:function(){
 					alert("문제가 발생 하였습니다.")
@@ -226,13 +229,13 @@
 			});
 		}
 		
-		function friend_find(){
+		function user_find(){
 			var m_id = $('#m_id').val();
 			var form = {
 					m_id : m_id
 			}
 			$.ajax({
-				url:"friend_find",
+				url:"user_find",
 				type:"POST",
 				data: form,
 				dataType: "json",
@@ -248,12 +251,13 @@
 				}
 			});
 		}
-		
-		$(".find_friend input[type=text]").keypress(function(e) { 
-			if (e.keyCode == 13){
-		    	f_find();
-		    }    
-		});
+		function enter(){
+			$('.user_find').keypress(function(e) { 
+				if (e.keyCode == 13){
+					user_find();
+			    }    
+			});
+		}
 		
 		function friend_add(){
 			var f_id = $('#td_id').text();
@@ -266,8 +270,17 @@
 				type:"POST",
 				data: form,
 				cache 	: false,
+				dataType: "json",
 				success: function(data){
-					alert("친구 추가 성공.")
+					console.log(data)
+					if(data.chk == 0){
+						alert("이미 친구목록에 있는 아이디 입니다.")
+					}else if(data.chk == 1){
+						alert("자기 자신은 추가 할 수 없습니다.")
+					}else if(data.chk == 2){
+						alert("친구 추가 성공.")	
+					}
+					
 				},
 				error:function(){
 					alert("문제가 발생 하였습니다.")
@@ -377,16 +390,25 @@
          <div class="board">
          	<h4>게시글 </h4>
 	         		<div class="add">
-	         		
+	         		<c:set var="list" value="${boardlist.get(0) }"/>
+	         			<table border='1'>
+				    			<tr><td>아이디</td><td>${list.m_id }</td></tr>
+				    			<tr><td>제목</td><td>${list.p_title }</td></tr>
+				    			<tr><td>카테고리</td><td>${list.p_cat }</td></tr>
+				    			<tr><td>해시</td><td>${list.p_hash }</td></tr>
+				    			<tr><td>내용</td><td>${list.p_content }</td></tr>
+				    			<tr><td>사진</td><td>${list.p_img }</td></tr>
+				    			<tr><td>작성날자</td><td>${list.p_date }</td></tr>
+				    	</table>
 	         		</div>
          </div>
       </div>
       <div class="right">
          <div class="f_find">
          	<h4>친구 찾기</h4>
-         	<div class="find_friend">
-		       	<input type="text" name="m_id" id="m_id" onkeypress="friend_find()" placeholder="찾을 친구의 이름을 입력하세요." style="width: 200px; height: 40px;">
-		       	<input type="button" value="Find" onclick="friend_find()">
+         	<div class="u_find">
+		       	<input type="text" class="user_find" onkeypress="enter()" name="m_id" id="m_id" placeholder="찾을 친구의 이름을 입력하세요." style="width: 200px; height: 40px;">
+		       	<input type="button" value="Find" onclick="user_find()">
 	        </div>
          </div>
          <div class="f_info">

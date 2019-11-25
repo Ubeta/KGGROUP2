@@ -1,6 +1,5 @@
 package com.care.service;
 
-import java.util.Date;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +17,7 @@ public class PWriteBoardService implements IService{
 	@Override
 	public void execute(Model model) {
 		Map<String, Object> map = model.asMap();
-		map.get("w_board");
-		PostDTO pdto = (PostDTO) map.get("w_board");
-		pdto.setP_scope(1);
-		pdto.setP_like(2);
+		PostDTO pdto = (PostDTO)map.get("write_board");
 		
 		mdao.write_board(pdto);
 	}
