@@ -12,9 +12,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <style>
-html, body {
-	width: 100%;
+body {
+	width: 1950px;
 	height: 100%;
+	overflow: auto;
 }
 
 .wrapper {
@@ -23,7 +24,7 @@ html, body {
 }
 
 .main-wrapper {
-	width: 1950px;
+	width: 100%;
 	height: 100%;
 	display: flex;
 	flex-flow: row;
@@ -149,6 +150,7 @@ html, body {
 }
 .friend-request-container {
 	order: 3;
+	right: 0%;
 	width: 20%;
 	background-color: #E6E6E6;
 	text-align: center;
