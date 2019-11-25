@@ -232,9 +232,15 @@ body {
 
 	var u_id = "${param.u_id}";
 	var isFriend = ${isFriend};
+	var sessionId = '${mid}';
 	
 	
 	$(document).ready(function(){
+		
+		if (u_id == sessionId) {
+			location.href="mypage";
+		}
+		
 		if (isFriend == 0) {
 			$('#sendFriend').show();
 			$('#cancelFriend').hide();
@@ -247,7 +253,8 @@ body {
 			$('#sendFriend').hide();
 			$('#cancelFriend').hide();
 			$('#removeFriend').show();
-		}
+		}	
+		
 	});
 
 	function sendFriend(button){
