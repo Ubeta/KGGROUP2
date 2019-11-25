@@ -168,6 +168,7 @@
 					cache 	: false,
 					success: function(data){
 						console.log(data);
+						console.log(data.boardlist.p_date);
 						if(data.chk=="true"){
 							
 					    var id = data.boardlist.m_id;

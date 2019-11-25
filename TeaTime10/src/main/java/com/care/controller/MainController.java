@@ -185,6 +185,8 @@ public class MainController {
 			if(i<list.size()) {
 				boardlist_map.put("chk", "true");
 				boardlist_map.put("boardlist", list.get(i));
+				Map<String, Object> map = model.asMap();
+				
 				++cnt;
 				return boardlist_map;
 			}else {
