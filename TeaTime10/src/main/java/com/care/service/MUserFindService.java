@@ -8,15 +8,14 @@ import org.springframework.ui.Model;
 
 import com.care.modelDAO.ModelDAO;
 @Service
-public class MFFindService implements IService{
+public class MUserFindService implements IService{
 	@Autowired
 	private ModelDAO mdao;
 	@Override
 	public void execute(Model model) {
 		Map<String, Object> map = model.asMap();
-		String f_id = null;
-		f_id = (String)map.get("f_id");
-		model.addAttribute("finfo", mdao.f_info(f_id));
+		String user_id = (String)map.get("user_id");
+		model.addAttribute("userinfo", mdao.f_info(user_id));
 	}
 
 }

@@ -19,12 +19,15 @@ public class MMyInfoService implements IService{
 	
 	@Override
 	public void execute(Model model) {
+		//세션 아이디 받기
 		Map<String, Object> map = model.asMap();
-		map.get("my_id");
-		String session_my_id = null;
-		session_my_id = (String)map.get("my_id");
-		model.addAttribute("myinfo", mdao.my_info(session_my_id));
-		model.addAttribute("mycat", mdao.my_cat(session_my_id));
+		//String sessionid = (String)map.get("sessionid");
+		String sessionid = "1";
+		
+		model.addAttribute("myinfo", mdao.my_info(sessionid));
+		
+		
+		
 	}
 
 }
