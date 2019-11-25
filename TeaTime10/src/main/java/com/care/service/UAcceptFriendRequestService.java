@@ -27,8 +27,7 @@ public class UAcceptFriendRequestService implements IService {
 		int result = 0;
 		String f_id = request.getParameter("m_id");
 		
-		//String m_id = session.getAttribute("sid");
-		String m_id = "abc";
+		String m_id = (String)session.getAttribute("mid");
 		
 		MyFriendDTO mfdto = new MyFriendDTO();
 		

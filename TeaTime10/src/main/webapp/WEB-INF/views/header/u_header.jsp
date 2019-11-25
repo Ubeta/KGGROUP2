@@ -18,13 +18,12 @@
 <style>
 .headerbody {
 	display: flex;
-	width: 100%;
+	width: 1950px;
 }
 
 .wrapper {
-	min-width: 100%;
+	width: 100%;
 	display: flex;
-	margin-right: 0;
 	left: 0;
 	right: 0;
 	flex: 1 1 auto;
@@ -48,7 +47,7 @@
 .img-container {
 	order: 1;
 	display: flex;
-	margin-left: 5%;
+	margin-left: 2%;
 	margin-top: 1%;
 }
 
@@ -66,7 +65,7 @@
 .title-container {
 	order: 2;
 	margin-top: 1%;
-	margin-left: 3.5%;
+	margin-left: 1%;
 	display: flex;
 }
 
@@ -83,12 +82,14 @@
 
 .search-container {
 	order: 3;
+	left: 40%;
+	margin: auto;
+	margin-top: 1%;
 	display: flex;
 	flex-flow: row;
 }
 
 #sFrm {
-	order: 1;
 	display: flex;
 	flex-flow: row;
 }
@@ -96,29 +97,26 @@
 .search-bar-container {
 	order: 1;
 	width: 40%;
-	margin-left: 35%;
-	margin-top: 1.5%;
 	flex: 0 1 auto;
 }
 
 .search-bar {
 	height: 30px;
-	width: 30.75rem;
+	width: 28em;
 	font-size: 16pt;
 }
 
 .search-button-container {
 	order: 2;
-	margin-top: 3%;
-	margin-left: 53.5%;
+	margin-left: 54.5%;
+	margin-top: 1.4%;
 	background-color: #DCDCDC;
 	width: 34px;
 	height: 34px;
 }
 
 .search-button {
-	margin-top: 3%;
-	margin-left: 2%;
+	margin-top: 4.4%;
 	width: 30px;
 	height: 30px;
 	flex: 0 1 auto;
@@ -143,9 +141,8 @@ a {
 	display: flex;
 	flex-flow: row;
 	margin-top: 0.4%;
-	margin-right: 5%;
 	height: 80%;
-	width: 25%;
+	width: 20%;
 	background-color: #2F4F4F;
 	line-height: 50px;
 	border-radius: 3px;
@@ -167,8 +164,8 @@ a {
 	order: 2;
 	padding-left: 1%;
 	padding-right: 1%;
-	margin-left: 2%;
-	margin-right: 2%;
+	margin-left: 1%;
+	margin-right: 1%;
 	border-left-style: solid;
 	border-left-color: grey;
 	border-left-width: 2px;
@@ -190,6 +187,11 @@ a {
 	font-weight: bold;
 	cursor: pointer;
 }
+.whitespace {
+	order: 5;
+	width: 1%;
+	margin-right: 0;
+}
 </style>
 
 <script>
@@ -198,13 +200,13 @@ a {
 		frm.submit();
 	}
 	function mainpage(){
-		location.href="#";
+		location.href="main";
 	}
 	function mypage(){
-		location.href="#";
+		location.href="mypage";
 	}
 	function logout(){
-		location.href="#";
+		location.href="everylogout";
 	}
 </script>
 
@@ -237,14 +239,17 @@ a {
 		
 		<div class="list-container">
 			<div class="main-page" onclick="mainpage()">
-				<a href="#">메인</a>
+				<a href="main">메인</a>
 			</div>
 			<div class="my-page" onclick="mypage()">
-				<a href="#">마이</a>
+				<a href="mypage">마이</a>
 			</div>
 			<div class="logout" onclick="logout()">
-				<a href="#">로그아웃</a>
+				<a href="everylogout">로그아웃</a>
 			</div>
+		</div>
+		
+		<div class="whitespace">
 		</div>
 
 	</div>

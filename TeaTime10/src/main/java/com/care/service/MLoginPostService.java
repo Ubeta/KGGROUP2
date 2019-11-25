@@ -46,6 +46,7 @@ public class MLoginPostService implements IService{
 		
 		CategoryDTO catedto = mdao.mcategorychk(m_id);
 		ArrayList<String> list = new ArrayList<String>();
+
 		if (catedto.getC_sports().equals("Y")) {
 			list.add("sports");
 			System.out.println(catedto.getC_sports()+":sports");

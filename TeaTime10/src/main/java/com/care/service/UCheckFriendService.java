@@ -27,8 +27,7 @@ public class UCheckFriendService implements IService {
 		HttpSession session = request.getSession();
 		
 		String u_id = request.getParameter("u_id");
-		//String m_id = session.getAttribute("sid");
-		String m_id = "david";
+		String m_id = (String)session.getAttribute("mid");
 		
 		MyFriendDTO mfdto = new MyFriendDTO();
 		

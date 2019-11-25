@@ -25,10 +25,8 @@ public class UCancelFriendRequestService implements IService {
 		HttpSession session = request.getSession();
 		
 		int result = 0;
-		String f_id = request.getParameter("u_id");
-		
-		//String m_id = session.getAttribute("sid");
-		String m_id = "david";
+		String m_id = request.getParameter("u_id");
+		String f_id = (String)session.getAttribute("mid");
 		MyFriendDTO mfdto = new MyFriendDTO();
 		mfdto.setM_id(m_id);
 		mfdto.setF_id(f_id);

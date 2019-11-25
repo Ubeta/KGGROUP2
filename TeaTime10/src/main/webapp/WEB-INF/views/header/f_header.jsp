@@ -36,7 +36,7 @@
 	left: 0;
 	right: 0;
 	background-color: #66CCCC;
-	height: 80px;
+	height: 8%;
 	display: flex;
 	flex-flow: row;
 	border-bottom-style: solid;
@@ -45,14 +45,16 @@
 	flex: 1 0 100%;
 }
 
-.img-container: {
+.img-container {
 	order: 1;
 	display: flex;
+	margin-left: 2%;
+	margin-top: 1%;
 }
 
 .logo {
-	margin: 15px;
-	margin-left: 3.75rem;
+	display: block;
+	margin: 0 auto;
 	border-radius: 5px;
 	flex: 1 1 auto;
 }
@@ -63,8 +65,8 @@
 
 .title-container {
 	order: 2;
-	margin-top: 12px;
-	margin-left: 2.625rem;
+	margin-top: 1%;
+	margin-left: 1%;
 	display: flex;
 }
 
@@ -81,6 +83,11 @@
 
 .search-container {
 	order: 3;
+	left: 40%;
+	margin: auto;
+	margin-top: 1%;
+	display: flex;
+	flex-flow: row;
 }
 
 #sFrm {
@@ -90,28 +97,27 @@
 
 .search-bar-container {
 	order: 1;
-	margin-left: 20.5rem;
-	margin-top: 15px;
+	width: 40%;
 	flex: 0 1 auto;
 }
 
 .search-bar {
 	height: 30px;
-	width: 30.75rem; 
+	width: 28em;
 	font-size: 16pt;
 }
 
 .search-button-container {
 	order: 2;
-	margin-top: 24px;
+	margin-left: 54.5%;
+	margin-top: 1.4%;
 	background-color: #DCDCDC;
 	width: 34px;
 	height: 34px;
 }
 
 .search-button {
-	margin-top: 3px;
-	margin-left: 0.1rem;
+	margin-top: 4.4%;
 	width: 30px;
 	height: 30px;
 	flex: 0 1 auto;
@@ -135,24 +141,20 @@ a {
 	order: 4;
 	display: flex;
 	flex-flow: row;
-	right: 0;
-	margin-left: 16rem;
-	margin-right: 1rem;
-	margin-top: 6px;
-	height: 60px;
-	width: 26rem;
+	margin-top: 0.4%;
+	height: 80%;
+	width: 20%;
 	background-color: #2F4F4F;
 	line-height: 50px;
 	border-radius: 3px;
 	border-style: solid;
 	border-color: black;
 	text-align: center;
-	flex: 0 1 auto;
 	
 }
 .main-page {
 	order: 1;
-	margin-left: 0.75rem;
+	margin-left: 1%;
 	flex: 1 1 auto;
 }
 .main-page:hover {
@@ -161,10 +163,10 @@ a {
 }
 .my-page {
 	order: 2;
-	padding-left: 0.625rem;
-	padding-right: 0.625rem;
-	margin-left: 1rem;
-	margin-right: 1rem;
+	padding-left: 1%;
+	padding-right: 1%;
+	margin-left: 1%;
+	margin-right: 1%;
 	border-left-style: solid;
 	border-left-color: grey;
 	border-left-width: 2px;
@@ -179,12 +181,17 @@ a {
 }
 .logout {
 	order: 3;
-	margin-right: 0.75rem;
+	margin-right: 1%;
 	flex: 1 1 auto;
 }
 .logout:hover {
 	font-weight: bold;
 	cursor: pointer;
+}
+.whitespace {
+	order: 5;
+	width: 1%;
+	margin-right: 0;
 }
 </style>
 
@@ -194,13 +201,13 @@ a {
 		frm.submit();
 	}
 	function mainpage(){
-		location.href="#";
+		location.href="main";
 	}
 	function mypage(){
-		location.href="#";
+		location.href="mypage";
 	}
 	function logout(){
-		location.href="#";
+		location.href="everylogout";
 	}
 </script>
 
@@ -233,14 +240,17 @@ a {
 		
 		<div class="list-container">
 			<div class="main-page" onclick="mainpage()">
-				<a href="#">메인 페이지</a>
+				<a href="main">메인</a>
 			</div>
 			<div class="my-page" onclick="mypage()">
-				<a href="#">마이 페이지</a>
+				<a href="mypage">마이</a>
 			</div>
 			<div class="logout" onclick="logout()">
-				<a href="#">로그아웃</a>
+				<a href="everylogout">로그아웃</a>
 			</div>
+		</div>
+		
+		<div class="whitespace">
 		</div>
 
 	</div>
