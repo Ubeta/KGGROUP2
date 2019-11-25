@@ -103,7 +103,7 @@ public class MainController {
 	ArrayList<PostDTO> list = new ArrayList<PostDTO>();
 	@RequestMapping(value = "mypage")
 	public String mypage(Model model,HttpSession session){
-		model.addAttribute("sessionid",session.getAttribute("mid"));
+		model.addAttribute("sessionid", session.getAttribute("mid"));
 		ser = context.getBean("PBoardListService", PBoardListService.class);
 		ser.execute(model);
 		Map<String, Object> map = model.asMap();
