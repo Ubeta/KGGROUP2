@@ -110,7 +110,7 @@ public class APILoginController {
 
 	@RequestMapping(value="kakaologout")
 	public String kakaologout(HttpSession session) {
-		session.removeAttribute("kid");
+		session.invalidate();
 		return "redirect:login";
 	}
 

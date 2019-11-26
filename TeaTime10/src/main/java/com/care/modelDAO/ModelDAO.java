@@ -173,28 +173,31 @@ public class ModelDAO {
 	//===========================================
 	
 	//==============yang================
-	public MemberDTO my_info(String my_id) {
-		return sqlSession.selectOne(namespace+".my_info", my_id);
-	}
-	public CategoryDTO my_cat(String my_id) {
-		return sqlSession.selectOne(namespace+".my_cat", my_id);
-	}
-	public MemberDTO f_info(String f_id) {
-		return sqlSession.selectOne(namespace+".f_info", f_id);
-	}
-	public void info_fix(MemberDTO mdto) {
-		sqlSession.update(namespace+".info_fix", mdto);
-	}
-	public void friend_add(MyFriendDTO mfdto) {
-		sqlSession.insert(namespace+".friend_add", mfdto);
-	}
-	public void write_board(PostDTO pdto) {
-		sqlSession.insert(namespace+".write_board", pdto);
-	}
-	public List<PostDTO> board_list(String m_id) {
-		return sqlSession.selectList(namespace+".board_list", m_id);
-	}
-	//===================================
+		public MemberDTO my_info(String sessionid) {
+			return sqlSession.selectOne(namespace+".my_info", sessionid);
+		}
+		public CategoryDTO my_cat(String sessionid) {
+			return sqlSession.selectOne(namespace+".my_cat", sessionid);
+		}
+		public MemberDTO f_info(String user_id) {
+			return sqlSession.selectOne(namespace+".f_info", user_id);
+		}
+		public void info_fix(MemberDTO mdto) {
+			sqlSession.update(namespace+".info_fix", mdto);
+		}
+		public List<MyFriendDTO> f_list(String user_id) {
+			return sqlSession.selectList(namespace+".f_list", user_id);
+		}
+		public void friend_add(MyFriendDTO mfdto) {
+			sqlSession.insert(namespace+".friend_add", mfdto);
+		}
+		public void write_board(PostDTO pdto) {
+			sqlSession.insert(namespace+".write_board", pdto);
+		}
+		public List<PostDTO> board_list(String sessionid) {
+			return sqlSession.selectList(namespace+".board_list", sessionid);
+		}
+		//===================================
 
 	
 	public CategoryDTO mcategorychk(String m_id) {
