@@ -14,6 +14,8 @@
 		<typeAlias alias="redto" type="com.care.modelDTO.ReplyDTO" />
 		<typeAlias alias="ndto" type="com.care.modelDTO.NaverDTO"/>
 		<typeAlias alias="kdto" type="com.care.modelDTO.KakaoDTO"/>
+		<typeAlias alias="pldto" type="com.care.modelDTO.PostLikeDTO"/>
+		<typeAlias alias="rldto" type="com.care.modelDTO.ReplyLikeDTO"/>
 	</typeAliases>
 
 </configuration>
