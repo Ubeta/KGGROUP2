@@ -292,7 +292,9 @@
 		}
 		
 		function write_board(){
-			var session_id = "1";
+			//================= John 수정 11/27 ================================
+			var session_id = "${mid}";
+			//================================================================
 			var p_cat = $("#p_cat option:selected").val();
 			var p_hash = $('#p_hash').val();
 			var p_title = $('#p_title').val();

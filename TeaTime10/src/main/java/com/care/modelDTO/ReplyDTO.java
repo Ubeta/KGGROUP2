@@ -2,12 +2,15 @@ package com.care.modelDTO;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class ReplyDTO {
 
 	private String m_id;
 	private int r_num;
 	private int r_idgroup;
 	private String r_content;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date r_date;
 	private int r_like;
 	
