@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -306,5 +307,17 @@ public class ModelDAO {
 	public List<PostDTO> friendPost(String m_id){
 		return sqlSession.selectList(namespace+".friendPost", m_id);
 	}
-
+	/*친구 게시글만 추출ajax*/
+	public List<PostDTO> friendPostList(HashMap<String, Object> session){
+		return sqlSession.selectList(namespace+".friendPostAjax", session );
+	}
+	/*댓글 달기*/
+	public void addComment(ReplyDTO redto) {
+		//System.out.println("세션 아이딩 :" + redto.getM_id());
+		sqlSession.insert(namespace+".addComment", redto);
+	}
+	//댓글 가져오기 
+	public List<ReplyDTO> getComment(HashMap<String, Object> reply) {
+		return sqlSession.selectList(namespace+".getComment", reply );
+	}
 }
