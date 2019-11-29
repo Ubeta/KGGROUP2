@@ -1,5 +1,9 @@
 package com.care.modelDAO;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +15,7 @@ import com.care.modelDTO.CategoryDTO;
 import com.care.modelDTO.MemberDTO;
 import com.care.modelDTO.MyFriendDTO;
 import com.care.modelDTO.PostDTO;
+import com.care.modelDTO.ReplyDTO;
 
 @Repository
 public class ModelDAO {
@@ -77,22 +82,22 @@ public class ModelDAO {
 		return cat_du;
 	}
 
-	//John DAO ==================================
+	
+	//=============================John DAO ==================================
 	public int checkFriendStatus(MyFriendDTO mfdto) {
 		int friendStatus = 0;
 		try {
 			friendStatus = sqlSession.selectOne(namespace + ".checkFriendStatus1", mfdto);
 		} catch (Exception e){
 			System.out.println("checkFriendStatus catch 1");
-			e.printStackTrace();
-		}
-		try {
-			friendStatus = sqlSession.selectOne(namespace + ".checkFriendStatus2", mfdto);
-		} catch (Exception e){
-			System.out.println("checkFriendStatus catch 2");
-			e.printStackTrace();
+			try {
+				friendStatus = sqlSession.selectOne(namespace + ".checkFriendStatus2", mfdto);
+			} catch (Exception e2){
+				System.out.println("checkFriendStatus catch 2");
+			}
 		}
 		return friendStatus;
+		
 	}
 	
 	public int sendFriendRequest(MyFriendDTO mfdto) {
@@ -116,11 +121,11 @@ public class ModelDAO {
 			result = sqlSession.delete(namespace + ".cancelFriendRequest1", mfdto);
 		} catch (Exception e) {
 			System.out.println("cancelFriendRequest catch 1");
-		}
-		try {
-			result = sqlSession.update(namespace + ".cancelFriendRequest2", mfdto);
-		} catch (Exception e) {
-			System.out.println("cancelFriendRequest catch 1");
+			try {
+				result = sqlSession.update(namespace + ".cancelFriendRequest2", mfdto);
+			} catch (Exception e2) {
+				System.out.println("cancelFriendRequest catch 2");
+			}
 		}
 		return result;
 	}
@@ -144,11 +149,11 @@ public class ModelDAO {
 			result = sqlSession.update(namespace + ".removeFriend1", mfdto);
 		} catch (Exception e) {
 			System.out.println("removeFriend 1 catch");
-		}
-		try {
-			result = sqlSession.update(namespace + ".removeFriend2", mfdto);
-		} catch (Exception e) {
-			System.out.println("removeFriend 2 catch");
+			try {
+				result = sqlSession.update(namespace + ".removeFriend2", mfdto);
+			} catch (Exception e2) {
+				System.out.println("removeFriend 2 catch");
+			}
 		}
 		return result;
 		
@@ -159,7 +164,7 @@ public class ModelDAO {
 		try {
 			members = sqlSession.selectList(namespace + ".getFriendRequests", mfdto);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("getFriendRequests catch");
 		}
 		return members;
 	}
@@ -170,7 +175,70 @@ public class ModelDAO {
 	public List<PostDTO> getUserPosts(String m_id) {
 		return sqlSession.selectList(namespace + ".getUserPosts", m_id);
 	}
-	//===========================================
+	public int inputPostReply(ReplyDTO redto) {
+		int result = 0;
+		result = sqlSession.insert(namespace + ".inputPostReply", redto);
+		return result;
+	}
+	public List<ReplyDTO> getPostReplies(int r_idgroup) {
+		return sqlSession.selectList(namespace + ".getPostReplies", r_idgroup);
+	}
+	
+	public ArrayList<ReplyDTO> getPostReplyPackets(int r_idgroup, int lowerBound, int upperBound) {
+		ArrayList<ReplyDTO> replies = new ArrayList<ReplyDTO>();
+		System.out.println("getPostReplyPackets DAO entered");
+		String driver = "oracle.jdbc.driver.OracleDriver";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+		String uid = "jsp";
+		String upw = "1234";
+		String sql = "select B.* from (select rownum rn, A.* from "
+				+ "(select * from reply where r_idgroup=? order by r_date desc)A)B "
+				+ "where rn > ? AND rn <= ?";
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			Class.forName(driver);
+			conn = DriverManager.getConnection(url, uid, upw);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, r_idgroup);
+			pstmt.setInt(2, lowerBound);
+			pstmt.setInt(3, upperBound);
+			rs = pstmt.executeQuery();
+			System.out.println("Before rs.next()");
+			while (rs.next()) {
+				System.out.println("dao check");
+				ReplyDTO reply = new ReplyDTO();
+				reply.setM_id(rs.getString("m_id"));
+				reply.setR_num(rs.getInt("r_num"));
+				reply.setR_idgroup(rs.getInt("r_idgroup"));
+				reply.setR_content(rs.getString("r_content"));
+				reply.setR_date(rs.getDate("r_date"));
+				reply.setR_like(rs.getInt("r_like"));
+				replies.add(reply);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (conn != null) {
+					conn.close();
+				} if (pstmt != null) {
+					pstmt.close();
+				} if (rs != null) {
+					rs.close();
+				}
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
+		return replies;
+		
+	}
+	
+	//====================== John DAO 긑 ===========================================
 	
 	//==============yang================
 		public MemberDTO my_info(String sessionid) {

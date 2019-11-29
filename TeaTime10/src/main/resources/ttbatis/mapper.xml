@@ -130,6 +130,15 @@
 		SELECT a.* FROM member a JOIN myfriend b ON a.m_id=b.m_id WHERE b.f_isfriend=1 
 			AND b.f_id=#{m_id}
 	</select>
+	
+	<insert id="inputPostReply" parameterType="redto">
+		INSERT INTO reply (m_id, r_num, r_idgroup, r_content) VALUES (#{m_id},
+			r_num_seq.nextval, #{r_idgroup}, #{r_content})
+	</insert>
+	<select id="getPostReplies" resultType="redto" parameterType="Integer">
+		SELECT * FROM reply WHERE r_idgroup=#{r_idgroup} ORDER BY r_date DESC
+	</select>
+	
 	<!-- John 긑 -->
 	
 	

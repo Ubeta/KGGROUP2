@@ -13,7 +13,7 @@ import com.care.modelDAO.ModelDAO;
 import com.care.modelDTO.MyFriendDTO;
 
 @Service
-public class URemoveFriendService implements IService {
+public class URejectFriendRequestService implements IService {
 
 	@Autowired
 	ModelDAO dao;
@@ -25,19 +25,16 @@ public class URemoveFriendService implements IService {
 		HttpSession session = request.getSession();
 		
 		int result = 0;
-		String f_id = request.getParameter("u_id");
-		
-		String m_id = (String) session.getAttribute("mid");
-		
+		String m_id = request.getParameter("m_id");
+		String f_id = (String)session.getAttribute("mid");
 		MyFriendDTO mfdto = new MyFriendDTO();
-		
 		mfdto.setM_id(m_id);
 		mfdto.setF_id(f_id);
-		result = dao.removeFriend(mfdto);
+		result = dao.cancelFriendRequest(mfdto);
 		if (result == 1) {
-			model.addAttribute("removeFriendSuccess", "1");
+			model.addAttribute("result", "1");
 		} else {
-			model.addAttribute("removeFriendSuccess", "0");
+			model.addAttribute("result", "0");
 		}
 		
 	}

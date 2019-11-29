@@ -99,6 +99,7 @@ public class MainController {
 	}
 	
 	
+	
 	//============================양진영=============================
 		//============================내 페이지===========================
 		ArrayList<PostDTO> list = new ArrayList<PostDTO>();
@@ -112,6 +113,7 @@ public class MainController {
 			list = (ArrayList<PostDTO>) map.get("boardlist");
 			cnt=1;
 			return "mypage";
+
 		}
 		//===========================회원정보 수정 후 리다이렉트================
 		@RequestMapping(value = "fix_myinfo" , method = RequestMethod.POST)
