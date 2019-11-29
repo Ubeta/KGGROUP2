@@ -161,7 +161,7 @@ a {
 	font-weight: bold;
 	cursor: pointer;
 }
-.my-page {
+.friend-page {
 	order: 2;
 	padding-left: 1%;
 	padding-right: 1%;
@@ -175,7 +175,7 @@ a {
 	border-right-width: 2px;
 	flex: 1 1 auto;
 }
-.my-page:hover {
+.friend-page:hover {
 	font-weight: bold;
 	cursor: pointer;
 }

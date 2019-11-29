@@ -212,6 +212,9 @@
 					$('#my_id').val(data.memdto.m_id);
 					$('#my_name').val(data.memdto.m_name);
 					$('#my_idnum').val(data.memdto.m_idnum);
+					//============ John 수정 11/26 =====================
+					$('#my_pic').attr('src', 'img/' + data.memdto.m_pic);
+					//================================================
 					var gender=null;
 					if(data.memdto.m_gender==1){
 						gender="남자";
@@ -288,7 +291,13 @@
 		}
 		
 		function write_board(){
-			var session_id = "1";
+
+			
+
+			//================= John 수정 11/27 ================================
+			var session_id = "${mid}";
+			//================================================================
+
 			var p_cat = $("#p_cat option:selected").val();
 			var p_hash = $('#p_hash').val();
 			var p_title = $('#p_title').val();
@@ -335,7 +344,9 @@
          	<h3>내정보 수정</h3>
          	<form action="fix_myinfo" method="post">
          		<input type="hidden" id="my_id" name="my_id" ><br>
-	         	<img alt="my_pic" src=""><br>
+         		<!-- ============ John 수정 11/26 =====================  -->
+	         	<img alt="pPic" id="my_pic" src=""><br>
+	         	<!-- ================================================  -->
 	         	<input type="text" id="my_name" name="my_name" ><br>
 	         	<input type="text" id="my_tel" name="my_tel" ><br>
 	         	<input type="text" id="my_mail" name="my_mail" ><br>

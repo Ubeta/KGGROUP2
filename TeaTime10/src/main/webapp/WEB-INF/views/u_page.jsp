@@ -35,7 +35,6 @@ body {
 	display: flex;
 	flex-flow: column;
 	width: 20%;
-	height: 100%;
 	background-color: #E6E6E6;
 	text-align: center;
 	border-right-style: solid;
@@ -74,7 +73,7 @@ body {
 	border-collapse: collapse;
 }
 
-.user-info table td, table th {
+.user-info table td, user-info table th {
 	border: 1px solid #2F4F4F;
 	padding: 4px;
 }
@@ -87,11 +86,11 @@ body {
 	border-bottom: 0;
 }
 
-.user-info table tr td:first-child, table tr th:first-child {
+.user-info table tr td:first-child, .user-info table tr th:first-child {
 	border-left: 0;
 }
 
-.user-info table tr td:last-child, table tr th:last-child {
+.user-info table tr td:last-child, .user-info table tr th:last-child {
 	border-right: 0;
 }
 
@@ -142,11 +141,38 @@ body {
 	cursor: pointer;
 	border-radius: 6px;
 }
-
-.post-container {
+.middle-section-container {
 	order: 2;
+	display: flex;
+	flex-flow: column;
+	margin-top: 1%;
 	width: 60%;
-	
+}
+.post-container {
+	order: 1;
+}
+.post-container table {
+	width: 70%;
+	height: 16em;
+	border-spacing: 0.2em;
+	border-collapse: seperate;
+}
+.post-container table th {
+	padding: 0.5em;
+	font-size: 16pt;
+}
+.post-container table td {
+	padding: 0.5em;
+	font-size: 12pt;
+}
+.post {
+	margin-top: 5%;
+}
+.loader {
+	margin-top: 10%;
+	order: 2;
+	text-align: center;
+	font-size: 14pt;
 }
 .friend-request-container {
 	order: 3;
@@ -189,7 +215,7 @@ body {
 	margin-top: 10%;
 	padding: 0.2em;
 	width: 90%;
-	height: 2em;
+	height: 3em;
 	background-color: #B0C4DE;
 	border: 3px solid #4682B4;
 	border-radius: 2px;
@@ -212,30 +238,57 @@ body {
 .request-name4 {
 	color: black;
 	font-size: 18pt;
-	line-height: -40%;
+	line-height: 2em;
+}
+.request-name4:hover {
+	text-decoration: underline;
 }
 .accept-friend-button {
 	order: 3;
 }
 .acceptFriendButton {
 	background-color: #73E600;
-	padding: 0.5em 1em;
-	font-size: 9pt;
-	margin: 0.1em 0.1em;
+	width: 4em;
+	height: 90%;
+	font-size: 11pt;
+	margin: 0.3em;
 	border-radius: 4px;
+	padding: 0;
 }
+.acceptFriendButton:hover {
+	border: solid blue 1px;
+}
+.reject-friend-button {
+	order: 4;
+}
+.rejectFriendButton {
+	background-color: #FF4136;
+	width: 4em;
+	height: 90%;
+	font-size: 11pt;
+	margin: 0.3em;
+	border-radius: 4px;
+	padding: 0;
+}
+.rejectFriendButton:hover {
+	border: solid blue 1px;
+}
+
 </style>
 
 <script>
 
-	
-
 	var u_id = "${param.u_id}";
 	var isFriend = ${isFriend};
 	var sessionId = '${mid}';
-	
+	var flag = true;
+	var replyCounter = 2;
+	var repliesArray = new Map();
 	
 	$(document).ready(function(){
+		
+		$('.loader').hide();
+		$('.replyLineClass').hide();
 		
 		if (u_id == sessionId) {
 			location.href="mypage";
@@ -256,6 +309,132 @@ body {
 		}	
 		
 	});
+	
+	
+	
+	function replyPostOpen(idgroup) {
+		console.log('replyPostOpen idgroup:'+idgroup);
+		$('#replyLine'+idgroup).show();
+	}
+	
+	function replyPost(idgroup){
+		$.ajax({
+			url: "reply_post_send",
+			type: "POST",
+			data: {
+				'm_id': sessionId,
+				'r_idgroup': idgroup,
+				'r_content': $('#replyBody'+idgroup).val()
+				},
+			success: function(data) {
+				alert("Reply Success, data:" + data);
+			},
+			error: function(){
+				alert("Error")
+			}	
+		});
+	}
+	
+	$(function(idgroup){
+		$('.replyLineClass[onload]').trigger('onload');
+	});
+	$('body').on({
+		DOMNodeInserted : function(){
+			console.log('dynamic insert');
+			$('.replyLineClass[onload]').trigger('onload');
+			alert("dynamic");
+		}
+	});
+	
+	function createReplyArray(idgroup) {
+		repliesArray.set(idgroup, replyCounter);
+	}
+	
+	function showReplies(idgroup) {
+		console.log('showreplies idgrou: ' + idgroup);
+		var tempCounter = 0;
+		var tempCounter = repliesArray.get(idgroup);
+		$.ajax({
+			url: "post_reply_show",
+			type: "POST",
+			data: {'r_idgroup': idgroup,
+				'counter' : tempCounter
+				},
+			success: function(data) {
+				alert("success");
+				
+				$.each(data.reply, function(index, value) {
+				console.log(index + "" + value.r_idgroup);
+					$('.reply-list-container'+value.r_idgroup).append("<tr>" +
+							"<td>like</td>" +
+							"<td>"+value.m_id+"</td>" +
+							"<td colspan='2'>"+value.r_content+"</td>" +
+							"</tr>");
+				});
+				tempCounter +=4;
+				repliesArray.set(idgroup, tempCounter);		
+			},
+			error: function() {
+				alert("error");
+			}
+		});
+	}
+	
+	
+	$(window).scroll(function(){
+		if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+			flag = true;
+			$('.loader').show();
+			$.ajax({
+				url: "show_more_user_posts",
+				type: "POST",
+				data: {'u_id':u_id},
+				dataType: "JSON",
+				cache: false,
+				success: function(data) {
+					if (flag && data.morePosts) {
+						flag = false;
+						$('.loader').hide();
+							if (data != null) {
+							$(".post-container").append("<table class='post' align='center' border='1'><tr height='5%'>" + 
+							"<th width='15%'>카테고리</th><td width='15%' align='center'>"+data.post.p_cat+"</td>" + 
+							"<th width='20%'>제목</th><td width='50%' align='center'>"+data.post.p_title+"</td>" +
+							"</tr><tr height='40%'><td colspan='4' align='center'>"+data.post.p_content+"</td></tr>" +
+							"<tr height='30%'><td colspan='4' align='center'>"+data.post.p_img +"</td></tr>" + 
+							"<tr height='5%'><th>해시</th><td colspan='3'>"+data.post.p_hash+"</td><tr height='5%'><td>like</td>" + 
+							"<th colspan='2'>작성자</th><td align='center'>"+data.post.m_id+"</td></tr>" +
+							"<tr height='5%'><td colspan='1' align='center'>" +
+							"<input type='button' class='replyPostOpen' onclick='replyPostOpen("+data.post.p_idgroup+")' value='댓글'>" +
+							//"<td onload='createReplyArray("+data.post.p_idgroup+")' class='replyLineClass' id='replyLine"+data.post.p_idgroup+"' colspan='3' align='center'><form id='replyFrm'>" +
+							"<td onload='createReplyArray()' class='replyLineClass' id='replyLine"+data.post.p_idgroup+"' colspan='3' align='center'><form id='replyFrm'>" +
+							
+							"<input class='replyBody' id='replyBody"+data.post.p_idgroup+"' type='text' name='replyContent'>" + 
+							"<input type='button' class='replyPost' onclick='replyPost("+data.post.p_idgroup+")' value='답장'>" +
+
+							"</form></td></tr>" +
+							"<tbody class='reply-list-container"+data.post.p_idgroup+"' id='reply-list-container'></tbody>" +
+							"<tr><td colspan='4' align='center'>" +
+							"<input type='button' class='showReplies' onclick='showReplies("+data.post.p_idgroup+")' value='댓글보기'>" +
+							"</td></tr>" +
+							"</table>");
+							createReplyArray(data.post.p_idgroup);
+							$('.replyLineClass').hide();
+							
+						} else {
+							alert("더이상 글이 없습니다");
+							$('.loader').show();
+						}
+					}
+				},
+				error: function(data) {
+					flag = true;
+					$('.loader').hide();
+					alert("Error")
+				}
+			});
+		}
+	});
+	
 
 	function sendFriend(button){
 		$.ajax({
@@ -321,6 +500,22 @@ body {
 			}
 		});
 	}
+	function rejectFriend(m_id){
+			
+			$.ajax({
+				url: "u_page_friendReject",
+				type: "POST",
+				data: {'m_id': m_id},
+				success: function(data){
+					$('#friendBox'+m_id).hide();
+					alert(m_id);
+					alert("Friend Accept Success, data: " + data);
+				},
+				error: function(){
+					alert("문제가 발생 하였습니다.");
+				}
+			});
+		}
 	
 </script>
 
@@ -383,18 +578,69 @@ body {
 
 		</div>
 		
+		<div class="middle-section-container">
+		
 		<div class="post-container">
-		<c:forEach var="post" items="${userPosts }">
+		
+		<c:forEach var="post" items="${userPosts }" begin="0" end="2">
 			<table class="post" align="center" border="1">
-				<tr>
-					<td>${post.p_title }</td>
-					<td>${post.m_id }</td>
+				<tr height="5%">
+					<th width="15%">카테고리</th>
+					<td width="15%" align="center">${post.p_cat }</td>
+					<th width="20%">제목</th>
+					<td width="50%" align="center">${post.p_title }</td>
 				</tr>
-				<tr>
-					<td>${post.p_content }</td>
+				<tr height="40%">
+					<td colspan="4" align="center">${post.p_content }</td>
 				</tr>
+				<tr height="30%">
+					<td colspan="4" align="center">${post.p_img }</td>
+				</tr>
+				<tr height="5%">
+					<th>해시</th>
+					<td colspan="3">${post.p_hash }</td>
+				<tr height="5%">
+					<td>like</td>
+					<th colspan="2">작성자</th>
+					<td align="center">${post.m_id }</td>
+				</tr>
+				<tr height="5%">
+					
+					<td colspan="1" align="center">
+						<input type="button" class="replyPostOpen" onclick="replyPostOpen('${post.p_idgroup}')" value="댓글">
+					</td>
+					<td onload="createReplyArray('${post.p_idgroup}')" class="replyLineClass" id="replyLine${post.p_idgroup }" colspan="3" align="center">
+					<form id="replyFrm">
+						<input class="replyBody" id="replyBody${post.p_idgroup }" type="text" name="replyContent">
+						<input type="button" class="replyPost" onclick="replyPost('${post.p_idgroup}')" value="답장">
+					</form>
+					</td>
+					
+				</tr>	
+				<!-- ==============DEBUGGING AREA========= -->
+		
+				<!-- ======================================= -->
+				<tbody class="reply-list-container${post.p_idgroup }" id="reply-list-container">
+				</tbody>
+				<tr>
+					<td colspan="4" align="center">
+						<input type="button" class="showReplies" onclick="showReplies('${post.p_idgroup}')" value="댓글보기">
+					</td>
+				</tr>
+				
+					<c:forEach var="reply" items="${replies}" begin="0" end="2">
+					<tr>
+						<td colspan="2">${reply.r_content }</td>
+						<td>${reply.m_id }</td>
+						<td>like</td>
+					</tr>
+					</c:forEach>
 			</table>
 		</c:forEach>
+		
+		
+		</div>
+		<div class="loader">글이 더이상 없습니다</div>
 		
 		</div>
 		
@@ -419,6 +665,10 @@ body {
 						<div class="accept-friend-button">
 						<button id="acceptFriend" class="button acceptFriendButton" 
 							onclick="acceptFriend('${friendRequest.m_id}')">확인</button>
+						</div>
+						<div class="reject-friend-button">
+						<button id="rejectFriend" class="button rejectFriendButton" 
+							onclick="rejectFriend('${friendRequest.m_id}')">거절</button>
 						</div>
 					</div>
 				</c:forEach>

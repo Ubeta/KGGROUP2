@@ -1,7 +1,10 @@
 package com.care.controller;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -17,14 +20,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.care.modelDTO.PostDTO;
+import com.care.modelDTO.ReplyDTO;
 import com.care.service.IService;
 import com.care.service.UAcceptFriendRequestService;
 import com.care.service.UCancelFriendRequestService;
 import com.care.service.UCheckFriendService;
 import com.care.service.UGetFriendRequestListService;
+import com.care.service.UGetReplyPacketService;
 import com.care.service.ULookUpService;
 import com.care.service.UPostService;
+import com.care.service.URejectFriendRequestService;
 import com.care.service.URemoveFriendService;
+import com.care.service.UReplyGetService;
+import com.care.service.UReplyInputService;
 import com.care.service.USendFriendRequestService;
 
 /**
@@ -34,6 +43,8 @@ import com.care.service.USendFriendRequestService;
 public class HomeController {
 
 	IService ser;
+	private static int userPostCount = 3;
+	private static int userReplyCount = 0;
 
 	@Autowired
 	ApplicationContext context = ApplicationContextprovider.applicationContext;
@@ -84,6 +95,7 @@ public class HomeController {
 	}
 	@RequestMapping("u_page")
 	public String u_page(Model model, HttpServletRequest request) {
+		userPostCount = 3;
 		model.addAttribute("request", request);
 		ser = context.getBean("ULookUpService", ULookUpService.class);
 		ser.execute(model);
@@ -142,6 +154,106 @@ public class HomeController {
 		Map<String, Object> map = model.asMap();
 		String result = (String) map.get("addFriendSuccess");
 		return result;
+	}
+	@ResponseBody
+	@RequestMapping(value="u_page_friendReject")
+	public String u_page_friendReject(Model model, HttpServletRequest request) {
+		model.addAttribute("request", request);
+		ser = context.getBean("URejectFriendRequestService", URejectFriendRequestService.class);
+		ser.execute(model);
+		Map<String, Object> map = model.asMap();
+		String result = (String) map.get("addFriendSuccess");
+		return result;
+	}
+	@ResponseBody
+	@RequestMapping("show_more_user_posts")
+	public Map<String, Object> showMoreUserPosts(Model model, HttpServletRequest request){
+		model.addAttribute("request", request);
+		ser = context.getBean("UPostService", UPostService.class);
+		ser.execute(model);
+		int postCount = userPostCount;
+		Map<String, Object> userPosts = new HashMap<String, Object>();
+		Map<String, Object> map = model.asMap();
+		List<PostDTO> postList = (ArrayList<PostDTO>)map.get("userPosts");
+		
+		System.out.println(postList);
+		
+		if (postCount < postList.size()) {
+			userPosts.put("post", postList.get(postCount));
+			userPosts.put("morePosts", true);
+			System.out.println(postList.get(postCount).getP_cat());
+			userPostCount++;
+			return userPosts;
+		} else {
+			userPosts.put("morePosts", false);
+			return userPosts;
+		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="reply_post_send")
+	public String replyPostSend(Model model, ReplyDTO redto) {
+		System.out.println("replyDTO idgroup: " + redto.getM_id());
+		System.out.println("replyDTO idgroup: " + redto.getR_idgroup());
+		System.out.println("replyDTO idgroup: " + redto.getR_content());
+		model.addAttribute("redto", redto);
+		ser = context.getBean("UReplyInputService", UReplyInputService.class);
+		ser.execute(model);
+		Map<String, Object> map = model.asMap();
+		String result = (String) map.get("replyAddSuccess");
+		return result;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value="post_reply_show")
+	public Map<String, Object> postReplyShow(Model model, HttpServletRequest request) {
+		int originalCounter = Integer.parseInt(request.getParameter("counter"));
+
+		int lowerBoundCounter = originalCounter - 2;
+		int upperBoundCounter = originalCounter + 2;
+		model.addAttribute("request", request);
+		model.addAttribute("lowerBound", lowerBoundCounter);
+		model.addAttribute("upperBound", upperBoundCounter);
+		
+		ser = context.getBean("UGetReplyPacketService", UGetReplyPacketService.class);
+		ser.execute(model);
+		
+		Map<String, Object> map = model.asMap();
+		ArrayList<ReplyDTO> replyPacketList = (ArrayList<ReplyDTO>)map.get("replyPackets");
+		
+		Map<String, Object> replyPackets = new HashMap<String, Object>();
+		replyPackets.put("reply", replyPacketList);
+		return replyPackets;
+		
+		/*
+		model.addAttribute("request", request);
+		
+		ser = context.getBean("UReplyGetService", UReplyGetService.class);
+		ser.execute(model);
+		Map<String, Object> replies = new HashMap<String, Object>();
+		Map<String, Object> map = model.asMap();
+		ArrayList<ReplyDTO> getReplyList = (ArrayList<ReplyDTO>)map.get("userReplies");
+		
+		ArrayList<ReplyDTO> sendReplyList = new ArrayList<ReplyDTO>();
+		
+		int originalCounter = Integer.parseInt(request.getParameter("counter"));
+		int idgroup = Integer.parseInt(request.getParameter("r_idgroup"));
+		int lowerBoundCounter = originalCounter - 2;
+		int upperBoundCounter = originalCounter + 2;
+
+		System.out.println("counter:" + originalCounter);
+		//Have to modify here to show 5 at a time -John
+		for (int i = lowerBoundCounter; i < upperBoundCounter; i++) {
+			System.out.println("inside for loop replyList: " + getReplyList.get(i).getR_content());
+			System.out.println("inside replies" + replies);
+			sendReplyList.add(getReplyList.get(i));		
+			replies.put("reply", sendReplyList);
+		}
+		
+		System.out.println("outside replies: " + replies);
+		return replies;
+		//=========================================
+		*/
 	}
 
 }

@@ -160,6 +160,7 @@ public class MainController {
 	}
 	
 	
+	
 	//============================양진영=============================
 		//============================내 페이지===========================
 		ArrayList<PostDTO> list = new ArrayList<PostDTO>();
@@ -173,6 +174,7 @@ public class MainController {
 			list = (ArrayList<PostDTO>) map.get("boardlist");
 			cnt=1;
 			return "mypage";
+
 		}
 		//===========================회원정보 수정 후 리다이렉트================
 		@RequestMapping(value = "fix_myinfo" , method = RequestMethod.POST)
@@ -246,6 +248,8 @@ public class MainController {
 			if(i<list.size()) {
 				boardlist_map.put("chk", "true");
 				boardlist_map.put("boardlist", list.get(i));
+				Map<String, Object> map = model.asMap();
+				
 				++cnt;
 				return boardlist_map;
 			}else {
