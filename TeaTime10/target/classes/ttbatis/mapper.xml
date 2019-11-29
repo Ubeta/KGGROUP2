@@ -163,7 +163,7 @@
 										from myfriend B 
 										where B.m_id = #{m_id} and B.f_isfriend = 2) or C.m_id= #{m_id})
    	</select>
-   <!-- yang -->
+  <!-- yang -->
 	<!-- 내정보 가져오기 -->
    <select id="my_info" resultType="memdto" parameterType="String">
    		select * from member where m_id=#{sessionid}
@@ -196,4 +196,37 @@
 	<select id="board_list" resultType="podto" parameterType="String">
 		select * from post where m_id=#{sessionid} order by p_date desc
 	</select>
+	<!-- 리플 리스트 가져오기 -->
+	<select id="reply_list" resultType="redto" parameterType="Int">
+		select * from reply where r_idgroup=#{idgroup} order by r_date desc
+	</select>
+	<!-- 리플쓰기 -->
+	<insert id="reply_write" parameterType="redto">
+		insert into reply (m_id, r_num, r_idgroup, r_content, r_date, r_like)
+		values(#{m_id}, p_num_seq.nextval, #{r_idgroup}, #{r_content}, sysdate, #{r_like})
+	</insert>
+	<!-- 좋아요 업 -->
+	<update id="p_like_up" parameterType="podto">
+		update post set p_like=p_like+1 where p_idgroup=#{p_idgroup}
+	</update>
+	<!-- 좋아요 다운 -->
+	<update id="p_like_down" parameterType="podto">
+		update post set p_like=p_like-1 where p_idgroup=#{p_idgroup}
+	</update>
+	<!-- 좋아요 초기 입력 -->
+	<insert id="p_like_in" parameterType="podto">
+		insert into p_likeup values(#{m_id}, #{p_idgroup}, 1)
+	</insert>
+	<!-- 좋아요 확인 -->
+	<select id="p_like_chk" resultType="pldto" parameterType="podto">
+		select * from p_likeup where m_id=#{m_id} and p_idgroup=#{p_idgroup}
+	</select>
+	<!-- 좋아요 확인 업-->
+	<update id="p_like_chk_up" parameterType="podto">
+		update p_likeup set p_likechk=p_likechk+1 where m_id=#{m_id} and p_idgroup=#{p_idgroup}
+	</update>
+	<!-- 좋아요 확인 다운-->
+	<update id="p_like_chk_down" parameterType="podto">
+		update p_likeup set p_likechk=p_likechk-1 where m_id=#{m_id} and p_idgroup=#{p_idgroup}
+	</update>
 </mapper>

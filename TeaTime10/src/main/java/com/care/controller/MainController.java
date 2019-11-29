@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.care.modelDTO.MemberDTO;
 import com.care.modelDTO.MyFriendDTO;
 import com.care.modelDTO.PostDTO;
+import com.care.modelDTO.ReplyDTO;
 import com.care.service.FFriendAddService;
 import com.care.service.FListService;
 import com.care.service.FriendPostService;
@@ -31,7 +32,10 @@ import com.care.service.MMyInfoService;
 import com.care.service.MRegisterService;
 import com.care.service.MUserFindService;
 import com.care.service.PBoardListService;
+import com.care.service.PLikeUpService;
 import com.care.service.PWriteBoardService;
+import com.care.service.RReplyListService;
+import com.care.service.RReplyWriteService;
 
 @Controller
 public class MainController {
@@ -101,102 +105,142 @@ public class MainController {
 	
 	
 	//============================양진영=============================
-		//============================내 페이지===========================
-		ArrayList<PostDTO> list = new ArrayList<PostDTO>();
-		@RequestMapping(value = "mypage")
-		public String mypage(Model model,HttpSession session){
-			String sessionid = (String)session.getAttribute("mid");
-			model.addAttribute("sessionid",sessionid);
-			ser = context.getBean("PBoardListService", PBoardListService.class);
-			ser.execute(model);
-			Map<String, Object> map = model.asMap();
-			list = (ArrayList<PostDTO>) map.get("boardlist");
-			cnt=1;
-			return "mypage";
-
-		}
-		//===========================회원정보 수정 후 리다이렉트================
-		@RequestMapping(value = "fix_myinfo" , method = RequestMethod.POST)
-		public String fix_myinfo(Model model, HttpServletRequest request){
-			model.addAttribute("info_fix",request);
-			ser = context.getBean("MInfoFixService", MInfoFixService.class);
-			ser.execute(model);
-			return "redirect:mypage";
-		}
-		//===========================내정보 리스트 받기===========================
-		@ResponseBody
-		@RequestMapping(value = "my_info")
-		public Map<String, Object> my_info(Model model, HttpSession session) {
-			String sessionid = (String)session.getAttribute("mid");
-			model.addAttribute("sessionid",sessionid);
-			ser = context.getBean("MMyInfoService", MMyInfoService.class);
-			ser.execute(model);	
-			//========================
-			Map<String, Object> map = model.asMap();
-			MemberDTO dto = (MemberDTO)map.get("myinfo");
-			//=====================
-			Map<String, Object> my_info = new HashMap<String, Object>();
-			my_info.put("memdto", dto);
-			return my_info;
-		}
-		//===========================유저 찾기===========================
-		@ResponseBody
-		@RequestMapping(value = "user_find")
-		public Map<String, Object> user_find(Model model, MemberDTO mdto) {
-			String user_friend = mdto.getM_id();
-			model.addAttribute("user_id", user_friend);
-			//========================
-			Map<String, Object> map = model.asMap();
-			ser = context.getBean("MUserFindService", MUserFindService.class);
-			ser.execute(model);	
-			MemberDTO dto = (MemberDTO)map.get("userinfo");
-			//=====================
-			Map<String, Object> user_info = new HashMap<String, Object>();
-			user_info.put("dto", dto);
-			return user_info;
-		}
-		//===========================친구 추가===========================
-		@ResponseBody
-		@RequestMapping(value = "friend_add")
-		public Map<String, Object> friend_add(Model model, MyFriendDTO mfdto) {
-			String f_friend = mfdto.getF_id();
-			model.addAttribute("f_id", f_friend);
-			ser = context.getBean("FFriendAddService", FFriendAddService.class);
-			ser.execute(model);
-			Map<String, Object> map = model.asMap();
-			int chk = (Integer)map.get("chk");
-			Map<String, Object> chkmap = new HashMap<String, Object>();
-			chkmap.put("chk", chk);
-			return chkmap;
-		}
-		//===========================개시글 작성===========================
-		@ResponseBody
-		@RequestMapping(value = "write_board")
-		public void write_board(Model model, PostDTO pdto) {
-			model.addAttribute("write_board", pdto);
-			ser = context.getBean("PWriteBoardService", PWriteBoardService.class);
-			ser.execute(model);
-		}
-		//===========================개시글 리스트===========================
-		public static int cnt=1;
-		@ResponseBody
-		@RequestMapping(value = "boardlist")
-		public Map<String, Object> boardlist(Model model, PostDTO podto) {
-			Map<String, Object> boardlist_map = new HashMap<String, Object>();
-			int i = cnt;
-			if(i<list.size()) {
-				boardlist_map.put("chk", "true");
-				boardlist_map.put("boardlist", list.get(i));
+			//============================내 페이지===========================
+			ArrayList<PostDTO> list = new ArrayList<PostDTO>();
+			ArrayList<ReplyDTO> replylist = new ArrayList<ReplyDTO>();
+			@RequestMapping(value = "mypage")
+			public String mypage(Model model,HttpSession session){
+				String sessionid = (String)session.getAttribute("mid");
+				model.addAttribute("sessionid",sessionid);
+				ser = context.getBean("PBoardListService", PBoardListService.class);
+				ser.execute(model);
 				Map<String, Object> map = model.asMap();
-				
-				++cnt;
-				return boardlist_map;
-			}else {
-				boardlist_map.put("chk", "false");
-				return boardlist_map;
+				list = (ArrayList<PostDTO>) map.get("boardlist");
+				cnt=1;
+				return "mypage";
 			}
-		}
-	////////////////////////////////////////////////////////////////
+			//===========================회원정보 수정 후 리다이렉트================
+			@RequestMapping(value = "fix_myinfo" , method = RequestMethod.POST)
+			public String fix_myinfo(Model model, HttpServletRequest request){
+				model.addAttribute("info_fix",request);
+				ser = context.getBean("MInfoFixService", MInfoFixService.class);
+				ser.execute(model);
+				return "redirect:mypage";
+			}
+			//===========================내정보 리스트 받기===========================
+			@ResponseBody
+			@RequestMapping(value = "my_info")
+			public Map<String, Object> my_info(Model model, HttpSession session) {
+				String sessionid = (String)session.getAttribute("mid");
+				model.addAttribute("sessionid",sessionid);
+				ser = context.getBean("MMyInfoService", MMyInfoService.class);
+				ser.execute(model);	
+				//========================
+				Map<String, Object> map = model.asMap();
+				MemberDTO dto = (MemberDTO)map.get("myinfo");
+				//=====================
+				Map<String, Object> my_info = new HashMap<String, Object>();
+				my_info.put("memdto", dto);
+				return my_info;
+			}
+			//===========================유저 찾기===========================
+			@ResponseBody
+			@RequestMapping(value = "user_find")
+			public Map<String, Object> user_find(Model model, MemberDTO mdto) {
+				String user_friend = mdto.getM_id();
+				model.addAttribute("user_id", user_friend);
+				
+				Map<String, Object> map = model.asMap();
+				ser = context.getBean("MUserFindService", MUserFindService.class);
+				ser.execute(model);	
+				MemberDTO dto = (MemberDTO)map.get("userinfo");
+				Map<String, Object> user_info = new HashMap<String, Object>();
+				
+				if(dto==null) {
+					user_info.put("chk", 0);
+				}else if( dto!=null) {
+					user_info.put("chk", 1);
+					user_info.put("dto", dto);
+				}
+				return user_info;
+			}
+			//===========================친구 추가===========================
+			@ResponseBody
+			@RequestMapping(value = "friend_add")
+			public Map<String, Object> friend_add(Model model, MyFriendDTO mfdto) {
+				String f_friend = mfdto.getF_id();
+				model.addAttribute("f_id", f_friend);
+				ser = context.getBean("FFriendAddService", FFriendAddService.class);
+				ser.execute(model);
+				Map<String, Object> map = model.asMap();
+				int chk = (Integer)map.get("chk");
+				Map<String, Object> chkmap = new HashMap<String, Object>();
+				chkmap.put("chk", chk);
+				return chkmap;
+			}
+			//===========================개시글 작성===========================
+			@ResponseBody
+			@RequestMapping(value = "write_board")
+			public void write_board(Model model, PostDTO pdto) {
+				model.addAttribute("write_board", pdto);
+				ser = context.getBean("PWriteBoardService", PWriteBoardService.class);
+				ser.execute(model);
+			}
+			//===========================개시글 리스트===========================
+			private int cnt=1;
+			@ResponseBody
+			@RequestMapping(value = "boardlist")
+			public Map<String, Object> boardlist(Model model, PostDTO podto) {
+				Map<String, Object> boardlist_map = new HashMap<String, Object>();
+				int i = cnt;
+				if(i<list.size()) {
+					boardlist_map.put("chk", "true");
+					boardlist_map.put("boardlist", list.get(i));
+					++cnt;
+					return boardlist_map;
+				}else if(list.size()==0){
+					boardlist_map.put("chk", "non");
+					return boardlist_map;
+				}else{
+					boardlist_map.put("chk", "false");
+					return boardlist_map;
+				}
+			}
+			//===========================댓글 리스트===========================
+			@ResponseBody
+			@RequestMapping(value = "replylist")
+			public Map<String, Object> replylist(Model model, PostDTO pdto) {
+				model.addAttribute("idgroup", pdto.getP_idgroup());
+				ser = context.getBean("RReplyListService", RReplyListService.class);
+				ser.execute(model);
+				Map<String, Object> map = model.asMap();
+				replylist = (ArrayList<ReplyDTO>) map.get("replylist");
+				Map<String, Object> replylist_map = new HashMap<String, Object>();
+				replylist_map.put("replylist_1", replylist);
+				return replylist_map;
+			}
+			//===========================댓글 작성===========================
+			@ResponseBody
+			@RequestMapping(value = "reply_write")
+			public void reply_write(Model model, ReplyDTO rdto) {
+				model.addAttribute("reply_write", rdto);
+				ser = context.getBean("RReplyWriteService", RReplyWriteService.class);
+				ser.execute(model);
+			}
+			//===========================좋아요 값 올리기===========================
+			@ResponseBody
+			@RequestMapping(value = "like_up")
+			public Map<String, Object> like_up(Model model, PostDTO pdto) {
+				model.addAttribute("like_up", pdto);
+				ser = context.getBean("PLikeUpService", PLikeUpService.class);
+				ser.execute(model);
+				Map<String, Object> map = model.asMap();
+				int chk = (Integer)map.get("chk");
+				Map<String, Object> chk_map = new HashMap<String, Object>();
+				chk_map.put("chk", chk);
+				return chk_map;
+			}
+		////////////////////////////////////////////////////////////////
 }
 
 
