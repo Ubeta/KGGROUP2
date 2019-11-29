@@ -168,7 +168,6 @@
 					cache 	: false,
 					success: function(data){
 						console.log(data);
-						console.log(data.boardlist.p_date);
 						if(data.chk=="true"){
 							
 					    var id = data.boardlist.m_id;
@@ -289,7 +288,7 @@
 		}
 		
 		function write_board(){
-			var session_id = "1";
+			var session_id = '${mid}';
 			var p_cat = $("#p_cat option:selected").val();
 			var p_hash = $('#p_hash').val();
 			var p_title = $('#p_title').val();
