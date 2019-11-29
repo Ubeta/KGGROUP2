@@ -159,7 +159,7 @@
 		     }); 
 		});
 		
-	      
+
 	    
 	    function my_info(){
 			$.ajax({
@@ -253,6 +253,7 @@
 		
 		function write_board(){
 			var session_id = '${mid}';
+
 			var p_cat = $("#p_cat option:selected").val();
 			var p_hash = $('#p_hash').val();
 			var p_title = $('#p_title').val();
@@ -511,21 +512,7 @@
          <hr>
          <div class="board">
          	<h4>게시글 </h4>
-	         			<div class="post">
-			         		<c:if test="${boardlist.size() ne 0 }">
-			         			<c:set var="list" value="${boardlist.get(0) }"/>
-			         			<table class="board_table" border='1'>
-						    			<tr><td style="width: 50px;">작성자</td><td>${list.m_id }</td>  <td>카테고리</td><td>${list.p_cat }</td>  <td>해시</td><td>${list.p_hash }</td></tr>
-						    			<tr><td colspan="2">제목</td><td colspan="4">${list.p_title }</td></tr>
-						    			<tr><td colspan="6" style="height: 100px;">${list.p_content }</td></tr>
-						    			<tr><td colspan="6">${list.p_img }</td></tr>
-						    			<tr><td colspan="2">작성날자</td><td >${list.p_date }</td><td colspan="2"><button onclick="like(${list.p_idgroup })">좋아요</button></td><td >${list.p_like }</td></tr>
-						    			<tr><td colspan="6">${list.p_idgroup }</td></tr>
-						    			<tr><td colspan="6"><input type="button" class="show_reply" onclick="reply_test(${list.p_idgroup })" value="show_reply"></td></tr>
-						    			<tr><td colspan="6"><div class="reply_add${list.p_idgroup }" ></div></td></tr>
-						    	</table>
-			         		</c:if>
-		         		</div>
+
          </div>
       </div>
       <div class="right">

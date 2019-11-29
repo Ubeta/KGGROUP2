@@ -58,6 +58,7 @@ public class MRegisterService implements IService{
 		}
 		
 		model.addAttribute("du",dao.register(mdto, id, tel, mail));
+		
 	}
 
 }

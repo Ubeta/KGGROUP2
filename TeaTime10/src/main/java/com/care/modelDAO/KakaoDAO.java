@@ -1,12 +1,10 @@
 package com.care.modelDAO;
 
-import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import com.care.modelDTO.CategoryDTO;
 import com.care.modelDTO.KakaoDTO;
-import com.care.modelDTO.NaverDTO;
 import com.care.modelDTO.PostDTO;
 
 @Repository
@@ -35,6 +32,10 @@ public class KakaoDAO {
 	public CategoryDTO kakaocategorychk(KakaoDTO dto) {
 		return sqlSession.selectOne(namespace+".kakaocategorychk",dto);
 	}
+	public void updatecategory(CategoryDTO cdto) {
+		sqlSession.update(namespace+".updatecategory" , cdto);
+	}
+	
 
 	public ArrayList<PostDTO> post(ArrayList<String> list,ArrayList<String> flist){
 		ArrayList<PostDTO> plist = new ArrayList<PostDTO>();
@@ -102,7 +103,6 @@ public class KakaoDAO {
 				sql += "p_cat=? or ";
 			}
 			sql += "p_cat=?";
-			System.out.println(sql);
 			try {
 				Class.forName(driver);
 				con = DriverManager.getConnection(url,user,pwd);

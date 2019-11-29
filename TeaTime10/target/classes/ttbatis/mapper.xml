@@ -83,6 +83,22 @@
    		select * from category where m_id=#{m_id}
    </select>
    
+   
+   <!-- 카테고리 메인에서 업데이트 -->
+   <select id="updatecategory" parameterType="catdto">
+   		update category set c_sports=#{c_sports}, c_news=#{c_news },
+   		 c_food=#{c_food }, c_language=#{c_language },
+   		  c_people=#{c_people }, c_animal=#{c_animal },
+   		   c_fashion=#{c_fashion }, c_love=#{c_love },
+   		    c_movie=#{c_movie }, c_religion=#{c_religion }, 
+   		    c_knowledge=#{c_knowledge }, c_travel=#{c_travel }, 
+   		    c_cartoon=#{c_cartoon }, c_game=#{c_game }, c_it=#{c_it }, 
+   		    c_weather=#{c_weather }, c_music=#{c_music }, c_car=#{c_car }, 
+   		    c_economy=#{c_economy }, c_etc=#{c_etc }, c_job=#{c_job }, 
+   		    c_living=#{c_living	}, c_book=#{c_book }, c_festival=#{c_festival }, 
+   		    c_health=#{c_health } where m_id=#{m_id}  
+   </select>
+   
    <!-- 이상호 끝 -->
 	
 	<!-- John(11/14): 사람 조회 select 문 -->
@@ -189,8 +205,8 @@
 	</insert>
 	<!-- 글쓰기 -->
 	<insert id="write_board" parameterType="podto">
-		insert into post (m_id, p_num, p_title, p_content, p_img, p_cat, p_hash, p_idgroup, p_scope, p_like)
-		values(#{m_id}, p_num_seq.nextval, #{p_title}, #{p_content}, #{p_img}, #{p_cat}, #{p_hash}, p_num_seq.currval, #{p_scope}, #{p_like})
+		insert into post (m_id, p_num, p_title, p_content, p_img, p_cat, p_hash, p_idgroup, p_scope, p_date, p_like)
+		values(#{m_id}, p_num_seq.nextval, #{p_title}, #{p_content}, #{p_img}, #{p_cat}, #{p_hash}, p_num_seq.currval, #{p_scope}, sysdate, #{p_like})
 	</insert>
 	<!-- 글리스트 가져오기 -->
 	<select id="board_list" resultType="podto" parameterType="String">
