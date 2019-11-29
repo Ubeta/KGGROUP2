@@ -2,6 +2,8 @@ package com.care.modelDTO;
 
 import java.sql.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class PostDTO {
 
 	private String m_id;
@@ -13,6 +15,7 @@ public class PostDTO {
 	private String p_hash;
 	private int p_idgroup;
 	private int p_scope;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date p_date;
 	private int p_like;
 	
