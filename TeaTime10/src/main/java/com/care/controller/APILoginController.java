@@ -3,6 +3,7 @@ package com.care.controller;
 import org.springframework.stereotype.Controller;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,9 +17,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.care.modelDTO.CategoryDTO;
+import com.care.modelDTO.MemberDTO;
 import com.care.modelDTO.PostDTO;
+import com.care.service.CategoryCall;
+import com.care.service.CategoryUpdate;
 import com.care.service.IService;
 import com.care.service.KakaoLoginService;
 import com.care.service.MCategoryService;
@@ -103,6 +109,7 @@ public class APILoginController {
 	public String logout(HttpSession session)throws IOException {
 		System.out.println(session.getAttribute("sid") + "  :  세션아이디");
 		session.invalidate();
+		System.out.println("깃허브테스트때문에 쓴거임");
 		return "redirect:login";
 	}
 	///////////////////////////////////////////////////////////
@@ -110,7 +117,7 @@ public class APILoginController {
 
 	@RequestMapping(value="kakaologout")
 	public String kakaologout(HttpSession session) {
-		session.removeAttribute("kid");
+		session.invalidate();
 		return "redirect:login";
 	}
 
@@ -158,6 +165,36 @@ public class APILoginController {
 			return "kakaologout2";
 		}
 		
+	}
+	@ResponseBody
+	@RequestMapping("categorycall")
+	public Map<String, Object> categorycall(CategoryDTO cdto, Model model){		
+		model.addAttribute("sessionid",cdto);
+		ser = context.getBean("categoryCall", CategoryCall.class);
+		ser.execute(model);
+		System.out.println("categorycall갔다옴");
+		Map<String, Object> maincat = model.asMap();
+		Map<String, Object> maincat_map = (Map<String, Object>) maincat.get("totalmap"); 
+		System.out.println(maincat_map.get("Y"));
+		System.out.println(maincat_map.get("N"));
+//		System.out.println(maincat_map.get("sports")); N이 드러옴
+		
+		System.out.println("리턴전");
+		return maincat_map;
+		
+	}
+	
+	@RequestMapping("catupdate")
+	public String aaaaa(CategoryDTO cdto,Model model) {
+		System.out.println("=================================");
+		System.out.println("제대로 왔음");
+		System.out.println(cdto.getC_book());
+		System.out.println(cdto.getC_news() + "news");
+		System.out.println("=================================");
+		model.addAttribute("cateupdate",cdto);
+		ser = context.getBean("categoryUpdate",CategoryUpdate.class);
+		ser.execute(model);
+		return "redirect:main";
 	}
 
 

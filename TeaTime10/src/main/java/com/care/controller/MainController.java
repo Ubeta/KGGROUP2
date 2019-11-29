@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.care.modelDTO.CountForm;
 import com.care.modelDTO.MemberDTO;
 import com.care.modelDTO.MyFriendDTO;
 import com.care.modelDTO.PostDTO;
+import com.care.modelDTO.ReplyDTO;
 import com.care.service.FFriendAddService;
 import com.care.service.FListService;
 import com.care.service.FriendPostService;
@@ -82,11 +84,70 @@ public class MainController {
 		model.addAttribute("session",session);
 		ser = context.getBean("MLoginPostService",MLoginPostService.class);
 		ser.execute(model);
-		//여기서 포스트글 가져와야 됨. 시발
+		Map<String,Object> map = model.asMap();
+		int size = (Integer)map.get("endcount");
+		ArrayList<PostDTO> pdto = (ArrayList<PostDTO>) map.get("postlist");
+		ArrayList<PostDTO> pdto1 = new ArrayList<PostDTO>();
+		
+		if(size>=3) {
+			pdto1.add(pdto.get(0));
+			pdto1.add(pdto.get(1));
+			pdto1.add(pdto.get(2));
+		
+		}else if(size==2) {
+			pdto1.add(pdto.get(0));
+			pdto1.add(pdto.get(1));
+		}else if(size==1) {
+			pdto1.add(pdto.get(0));
+		}
+		model.addAttribute("pdto1",pdto1);
+		model.addAttribute("pdtosize",pdto1.size());
 		return "main";
 	}
 	
-
+	@ResponseBody
+	   @RequestMapping(value = "mainajax")
+	   public Map<String, Object> mainajax(Model model,CountForm countform,HttpSession session){
+	      int postcount = countform.getCountform();
+	      model.addAttribute("session",session);
+	      ser = context.getBean("MLoginPostService",MLoginPostService.class);
+	      ser.execute(model); // 
+	      Map<String, Object> map = model.asMap();
+	      ArrayList<PostDTO> list = (ArrayList<PostDTO>)map.get("postlist");
+	      ArrayList<PostDTO> list2 = new ArrayList<PostDTO>();           
+	      Map<String, Object> mainaja = new HashMap<String, Object>();
+	      if(list.size()==0) {
+	         mainaja.put("chk","zero");
+	      }else if(list.size()-postcount==0) { 
+	         mainaja.put("chk","false");
+	      }else if (list.size()-postcount==1) { 
+	         for (int i = postcount; i < postcount+1; i++) { 
+	            list2.add(list.get(i));
+	         }
+	         mainaja.put("count",postcount+1);
+	         mainaja.put("chk", '1');
+	         mainaja.put("list2",list2);
+	      }else if(list.size()-postcount==2) {//2개가져옴
+	         for (int i = postcount; i < postcount+2; i++) { 
+	            list2.add(list.get(i));
+	         }
+	         mainaja.put("count",postcount+1);
+	         mainaja.put("chk", '2');
+	         mainaja.put("list2",list2);
+	      }else { 
+	         for (int i = postcount; i < postcount+3; i++) {
+	            list2.add(list.get(i));
+	         }
+	         System.out.println("세개가져옴");
+	         mainaja.put("count",postcount+1);
+	         mainaja.put("list2",list2);
+	         mainaja.put("chk", "true");
+	      }
+	      return mainaja;
+	   }
+	
+	
+	////////////////////////////////////////////////
 	//친구 게시글만 보는 페이지 
 	@RequestMapping("f_page")
 	public String f_page(Model model, HttpSession session) {
