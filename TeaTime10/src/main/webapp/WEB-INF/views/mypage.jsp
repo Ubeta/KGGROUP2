@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<spring:url value="/resources/images/placeholder.jpg" var="placeholder" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -171,6 +173,9 @@
                $('#my_id').val(data.memdto.m_id);
                $('#my_name').val(data.memdto.m_name);
                $('#my_idnum').val(data.memdto.m_idnum);
+
+               $('#my_pic').attr('src', 'img/'+data.memdto.m_pic);
+               
                var gender=null;
                if(data.memdto.m_gender==1){
                   gender="남자";
@@ -465,7 +470,8 @@
             <h3>내정보 수정</h3>
             <form action="fix_myinfo" method="post">
                <input type="hidden" id="my_id" name="my_id" ><br>
-               <img alt="my_pic" src=""><br>
+
+               <img alt="${placeholder }" id="my_pic" src=""><br>
                <input type="text" id="my_name" name="my_name" ><br>
                <input type="text" id="my_tel" name="my_tel" ><br>
                <input type="text" id="my_mail" name="my_mail" ><br>
