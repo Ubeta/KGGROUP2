@@ -2,6 +2,7 @@ package com.care.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,9 +22,12 @@ import com.care.modelDTO.MemberDTO;
 import com.care.modelDTO.MyFriendDTO;
 import com.care.modelDTO.PostDTO;
 import com.care.modelDTO.ReplyDTO;
+import com.care.service.AddCommentService;
 import com.care.service.FFriendAddService;
 import com.care.service.FListService;
+import com.care.service.FPostListService;
 import com.care.service.FriendPostService;
+import com.care.service.GetCommentService;
 import com.care.service.IService;
 import com.care.service.MCategoryService;
 import com.care.service.MInfoFixService;
@@ -152,17 +156,42 @@ public class MainController {
 	
 	////////////////////////////////////////////////
 	//친구 게시글만 보는 페이지 
-	@RequestMapping("f_page")
-	public String f_page(Model model, HttpSession session) {
-		model.addAttribute("friendLists", session);
-		ser = context.getBean("FListService", FListService.class);
-		ser.execute(model);
-		ser = context.getBean("friendPostService", FriendPostService.class);
-		ser.execute(model);
-		return "f_page";
-	}
+		ArrayList<PostDTO> flist = new ArrayList<PostDTO>();
+		ArrayList<ReplyDTO> rlist = new ArrayList<ReplyDTO>();
+		@RequestMapping("f_page")
+		public String f_page(Model model, HttpSession session) {
+			model.addAttribute("friendLists", session);
+			String id = (String)session.getAttribute("mid");
+			System.out.println("@@@@@@@@@@@");
+			System.out.println(id);
+			System.out.println("@@@@@@@@@@@@");
+			ser = context.getBean("FListService", FListService.class);
+			ser.execute(model);
+			ser = context.getBean("friendPostService", FriendPostService.class);
+			ser.execute(model);
+			//Map<String, Object> map = model.asMap();
+			//flist = (ArrayList<PostDTO>) map.get("fPost");   
+			return "f_page";
+		}
 	
-	
+		//친구 게시글 ajax 출력
+		@ResponseBody
+		@RequestMapping(value="fpostList")
+		public List<PostDTO> fpostList(Model model, PostDTO pdto, HttpServletRequest request, HttpSession session) {
+			HashMap<String, Object> fpageParameter = new HashMap<String, Object>();
+			String mid = (String)session.getAttribute("mid");
+			System.out.println("===========");
+			System.out.println(mid);
+			System.out.println("===========");
+			fpageParameter.put("sid", mid );
+			fpageParameter.put("page_no", request.getParameter("page_no"));
+			model.addAttribute("friendLists", fpageParameter);
+			ser = context.getBean("FPostListService", FPostListService.class);
+			ser.execute(model);
+			Map<String, Object> map = model.asMap();
+			flist = (ArrayList<PostDTO>) map.get("fPost"); 
+			return flist;
+		}
 	
 	//============================양진영=============================
 			//============================내 페이지===========================
@@ -301,6 +330,34 @@ public class MainController {
 				return chk_map;
 			}
 		////////////////////////////////////////////////////////////////
+			
+			//댓글 추가
+			@ResponseBody
+			@RequestMapping(value="addComment",produces="application/json; charset=utf8")
+			public void addComment(Model model, HttpSession session, ReplyDTO redto) {
+				model.addAttribute("replyId", session);
+				model.addAttribute("reply_dto", redto);
+				ser = context.getBean("addCommentService", AddCommentService.class);
+				ser.execute(model);
+			}
+			
+			// 댓글 가져오기 
+			@ResponseBody
+			@RequestMapping(value="getComment", produces="application/json; charset=utf8")
+			public List<ReplyDTO> getComment(Model model, HttpServletRequest request, ReplyDTO redto) {
+				HashMap<String, Object> replyParameter = new HashMap<String, Object>();
+				replyParameter.put("re_no", request.getParameter("re_no"));
+				replyParameter.put("p_num", redto.getR_idgroup());
+				System.out.println("파라미터 받앗나? : " + replyParameter.get("re_no"));
+				System.out.println("p_num 받앗나? : " + replyParameter.get("p_num"));
+				model.addAttribute("replyList", replyParameter);
+				ser = context.getBean("getCommentService", GetCommentService.class);
+				ser.execute(model);
+				Map<String, Object> map = model.asMap();
+				rlist = (ArrayList<ReplyDTO>) map.get("rList");
+				return rlist;
+			}
+			
 }
 
 
