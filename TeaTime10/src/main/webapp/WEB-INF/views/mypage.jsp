@@ -389,15 +389,8 @@
          <div class="board">
          	<h4>게시글 </h4>
 	         		<div class="add">
-	         		<c:set var="list" value="${boardlist.get(0) }"/>
 	         			<table border='1'>
-				    			<tr><td>아이디</td><td>${list.m_id }</td></tr>
-				    			<tr><td>제목</td><td>${list.p_title }</td></tr>
-				    			<tr><td>카테고리</td><td>${list.p_cat }</td></tr>
-				    			<tr><td>해시</td><td>${list.p_hash }</td></tr>
-				    			<tr><td>내용</td><td>${list.p_content }</td></tr>
-				    			<tr><td>사진</td><td>${list.p_img }</td></tr>
-				    			<tr><td>작성날자</td><td>${list.p_date }</td></tr>
+	         			
 				    	</table>
 	         		</div>
          </div>
