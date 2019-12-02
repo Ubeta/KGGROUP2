@@ -258,6 +258,7 @@ public class ModelDAO {
 			public List<MyFriendDTO> f_list(String user_id) {
 				return sqlSession.selectList(namespace+".f_list", user_id);
 			}
+			
 			public void write_board(PostDTO pdto) {
 				sqlSession.insert(namespace+".write_board", pdto);
 			}

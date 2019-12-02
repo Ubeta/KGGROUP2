@@ -96,6 +96,8 @@
             text-align: center;
          }
          
+         
+        
          .write_board{
             margin: 10px;
             padding: 10px;
