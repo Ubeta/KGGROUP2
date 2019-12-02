@@ -226,10 +226,6 @@
 	<select id="f_list" resultType="mfdto" parameterType="String">
    		select f_id from myfriend where m_id=#{user_id}
    </select>
-	<!-- 친구 추가 -->
-	<insert id="friend_add" parameterType="mfdto">
-		insert into myfriend (m_id, f_id) values(#{m_id}, #{f_id})
-	</insert>
 	<!-- 글쓰기 -->
 	<insert id="write_board" parameterType="podto">
 		insert into post (m_id, p_num, p_title, p_content, p_img, p_cat, p_hash, p_idgroup, p_scope, p_date, p_like)

@@ -616,10 +616,7 @@ body {
 					</form>
 					</td>
 					
-				</tr>	
-				<!-- ==============DEBUGGING AREA========= -->
-		
-				<!-- ======================================= -->
+				</tr>
 				<tbody class="reply-list-container${post.p_idgroup }" id="reply-list-container">
 				</tbody>
 				<tr>

@@ -18,7 +18,6 @@ public class PBoardListService implements IService{
 	public void execute(Model model) {
 		Map<String, Object> map = model.asMap();
 		String sessionid = (String)map.get("sessionid");
-		//String sessionid = "1";
 		model.addAttribute("boardlist", mdao.board_list(sessionid));
 		
 	}
