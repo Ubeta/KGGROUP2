@@ -190,7 +190,7 @@ public class ModelDAO {
 		ArrayList<ReplyDTO> replies = new ArrayList<ReplyDTO>();
 		System.out.println("getPostReplyPackets DAO entered");
 		String driver = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@192.168.0.30:1521:xe";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String uid = "jsp";
 		String upw = "1234";
 		String sql = "select B.* from (select rownum rn, A.* from "
@@ -238,6 +238,10 @@ public class ModelDAO {
 		}
 		return replies;
 		
+	}
+	
+	public ReplyDTO getPostReplyOne(int r_idgroup) {
+		return sqlSession.selectOne(namespace + ".getReplyOne", r_idgroup);
 	}
 	
 	//====================== John DAO 긑 ===========================================

@@ -471,7 +471,7 @@
             <form action="fix_myinfo" method="post">
                <input type="hidden" id="my_id" name="my_id" ><br>
 
-               <img alt="${placeholder }" id="my_pic" src=""><br>
+               <img alt="error" id="my_pic" src="" onerror="this.onerror=null; this.src='${placeholder }'"><br>
                <input type="text" id="my_name" name="my_name" ><br>
                <input type="text" id="my_tel" name="my_tel" ><br>
                <input type="text" id="my_mail" name="my_mail" ><br>

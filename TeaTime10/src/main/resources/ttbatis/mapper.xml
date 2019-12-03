@@ -154,7 +154,12 @@
 	<select id="getPostReplies" resultType="redto" parameterType="Integer">
 		SELECT * FROM reply WHERE r_idgroup=#{r_idgroup} ORDER BY r_date DESC
 	</select>
-	
+	<select id="getReplyOne" resultType="redto" parameterType="Integer">
+	<![CDATA[
+		SELECT * 
+          FROM(SELECT * FROM reply WHERE r_idgroup=#{r_idgroup} ORDER BY r_date DESC) D WHERE ROWNUM <=1
+		]]>
+	</select>
 	<!-- John 긑 -->
 	
 	
