@@ -227,9 +227,197 @@
    }
 
    .close:hover { background: #00d9ff; }
+   
+</style>
+   <style type="text/css">
+   
+   .replyList {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	opacity:0;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+	pointer-events: none;
+	
+	}
+   
+    .replyList:target {
+	opacity:1;
+	pointer-events: auto;
+	}
+
+	.replyList > div.test {
+	width: 400px;
+	position: relative;
+	margin: 10% auto;
+	padding: 5px 20px 13px 20px;
+	border-radius: 10px;
+	background: #fff;
+	background: -moz-linear-gradient(#fff, #999);
+	background: -webkit-linear-gradient(#fff, #999);
+	background: -o-linear-gradient(#fff, #999);
+	}  
+	
+	
+	.repliesTable {
+		width: 100%;
+		overflow: auto;
+	}
+	
+	.replyButtonsTable .table2{
+		height: 20px;
+	}
+	#reply-list-container {
+		
+		display: block;
+		overflow: auto;
+		height: 200px;
+		width: 100%;
+		
+	}
+	#reply-list-container th, #reply-list-container td, #reply-list-container tr {
+		text-align: center;
+	}
+	.repliesTable .table1 {
+		text-align: center;
+		margin: 0 auto;
+	}
+	.reply-list-big-container {
+		text-align: center;
+		margin: 0 auto;
+	}
+	.appendedTr {
+		text-align: center;
+	}
+	.appendedTd {
+		text-align: center;
+	}
+   
+   
+   
    </style>
+   
+   
+   
+   
+   
+   
    <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
    <jsp:useBean id="dao" class="com.care.modelDAO.ModelDAO"/>
+   
+   <script type="text/javascript">
+   $(document).ready(function(){
+	  	$('.replyLineClass').hide();
+		$('.closeReplies').hide();
+ });
+  
+  
+  function replyPostOpen(idgroup) {
+		$('#replyLine'+idgroup).show();
+	}
+	
+	function replyPost(idgroup){
+		$.ajax({
+			url: "reply_post_send",
+			type: "POST",
+			data: {
+				'm_id': '${mid}',
+				'r_idgroup': idgroup,
+				'r_content': $('#replyBody'+idgroup).val()
+				},
+			success: function(data) {
+				alert("Reply Success, data:" + data);
+				getOneReply(idgroup);
+			},
+			error: function(){
+				alert("Error")
+			}	
+		});
+	}
+	
+	$(function(idgroup){
+		$('.replyLineClass[onload]').trigger('onload');
+	});
+	$('body').on({
+		DOMNodeInserted : function(){
+			console.log('dynamic insert');
+			$('.replyLineClass[onload]').trigger('onload');
+			alert("dynamic");
+		}
+	});
+	
+	function createReplyArray(idgroup) {
+		repliesArray.set(idgroup, replyCounter);
+	}
+	
+	function getOneReply(idgroup) {
+		var tempCounter = repliesArray.get(idgroup);
+		$.ajax({
+			url: "post_reply_show_one",
+			type: "POST",
+			data: {'r_idgroup': idgroup},
+			success: function(data) {
+				alert("success");
+				$('.reply-list-container'+idgroup).prepend("<tr class='appendedTr'>" +
+					"<td class='appendedTd'>like</td>" +
+					"<td>"+data.oneReply.m_id+"</td>" +
+					"<td colspan='2'>"+data.oneReply.r_content+"</td>" +
+					"</tr>");
+				tempCounter +=1;
+				repliesArray.set(idgroup, tempCounter);		
+			},
+			error: function(){
+				alert("Error");
+			}
+		});
+	}
+	
+	function showReplies(idgroup) {
+		console.log('showreplies idgrou: ' + idgroup);
+		var tempCounter = 0;
+		var tempCounter = repliesArray.get(idgroup);
+		console.log(idgroup)
+		$('.closeReplies').show();
+		$.ajax({
+			url: "post_reply_show",
+			type: "POST",
+			data: {'r_idgroup': idgroup,
+				'counter' : tempCounter
+				},
+			success: function(data) {
+				alert("success");
+				
+				$.each(data.reply, function(index, value) {
+				console.log(index + "" + value.r_idgroup);
+					$('.reply-list-container'+value.r_idgroup).append("<tr class='appendedTr'>" +
+							"<td>like</td>" +
+							"<td>"+value.m_id+"</td>" +
+							"<td colspan='2'>"+value.r_content+"</td>" +
+							"</tr>");
+				});
+				tempCounter +=4;
+				repliesArray.set(idgroup, tempCounter);		
+			},
+			error: function() {
+				alert("error");
+			}
+		});
+	}
+	
+	function closeReplies(idgroup) {
+		$('.appendedTr').remove();
+		var tempCounter = 2;
+		repliesArray.set(idgroup, tempCounter);	
+		$('.closeReplies').hide();
+	}
+   </script>
    
 <script type="text/javascript">
 	var m_id = '${mid}';
@@ -485,50 +673,43 @@
   				dataType: "JSON",
   				cache: false,
   				success: function(data) {
+  					console.log(data)
   					if (flag && data.morePosts) {
   						flag = false;
   						$('.loader').hide();
   							if (data != null) {
-  							
+  								console.log(data.post.m_id)
+  	  							console.log(data.post.p_idgroup)
   							btn_test( data.post.m_id, data.post.p_idgroup );
   							
   							$(".post-container").append(
-  							"<table class='post' align='center' border='1'>"+
-  								"<tr height='5%'>" + 
-  									"<th width='15%'>카테고리</th>"+
-  									"<td width='15%' align='center'>"+data.post.p_cat+"</td>"+ 
-  									"<th width='20%'>제목</th>"+
-  									"<td width='50%' align='center'>"+data.post.p_title+"</td>"+
-  								"</tr>"+
-  								"<tr height='40%'>"+
-  									"<td colspan='4' align='center'>"+data.post.p_content+"</td>"+
-  								"</tr>" +
-  								"<tr height='30%'>"+
-  									"<td colspan='4' align='center'>"+data.post.p_img +"</td>"+
-  								"</tr>"+ 
-  								"<tr height='5%'>"+
-  									"<th>해시</th>"+
-  									"<td colspan='3'>"+data.post.p_hash+"</td>"+
-  								"<tr height='5%'>" +
-  									"<td><button onload='btn_test("+data.post.m_id+",'"+data.post.p_idgroup+"')' id='btn"+data.post.p_idgroup+"' class='p_btn_class'  onclick='p_like("+data.post.p_idgroup+")' >좋아요 : "+data.post.p_like+"</button></td>"+
-  									"<th colspan='2'>작성자</th><td align='center'>"+data.post.m_id+"</td>"+
-  								"</tr>"+
-  								"<tr>"+
-  									"<td><input type='button' class='replyPostOpen' onclick='replyPostOpen("+data.post.p_idgroup+")' value='댓글'></td>" +
-  									"<td onload='createReplyArray()' class='replyLineClass' id='replyLine"+data.post.p_idgroup+"' colspan='3' align='center'><form id='replyFrm'>" +
-  									"<input class='replyBody' id='replyBody"+data.post.p_idgroup+"' type='text' name='replyContent'>" + 
-  									"<input type='button' class='replyPost' onclick='replyPost("+data.post.p_idgroup+")' value='답장'>" +
-									"</form></td>"+
-								"</tr>"+
-  								"<tbody class='reply-list-container"+data.post.p_idgroup+"' id='reply-list-container'></tbody>"+
-  								"<tr>"+
-  									"<td colspan='4' align='center'>" +
-  									"<input type='button' class='showReplies' onclick='showReplies("+data.post.p_idgroup+")' value='댓글보기'>" +
-  									"</td>"+
-  								"</tr>" +
-  							"</table>");
-  							createReplyArray(data.post.p_idgroup);
-  							$('.replyLineClass').hide();
+									"<table class='post' align='center' border='1'>"+
+	  								"<tr height='5%'>" + 
+	  									"<th width='15%'>카테고리</th>"+
+	  									"<td width='15%' align='center'>"+data.post.p_cat+"</td>"+ 
+	  									"<th width='20%'>제목</th>"+
+	  									"<td width='50%' align='center'>"+data.post.p_title+"</td>"+
+	  								"</tr>"+
+	  								"<tr height='40%'>"+
+	  									"<td colspan='4' align='center'>"+data.post.p_content+"</td>"+
+	  								"</tr>" +
+	  								"<tr height='30%'>"+
+	  									"<td colspan='4' align='center'>"+data.post.p_img +"</td>"+
+	  								"</tr>"+ 
+	  								"<tr height='5%'>"+
+	  									"<th>해시</th>"+
+	  									"<td colspan='3'>"+data.post.p_hash+"</td>"+
+	  								"<tr height='5%'>" +
+	  									"<td><button onload='btn_test("+data.post.m_id+",'"+data.post.p_idgroup+"')' id='btn"+data.post.p_idgroup+"' class='p_btn_class'  onclick='p_like("+data.post.p_idgroup+")' >좋아요 : "+data.post.p_like+"</button></td>"+
+	  									"<th colspan='2'>작성자</th><td align='center'>"+data.post.m_id+"</td>"+
+	  								"</tr>"+  								"<tr height='5%'><td colspan='4' align='center'>" +
+  								"<form action='#openReply'>" +
+  								"<input type='hidden' value='"+data.post.p_idgroup+"' name='idgroup'>"+
+  								"<input type='hidden' value='${mid }' name='u_id'>"+
+  								"<input type='submit' value='댓글보기'>"+
+  								"</form></td></tr></table>");
+  								createReplyArray(data.post.p_idgroup);
+  								$('.replyLineClass').hide();
   							
   						} else {
   							alert("더이상 글이 없습니다");
@@ -546,71 +727,11 @@
   	});
       
       
-      //댓글 열어주는 코드
-      function replyPostOpen(idgroup) {
-  		console.log('replyPostOpen idgroup:'+idgroup);
-  		$('#replyLine'+idgroup).show();
-  	}
-  	//댓글 작성 코드
-  	function replyPost(idgroup){
-  		$.ajax({
-  			url: "reply_post_send",
-  			type: "POST",
-  			data: {
-  				'm_id': m_id,
-  				'r_idgroup': idgroup,
-  				'r_content': $('#replyBody'+idgroup).val()
-  				},
-  			success: function(data) {
-  				alert("Reply Success, data:" + data);
-  			},
-  			error: function(){
-  				alert("Error")
-  			}	
-  		});
-  	}
-  	//페이지 생성시 아래 배열 생성
-  	$(function(idgroup){
-		$('.replyLineClass[onload]').trigger('onload');
-	});
+     
   	
   	
   	
-  	//포스트댓글마다 아이디그룹 만들어주는 코드
-  	function createReplyArray(idgroup) {
-		repliesArray.set(idgroup, replyCounter);
-	}
   	
-  	//댓글 보여주는 코드
-  	function showReplies(idgroup) {
-		console.log('showreplies idgrou: ' + idgroup);
-		var tempCounter = 0;
-		var tempCounter = repliesArray.get(idgroup);
-		$.ajax({
-			url: "post_reply_show",
-			type: "POST",
-			data: {'r_idgroup': idgroup,
-				'counter' : tempCounter
-				},
-			success: function(data) {
-				alert("success");
-				
-				$.each(data.reply, function(index, value) {
-				console.log(index + "" + value.r_idgroup);
-					$('.reply-list-container'+value.r_idgroup).append("<tr>" +
-							"<td>like</td>" +
-							"<td>"+value.m_id+"</td>" +
-							"<td colspan='2'>"+value.r_content+"</td>" +
-							"</tr>");
-				});
-				tempCounter +=4;
-				repliesArray.set(idgroup, tempCounter);		
-			},
-			error: function() {
-				alert("error");
-			}
-		});
-	}
   	
   	$(function(id, idgroup){
 		$('.p_btn_class[onload]').trigger('onload');
@@ -761,30 +882,65 @@
 					<th colspan="2">작성자</th>
 					<td align="center">${m_list.m_id }</td>
 				</tr>
+				<!-- 댓글 수정 작업 -->
 				<tr height="5%">
-					
-					<td colspan="1" align="center">
-						<input type="button" class="replyPostOpen" onclick="replyPostOpen('${m_list.p_idgroup}')" value="댓글">
-					</td>
-					<td onload="createReplyArray('${m_list.p_idgroup}')" class="replyLineClass" id="replyLine${m_list.p_idgroup }" colspan="3" align="center">
-					<form id="replyFrm">
-						<input class="replyBody" id="replyBody${m_list.p_idgroup }" type="text" name="replyContent">
-						<input type="button" class="replyPost" onclick="replyPost('${m_list.p_idgroup}')" value="답장">
-					</form>
-					</td>
-					
-				</tr>
-				<tbody class="reply-list-container${m_list.p_idgroup }" id="reply-list-container">
-				</tbody>
-				<tr>
 					<td colspan="4" align="center">
-						<input type="button" class="showReplies" onclick="showReplies('${m_list.p_idgroup}')" value="댓글보기">
+					<form action="#openReply"> 
+						<input type="hidden" value="${m_list.p_idgroup }" name="idgroup"> 
+						<input type="hidden" value="${mid }" name="u_id"> 
+						<input type="submit" value="댓글보기">
+					</form>  
 					</td>
-				</tr>
-				
+				</tr>   
+
 			</table>
+			<a href="#openReply">Open Reply</a>
+				<div id="openReply" class="replyList">
+					<div class="test">
+						<a href="#close" title="Close" class="close">X</a>
+						
+					<div class="reply-big-container">
+					<div class="repliesTable">
+					
+					<table border="1" align="center" class="table1">
+					
+					<tbody class="reply-list-big-container">
+						<tbody align="center" class="reply-list-container${param.idgroup }" id="reply-list-container">
+						<thead align="center"></thead>
+						</tbody>
+					</tbody>
+					</table>
+					</div>
+					<div class="replyButtonsTable">
+					<table border="1" align="center" class="table2">
+					
+					<tr>
+						<td colspan="4" align="center">
+							<input type="button" class="showReplies" onclick="showReplies('${param.idgroup}')" value="댓글보기">
+							<input type="button" class="closeReplies" onclick="closeReplies('${param.idgroup}')" value="닫기">
+						</td>
+					</tr>
+					</tbody>
+					
+					<tbody class="reply-button-container">
+					<tr>
+						<td colspan="1" align="center">
+							<input type="button" class="replyPostOpen" onclick="replyPostOpen('${param.idgroup}')" value="댓글">
+						</td>
+						<td onload="createReplyArray('${param.idgroup}')" class="replyLineClass" id="replyLine${param.idgroup }" colspan="3" align="center">
+						<form id="replyFrm">
+							<input class="replyBody" id="replyBody${param.idgroup }" type="text" name="replyContent">
+							<input type="button" class="replyPost" onclick="replyPost('${param.idgroup}')" value="답장">
+						</form>
+						</td>					
+					</tr>	
+					</tbody>
+					</table>
+					</div>
+					</div>
+				</div>
+				</div>
 		</c:forEach>
-		
 		
 		</div>
       </div>
@@ -821,5 +977,8 @@
       </div>
    </div>
 </div>
+ 
+		
+		
 </body>
 </html>
