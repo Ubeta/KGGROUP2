@@ -240,6 +240,10 @@ public class ModelDAO {
 		
 	}
 	
+	public ReplyDTO getPostReplyOne(int r_idgroup) {
+		return sqlSession.selectOne(namespace + ".getReplyOne", r_idgroup);
+	}
+	
 	//====================== John DAO 긑 ===========================================
 	
 	//==============yang================
@@ -258,9 +262,7 @@ public class ModelDAO {
 			public List<MyFriendDTO> f_list(String user_id) {
 				return sqlSession.selectList(namespace+".f_list", user_id);
 			}
-			public void friend_add(MyFriendDTO mfdto) {
-				sqlSession.insert(namespace+".friend_add", mfdto);
-			}
+			
 			public void write_board(PostDTO pdto) {
 				sqlSession.insert(namespace+".write_board", pdto);
 			}

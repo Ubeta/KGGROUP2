@@ -12,6 +12,94 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <style>
+.replyList {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	opacity:0;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+	pointer-events: none;
+	
+	}
+   
+    .replyList:target {
+	opacity:1;
+	pointer-events: auto;
+	}
+
+	.replyList > div.test {
+	width: 400px;
+	position: relative;
+	margin: 10% auto;
+	padding: 5px 20px 13px 20px;
+	border-radius: 10px;
+	background: #fff;
+	background: -moz-linear-gradient(#fff, #999);
+	background: -webkit-linear-gradient(#fff, #999);
+	background: -o-linear-gradient(#fff, #999);
+	}  
+	.close {
+	background: #606061;
+	color: #FFFFFF;
+	line-height: 25px;
+	position: absolute;
+	right: -12px;
+	text-align: center;
+	top: -10px;
+	width: 24px;
+	text-decoration: none;
+	font-weight: bold;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+	-moz-box-shadow: 1px 1px 3px #000;
+	-webkit-box-shadow: 1px 1px 3px #000;
+	box-shadow: 1px 1px 3px #000;
+	}
+
+	.close:hover { background: #00d9ff; }
+	
+	.repliesTable {
+		width: 100%;
+		overflow: auto;
+	}
+	
+	.replyButtonsTable .table2{
+		height: 20px;
+	}
+	#reply-list-container {
+		
+		display: block;
+		overflow: auto;
+		height: 200px;
+		width: 100%;
+		
+	}
+	#reply-list-container th, #reply-list-container td, #reply-list-container tr {
+		text-align: center;
+	}
+	.repliesTable .table1 {
+		text-align: center;
+		margin: 0 auto;
+	}
+	.reply-list-big-container {
+		text-align: center;
+		margin: 0 auto;
+	}
+	.appendedTr {
+		text-align: center;
+	}
+	.appendedTd {
+		text-align: center;
+	}
+	
 body {
 	width: 1950px;
 	height: 100%;
@@ -289,6 +377,7 @@ body {
 		
 		$('.loader').hide();
 		$('.replyLineClass').hide();
+		$('.closeReplies').hide();
 		
 		if (u_id == sessionId) {
 			location.href="mypage";
@@ -306,14 +395,29 @@ body {
 			$('#sendFriend').hide();
 			$('#cancelFriend').hide();
 			$('#removeFriend').show();
-		}	
+		}
 		
+			$.ajax({
+				url: "show_more_user_posts",
+				type: "POST",
+				data: {'u_id':u_id},
+				dataType: "JSON",
+				cache: false,
+				success: function(data) {
+					if (!data.morePosts) {
+						$('.loader').show();
+					}
+				},
+				error: function(){
+					
+				}
+			
+		});
 	});
 	
 	
 	
 	function replyPostOpen(idgroup) {
-		console.log('replyPostOpen idgroup:'+idgroup);
 		$('#replyLine'+idgroup).show();
 	}
 	
@@ -328,6 +432,7 @@ body {
 				},
 			success: function(data) {
 				alert("Reply Success, data:" + data);
+				getOneReply(idgroup);
 			},
 			error: function(){
 				alert("Error")
@@ -350,10 +455,33 @@ body {
 		repliesArray.set(idgroup, replyCounter);
 	}
 	
+	function getOneReply(idgroup) {
+		var tempCounter = repliesArray.get(idgroup);
+		$.ajax({
+			url: "post_reply_show_one",
+			type: "POST",
+			data: {'r_idgroup': idgroup},
+			success: function(data) {
+				alert("success");
+				$('.reply-list-container'+idgroup).prepend("<tr class='appendedTr'>" +
+					"<td class='appendedTd'>like</td>" +
+					"<td>"+data.oneReply.m_id+"</td>" +
+					"<td colspan='2'>"+data.oneReply.r_content+"</td>" +
+					"</tr>");
+				tempCounter +=1;
+				repliesArray.set(idgroup, tempCounter);		
+			},
+			error: function(){
+				alert("Error");
+			}
+		});
+	}
+	
 	function showReplies(idgroup) {
 		console.log('showreplies idgrou: ' + idgroup);
 		var tempCounter = 0;
 		var tempCounter = repliesArray.get(idgroup);
+		$('.closeReplies').show();
 		$.ajax({
 			url: "post_reply_show",
 			type: "POST",
@@ -365,7 +493,7 @@ body {
 				
 				$.each(data.reply, function(index, value) {
 				console.log(index + "" + value.r_idgroup);
-					$('.reply-list-container'+value.r_idgroup).append("<tr>" +
+					$('.reply-list-container'+value.r_idgroup).append("<tr class='appendedTr'>" +
 							"<td>like</td>" +
 							"<td>"+value.m_id+"</td>" +
 							"<td colspan='2'>"+value.r_content+"</td>" +
@@ -378,6 +506,13 @@ body {
 				alert("error");
 			}
 		});
+	}
+	
+	function closeReplies(idgroup) {
+		$('.appendedTr').remove();
+		var tempCounter = 2;
+		repliesArray.set(idgroup, tempCounter);	
+		$('.closeReplies').hide();
 	}
 	
 	
@@ -403,20 +538,12 @@ body {
 							"<tr height='30%'><td colspan='4' align='center'>"+data.post.p_img +"</td></tr>" + 
 							"<tr height='5%'><th>해시</th><td colspan='3'>"+data.post.p_hash+"</td><tr height='5%'><td>like</td>" + 
 							"<th colspan='2'>작성자</th><td align='center'>"+data.post.m_id+"</td></tr>" +
-							"<tr height='5%'><td colspan='1' align='center'>" +
-							"<input type='button' class='replyPostOpen' onclick='replyPostOpen("+data.post.p_idgroup+")' value='댓글'>" +
-							//"<td onload='createReplyArray("+data.post.p_idgroup+")' class='replyLineClass' id='replyLine"+data.post.p_idgroup+"' colspan='3' align='center'><form id='replyFrm'>" +
-							"<td onload='createReplyArray()' class='replyLineClass' id='replyLine"+data.post.p_idgroup+"' colspan='3' align='center'><form id='replyFrm'>" +
-							
-							"<input class='replyBody' id='replyBody"+data.post.p_idgroup+"' type='text' name='replyContent'>" + 
-							"<input type='button' class='replyPost' onclick='replyPost("+data.post.p_idgroup+")' value='답장'>" +
-
-							"</form></td></tr>" +
-							"<tbody class='reply-list-container"+data.post.p_idgroup+"' id='reply-list-container'></tbody>" +
-							"<tr><td colspan='4' align='center'>" +
-							"<input type='button' class='showReplies' onclick='showReplies("+data.post.p_idgroup+")' value='댓글보기'>" +
-							"</td></tr>" +
-							"</table>");
+							"<tr height='5%'><td colspan='4' align='center'>" +
+							"<form action='#openReply'>" +
+							"<input type='hidden' value='"+data.post.p_idgroup+"' name='idgroup'>"+
+							"<input type='hidden' value='${param.u_id }' name='u_id'>"+
+							"<input type='submit' value='댓글보기'>"+
+							"</form></td></tr></table>");
 							createReplyArray(data.post.p_idgroup);
 							$('.replyLineClass').hide();
 							
@@ -604,40 +731,66 @@ body {
 					<th colspan="2">작성자</th>
 					<td align="center">${post.m_id }</td>
 				</tr>
+
 				<tr height="5%">
-					
-					<td colspan="1" align="center">
-						<input type="button" class="replyPostOpen" onclick="replyPostOpen('${post.p_idgroup}')" value="댓글">
-					</td>
-					<td onload="createReplyArray('${post.p_idgroup}')" class="replyLineClass" id="replyLine${post.p_idgroup }" colspan="3" align="center">
-					<form id="replyFrm">
-						<input class="replyBody" id="replyBody${post.p_idgroup }" type="text" name="replyContent">
-						<input type="button" class="replyPost" onclick="replyPost('${post.p_idgroup}')" value="답장">
-					</form>
-					</td>
-					
-				</tr>	
-				<!-- ==============DEBUGGING AREA========= -->
-		
-				<!-- ======================================= -->
-				<tbody class="reply-list-container${post.p_idgroup }" id="reply-list-container">
-				</tbody>
-				<tr>
 					<td colspan="4" align="center">
-						<input type="button" class="showReplies" onclick="showReplies('${post.p_idgroup}')" value="댓글보기">
+					<form action="#openReply"> 
+						<input type="hidden" value="${post.p_idgroup }" name="idgroup"> 
+						<input type="hidden" value="${param.u_id }" name="u_id"> 
+						<input type="submit" value="댓글보기">
+					</form>  
 					</td>
-				</tr>
-				
-					<c:forEach var="reply" items="${replies}" begin="0" end="2">
-					<tr>
-						<td colspan="2">${reply.r_content }</td>
-						<td>${reply.m_id }</td>
-						<td>like</td>
-					</tr>
-					</c:forEach>
+				</tr>   
+
 			</table>
 		</c:forEach>
 		
+		 <a href="#openReply">Open Reply</a>
+				<div id="openReply" class="replyList">
+					<div class="test">
+						<a href="#close" title="Close" class="close">X</a>
+						
+					<div class="reply-big-container">
+					<div class="repliesTable">
+					
+					<table border="1" align="center" class="table1">
+					
+					<tbody class="reply-list-big-container">
+						<tbody align="center" class="reply-list-container${param.idgroup }" id="reply-list-container">
+						<thead align="center"></thead>
+						</tbody>
+					</tbody>
+					</table>
+					</div>
+					<div class="replyButtonsTable">
+					<table border="1" align="center" class="table2">
+					
+					<tr>
+						<td colspan="4" align="center">
+							<input type="button" class="showReplies" onclick="showReplies('${param.idgroup}')" value="댓글보기">
+							<input type="button" class="closeReplies" onclick="closeReplies('${param.idgroup}')" value="닫기">
+						</td>
+					</tr>
+					</tbody>
+					
+					<tbody class="reply-button-container">
+					<tr>
+						<td colspan="1" align="center">
+							<input type="button" class="replyPostOpen" onclick="replyPostOpen('${param.idgroup}')" value="댓글">
+						</td>
+						<td onload="createReplyArray('${param.idgroup}')" class="replyLineClass" id="replyLine${param.idgroup }" colspan="3" align="center">
+						<form id="replyFrm">
+							<input class="replyBody" id="replyBody${param.idgroup }" type="text" name="replyContent">
+							<input type="button" class="replyPost" onclick="replyPost('${param.idgroup}')" value="답장">
+						</form>
+						</td>					
+					</tr>	
+					</tbody>
+					</table>
+					</div>
+					</div>
+				</div>
+				</div>
 		
 		</div>
 		<div class="loader">글이 더이상 없습니다</div>
