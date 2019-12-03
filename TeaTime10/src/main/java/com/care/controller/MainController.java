@@ -19,7 +19,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.care.modelDTO.CountForm;
 import com.care.modelDTO.MemberDTO;
-import com.care.modelDTO.MyFriendDTO;
 import com.care.modelDTO.PostDTO;
 import com.care.modelDTO.ReplyDTO;
 import com.care.service.AddCommentService;
@@ -36,6 +35,7 @@ import com.care.service.MMyInfoService;
 import com.care.service.MRegisterService;
 import com.care.service.MUserFindService;
 import com.care.service.PBoardListService;
+import com.care.service.PLikeChkService;
 import com.care.service.PLikeUpService;
 import com.care.service.PWriteBoardService;
 import com.care.service.RReplyListService;
@@ -204,7 +204,7 @@ public class MainController {
 				ser.execute(model);
 				Map<String, Object> map = model.asMap();
 				list = (ArrayList<PostDTO>) map.get("boardlist");
-				cnt=1;
+				cnt=3;
 				return "mypage";
 			}
 			//===========================회원정보 수정 후 리다이렉트================
@@ -271,7 +271,8 @@ public class MainController {
 				
 				if(i<list.size()) {
 					boardlist_map.put("chk", "true");
-					boardlist_map.put("boardlist", list.get(i));
+					boardlist_map.put("morePosts", true);
+					boardlist_map.put("post", list.get(i));
 					++cnt;
 					return boardlist_map;
 				}else if(list.size()==0){
@@ -279,6 +280,7 @@ public class MainController {
 					return boardlist_map;
 				}else{
 					boardlist_map.put("chk", "false");
+					boardlist_map.put("morePosts", false);
 					return boardlist_map;
 				}
 			}
@@ -314,6 +316,24 @@ public class MainController {
 				int chk = (Integer)map.get("chk");
 				Map<String, Object> chk_map = new HashMap<String, Object>();
 				chk_map.put("chk", chk);
+				return chk_map;
+			}
+			@ResponseBody
+			@RequestMapping(value = "btn_test")
+			public Map<String, Object> btn_test(Model model, PostDTO pldto) {
+				model.addAttribute("like_chk", pldto);
+				ser = context.getBean("PLikeChkService", PLikeChkService.class);
+				ser.execute(model);
+				Map<String, Object> map = model.asMap();
+				Map<String, Object> chk_map = new HashMap<String, Object>();
+				int chk = (Integer)map.get("btnchk");
+				if(chk==1) {
+					int idgroup = (Integer)map.get("idgroup");
+					chk_map.put("chk", chk);
+					chk_map.put("idgroup", idgroup);
+				}else {
+					chk_map.put("chk", chk);
+				}
 				return chk_map;
 			}
 		////////////////////////////////////////////////////////////////
