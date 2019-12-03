@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -207,6 +208,7 @@ public class MainController {
 				cnt=3;
 				return "mypage";
 			}
+        
 			//===========================회원정보 수정 후 리다이렉트================
 			@RequestMapping(value = "fix_myinfo" , method = RequestMethod.POST)
 			public String fix_myinfo(Model model, HttpServletRequest request){

@@ -240,6 +240,10 @@ public class ModelDAO {
 		
 	}
 	
+	public ReplyDTO getPostReplyOne(int r_idgroup) {
+		return sqlSession.selectOne(namespace + ".getReplyOne", r_idgroup);
+	}
+	
 	//====================== John DAO 긑 ===========================================
 	
 	//==============yang================

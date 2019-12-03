@@ -673,7 +673,7 @@
 								<td>비밀번호</td><td> <input type="text" id="my_pw" name="my_pw" > <input type="hidden" id="my_id" name="my_id" ></td>
 							   </tr>
 							   <tr>
-							      <td>사진</td><td>  <img alt="${placeholder }" id="my_pic" src=""></td>
+							      <td>사진</td><td>  <img alt="error" id="my_pic" src="" onerror="this.onerror=null; this.src='${placeholder }'"></td>
 							   </tr>
 							<tr>
 							   <td>이름</td><td>  <input type="text" id="my_name" name="my_name" ></td>

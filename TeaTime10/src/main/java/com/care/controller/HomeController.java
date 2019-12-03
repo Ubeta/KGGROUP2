@@ -27,12 +27,12 @@ import com.care.service.UAcceptFriendRequestService;
 import com.care.service.UCancelFriendRequestService;
 import com.care.service.UCheckFriendService;
 import com.care.service.UGetFriendRequestListService;
+import com.care.service.UGetReplyOneService;
 import com.care.service.UGetReplyPacketService;
 import com.care.service.ULookUpService;
 import com.care.service.UPostService;
 import com.care.service.URejectFriendRequestService;
 import com.care.service.URemoveFriendService;
-import com.care.service.UReplyGetService;
 import com.care.service.UReplyInputService;
 import com.care.service.USendFriendRequestService;
 
@@ -254,6 +254,21 @@ public class HomeController {
 		return replies;
 		//=========================================
 		*/
+	}
+	
+	@ResponseBody
+	@RequestMapping("post_reply_show_one")
+	public Map<String, Object> postReplyShowOne(Model model, HttpServletRequest request){
+		model.addAttribute("request", request);
+		ser = context.getBean("UGetReplyOneService", UGetReplyOneService.class);
+		ser.execute(model);
+		
+		Map<String, Object> oneReply = new HashMap<String, Object>();
+		Map<String, Object> map = model.asMap();
+		ReplyDTO reply = (ReplyDTO) map.get("replyOne");
+		oneReply.put("oneReply", reply);
+		return oneReply;
+		
 	}
 
 }
