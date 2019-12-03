@@ -137,7 +137,7 @@
 
 <script>
 
-<<<<<<< HEAD
+
 	//====== John 수정 12/2 =====
 	var sessionId = '${mid}';
 	var flag = true;
@@ -163,23 +163,6 @@
 					console.log(data.N)
 					$("#catform").append("<div id='listdiv'></div>");
 					$.each(data.Y, function (i, item) {   // item은 N Y 임 즉 스포츠부터 차례대로임.
-=======
-   $(document).ready(function(){
-      $('#catlist').hide();
-      $('#close').hide();
-      $('#catbutton1').click(function(){
-         var form = {m_id : '${mid}'}
-         $.ajax({
-            type:"POST",
-            url:"categorycall",
-            data: form,
-            dataType: "json",
-            success: function(data){
-               console.log(data.Y)
-               console.log(data.N)
-               $("#catform").append("<div id='listdiv'></div>");
-               $.each(data.Y, function (i, item) {   // item은 N Y 임 즉 스포츠부터 차례대로임.
->>>>>>> branch 'master' of https://github.com/Ubeta/KGGROUP2.git
 // each(data,function(i,item)) i 만큼 돌고  item 은 data 가 하나하나 들어감 , list 가 data 라고 치면 행 하나하나가 들어감 ex) dto d = list.get(i) 이렇게 하나의 줄이 다 들어감
               //  alert("i : "+i);
                         //  alert("item : "+item.version);
@@ -190,7 +173,6 @@
                    $.each(data.N, function (i, item) {
                     $("#listdiv").append(item +"<input type='checkbox' class='check_cate' name='c_"+item+"'><br>");
                     });
-<<<<<<< HEAD
 					 $('#listdiv').append("<input type='submit' value='등록'>");
 					 $('#close').show();
 					$("#catbutton1").hide();
@@ -215,34 +197,11 @@
 	   			$("#listdiv").remove(); // 여기까지 다 실행되고 서브밋 되기때문에 위에서 임의로 catform에 값을 넣어줘야 함.
 	       	});
 	   }
-=======
-                $('#listdiv').append("<input type='submit' value='등록'>");
-                $('#close').show();
-               $("#catbutton1").hide();
-               $("#catlist").show();
-            }
-         });   
-      });
-   });
+
+                
 
    
-   /////////////////////////////////////////////////////////////////
-     function catupdate() {
-         $("#catlist").hide();
-          $(".check_cate").each(function () {
-              if ($(this).is(":checked")) {
-                 var cat_name = $(this).attr("name");
-                  $("#catform").append("<input type='hidden' name='"+cat_name+"' value='Y'>");
-              }else{
-                    var cat_name = $(this).attr("name");
-                     $("#catform").append("<input type='hidden' name='"+cat_name+"' value='N'>");
-              }
-               $("#listdiv").remove(); // 여기까지 다 실행되고 서브밋 되기때문에 위에서 임의로 catform에 값을 넣어줘야 함.
-             });
-      }
->>>>>>> branch 'master' of https://github.com/Ubeta/KGGROUP2.git
-
-<<<<<<< HEAD
+   
 	function cateclose() {
 		$("#catlist").hide();
 		$("#catbutton1").show();
@@ -441,7 +400,7 @@
 	    });
 	   
 	   
-=======
+
    function cateclose() {
       $("#catlist").hide();
       $("#catbutton1").show();
@@ -600,7 +559,7 @@
                }
          }
        //여기까지 추가 했음
->>>>>>> branch 'master' of https://github.com/Ubeta/KGGROUP2.git
+
 </script>
 
 <body>
@@ -687,9 +646,15 @@
                 </form>
 =======
                         <!--12-01변경했음 mypage꺼  -->
+               <tr>
+               <td>
                   <input type="button" class="show_reply" onclick="reply_test(${post.p_idgroup })" value="show_reply"> 
->>>>>>> branch 'master' of https://github.com/Ubeta/KGGROUP2.git
-               <td id="replyLine" colspan="3" align="center">
+				</td>
+				
+               <td id="replyLine" colspan="3" align="center"></td>
+               <td>
+               <tr>
+               <td>
                <form id="replyFrm">
                   <input type="text" name="replyContent"><input type="button" class="replyPost" onclick="" value="답장">
                </form>
@@ -698,8 +663,8 @@
             </table>
             
             
-<<<<<<< HEAD
-        댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글                                         	    
+
+                                       	    
        	    <a href="#openModal">Open Modal</a>
 				<div id="openModal" class="modalDialog">
 					<div>
@@ -712,8 +677,7 @@
 					</div>
 				</div>
        	    
-       댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글                                       
- --> 	    
+       
   	   </c:forEach>
       		</div>
       		
@@ -745,52 +709,6 @@
 		</script>
 	</c:if>
 	
-=======
-<!--          댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글                                       -->              
-              <a href="#openModal">Open Modal</a>
-            <div id="openModal" class="modalDialog">
-               <div>
-                  <a href="#close" title="Close" class="close">X</a>
-                  <table border="1">
-                     <tr>
-                        <td>작성자</td><td>안녕</td>
-                     </tr>
-                  </table>
-               </div>
-            </div>
-              
-<!--          댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글                                       -->              
-        </c:forEach>
-            </div>
-            
-            
-          <br><br>
-        
-        
-        <div class="right">
-           우측페이지
-        </div>
-       </div>
-   </c:if>
-   
-   
-   <c:if test="${mid==null and nid!=null}">
-      <script>
-         location.href = "userpost";
-      </script>
-   </c:if>
-   <c:if test="${mid==null and kid!=null }">
-      <script>
-         location.href = "kakaologout";
-      </script>
-   </c:if>
-   <c:if test="${mid==null and kid==null and nid==null}">
-      <script>
-         alert("로그인 해주세요")
-         location.href = "login";
-      </script>
-   </c:if>
-   
->>>>>>> branch 'master' of https://github.com/Ubeta/KGGROUP2.git
+
 </body>
 </html>
