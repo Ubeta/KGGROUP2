@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -177,6 +178,14 @@ public class ModelDAO {
 	public List<PostDTO> getUserPosts(String m_id) {
 		return sqlSession.selectList(namespace + ".getUserPosts", m_id);
 	}
+	
+	public List<PostDTO> getUserPostsFriendScope(String m_id) {
+		return sqlSession.selectList(namespace + ".getUserPostsFriendScope", m_id);
+	}
+	public List<PostDTO> getUserPostsPublicScope(String m_id) {
+		return sqlSession.selectList(namespace + ".getUserPostsPublicScope", m_id);
+	}
+	
 	public int inputPostReply(ReplyDTO redto) {
 		int result = 0;
 		result = sqlSession.insert(namespace + ".inputPostReply", redto);
@@ -304,9 +313,25 @@ public class ModelDAO {
 	
 
 	/*친구 목록 */
+	//========= John 수정 (12/4) ==============
 	public List<MemberDTO> friendLists(String m_id) {
-		return sqlSession.selectList(namespace+".friendLists", m_id);
+		List<MemberDTO> fList1 = null;
+		List<MemberDTO> fList2 = null;
+		try {
+			fList1 = sqlSession.selectList(namespace+".friendLists1", m_id);
+		} catch (Exception e) {
+			System.out.println("ModelDAO friendLists catch 1");
+		}
+		try {
+			fList2 = sqlSession.selectList(namespace+".friendLists2", m_id);
+		} catch (Exception e) {
+			System.out.println("ModelDAO friendLists catch 2");
+		}
+		fList1.addAll(fList2);
+		
+		return fList1;
 	}
+	//========================================
 	/*친구 게시글만 추출*/
 	public List<PostDTO> friendPost(String m_id){
 		return sqlSession.selectList(namespace+".friendPost", m_id);
