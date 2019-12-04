@@ -426,7 +426,7 @@ $(function(){
 	         		<c:forEach items="${flist}" var="list">
 	         			<li><a style="color: black; border-bottom: 2px solid black;font-size: 25px; display:block; 
      						text-decoration:none;" href="u_page?u_id=${list.m_id}">
-     						${ list.m_pic} : ${list.m_id }</a></li>
+     						<img src="img/${list.m_pic}" width="75px" height="75px"> : ${list.m_id }</a></li>
 	         		</c:forEach>
          		</ul>	
          </div>
