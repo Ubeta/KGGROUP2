@@ -139,6 +139,12 @@
 	<select id="getUserPosts" resultType="podto" parameterType="String">
 		SELECT * FROM post WHERE m_id=#{m_id}
 	</select>
+	<select id="getUserPostsFriendScope" resultType="podto" parameterType="String">
+		SELECT * FROM post WHERE m_id=#{m_id} AND p_scope=1 OR p_scope=2 ORDER BY p_date DESC
+	</select>
+	<select id="getUserPostsPublicScope" resultType="podto" parameterType="String">
+		SELECT * FROM post WHERE m_id=#{m_id} AND p_scope=2 ORDER BY p_date DESC
+	</select>
 	
 	<insert id="sendFriendRequest1" parameterType="mfdto">
 		INSERT INTO myfriend (m_id, f_id, f_isfriend) VALUES (#{m_id}, #{f_id}, #{f_isfriend})
@@ -176,20 +182,34 @@
 	<select id="getPostReplies" resultType="redto" parameterType="Integer">
 		SELECT * FROM reply WHERE r_idgroup=#{r_idgroup} ORDER BY r_date DESC
 	</select>
-	
+	<select id="getReplyOne" resultType="redto" parameterType="Integer">
+	<![CDATA[
+		SELECT * 
+          FROM(SELECT * FROM reply WHERE r_idgroup=#{r_idgroup} ORDER BY r_date DESC) D WHERE ROWNUM <=1
+		]]>
+	</select>
 	<!-- John 긑 -->
 	
 	
 	
 <!-- 동민  -->
    <!-- 친구 목록 -->
-   <select id="friendLists" resultType="memdto" parameterType="String">
+   <select id="friendLists1" resultType="memdto" parameterType="String">
    		select m_id, m_pic 
    		from member A 
 		where A.m_id in(select B.f_id 
 						from myfriend B 
 						where B.m_id = #{m_id} and B.f_isfriend = 2)
    	</select>
+   	<!-- John 추가 (12/4) -->
+   	<select id="friendLists2" resultType="memdto" parameterType="String">
+   		select m_id, m_pic 
+   		from member A 
+		where A.m_id in(select B.m_id 
+						from myfriend B 
+						where B.f_id = #{m_id} and B.f_isfriend = 2)
+   	</select>
+   	<!-- =========== -->
    	
    	<!-- 친구들이 등록한 포스트만 추출 (친구포스트가 전체공개 or 친구만 공개 + 내가 쓴 글)-->
    	<select id="friendPost" resultType="podto" parameterType="String">
@@ -248,10 +268,6 @@
 	<select id="f_list" resultType="mfdto" parameterType="String">
    		select f_id from myfriend where m_id=#{user_id}
    </select>
-	<!-- 친구 추가 -->
-	<insert id="friend_add" parameterType="mfdto">
-		insert into myfriend (m_id, f_id) values(#{m_id}, #{f_id})
-	</insert>
 	<!-- 글쓰기 -->
 	<insert id="write_board" parameterType="podto">
 		insert into post (m_id, p_num, p_title, p_content, p_img, p_cat, p_hash, p_idgroup, p_scope, p_date, p_like)
