@@ -24,7 +24,6 @@ import com.care.modelDTO.MyFriendDTO;
 import com.care.modelDTO.PostDTO;
 import com.care.modelDTO.ReplyDTO;
 import com.care.service.AddCommentService;
-import com.care.service.FFriendAddService;
 import com.care.service.FListService;
 import com.care.service.FPostListService;
 import com.care.service.FriendPostService;
@@ -38,6 +37,7 @@ import com.care.service.MMyInfoService;
 import com.care.service.MRegisterService;
 import com.care.service.MUserFindService;
 import com.care.service.PBoardListService;
+import com.care.service.PLikeChkService;
 import com.care.service.PLikeUpService;
 import com.care.service.PWriteBoardService;
 import com.care.service.RReplyListService;
@@ -212,7 +212,7 @@ public class MainController {
             ser.execute(model);
             Map<String, Object> map = model.asMap();
             list = (ArrayList<PostDTO>) map.get("boardlist");
-            cnt=1;
+            cnt=3;
             return "mypage";
          }
          //===========================회원정보 수정 후 리다이렉트================
@@ -260,20 +260,6 @@ public class MainController {
             }
             return user_info;
          }
-         //===========================친구 추가===========================
-         @ResponseBody
-         @RequestMapping(value = "friend_add")
-         public Map<String, Object> friend_add(Model model, MyFriendDTO mfdto) {
-            String f_friend = mfdto.getF_id();
-            model.addAttribute("f_id", f_friend);
-            ser = context.getBean("FFriendAddService", FFriendAddService.class);
-            ser.execute(model);
-            Map<String, Object> map = model.asMap();
-            int chk = (Integer)map.get("chk");
-            Map<String, Object> chkmap = new HashMap<String, Object>();
-            chkmap.put("chk", chk);
-            return chkmap;
-         }
          //===========================개시글 작성===========================
          @ResponseBody
          @RequestMapping(value = "write_board")
@@ -283,25 +269,29 @@ public class MainController {
             ser.execute(model);
          }
          //===========================개시글 리스트===========================
-         private int cnt=1;
-         @ResponseBody
-         @RequestMapping(value = "boardlist")
-         public Map<String, Object> boardlist(Model model, PostDTO podto) {
-            Map<String, Object> boardlist_map = new HashMap<String, Object>();
-            int i = cnt;
-            if(i<list.size()) {
-               boardlist_map.put("chk", "true");
-               boardlist_map.put("boardlist", list.get(i));
-               ++cnt;
-               return boardlist_map;
-            }else if(list.size()==0){
-               boardlist_map.put("chk", "non");
-               return boardlist_map;
-            }else{
-               boardlist_map.put("chk", "false");
-               return boardlist_map;
-            }
-         }
+         private int cnt=3;
+			@ResponseBody
+			@RequestMapping(value = "boardlist")
+			public Map<String, Object> boardlist(Model model, PostDTO podto) {
+				Map<String, Object> boardlist_map = new HashMap<String, Object>();
+				
+				int i = cnt;
+				
+				if(i<list.size()) {
+					boardlist_map.put("chk", "true");
+					boardlist_map.put("morePosts", true);
+					boardlist_map.put("post", list.get(i));
+					++cnt;
+					return boardlist_map;
+				}else if(list.size()==0){
+					boardlist_map.put("chk", "non");
+					return boardlist_map;
+				}else{
+					boardlist_map.put("chk", "false");
+					boardlist_map.put("morePosts", false);
+					return boardlist_map;
+				}
+			}
          //===========================댓글 리스트===========================
          @ResponseBody
          @RequestMapping(value = "replylist")
@@ -336,6 +326,25 @@ public class MainController {
             chk_map.put("chk", chk);
             return chk_map;
          }
+       //============버튼 태스트
+			@ResponseBody
+			@RequestMapping(value = "btn_test")
+			public Map<String, Object> btn_test(Model model, PostDTO pldto) {
+				model.addAttribute("like_chk", pldto);
+				ser = context.getBean("PLikeChkService", PLikeChkService.class);
+				ser.execute(model);
+				Map<String, Object> map = model.asMap();
+				Map<String, Object> chk_map = new HashMap<String, Object>();
+				int chk = (Integer)map.get("btnchk");
+				if(chk==1) {
+					int idgroup = (Integer)map.get("idgroup");
+					chk_map.put("chk", chk);
+					chk_map.put("idgroup", idgroup);
+				}else {
+					chk_map.put("chk", chk);
+				}
+				return chk_map;
+			}
       ////////////////////////////////////////////////////////////////
          
          //댓글 추가
@@ -366,7 +375,6 @@ public class MainController {
          }
          
 }
-
 
 
 

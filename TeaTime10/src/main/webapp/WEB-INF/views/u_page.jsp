@@ -740,22 +740,7 @@ body {
 					<th colspan="2">작성자</th>
 					<td align="center">${post.m_id }</td>
 				</tr>
-				<!-- 
-				<tr height="5%">
-					
-					<td colspan="1" align="center">
-						<input type="button" class="replyPostOpen" onclick="replyPostOpen('${post.p_idgroup}')" value="댓글">
-					</td>
-					<td onload="createReplyArray('${post.p_idgroup}')" class="replyLineClass" id="replyLine${post.p_idgroup }" colspan="3" align="center">
-					<form id="replyFrm">
-						<input class="replyBody" id="replyBody${post.p_idgroup }" type="text" name="replyContent">
-						<input type="button" class="replyPost" onclick="replyPost('${post.p_idgroup}')" value="답장">
-					</form>
-					</td>
-					
-				</tr>	
-				 -->
-				<!-- ==============DEBUGGING AREA========= -->
+
 				<tr height="5%">
 					<td colspan="4" align="center">
 					<form action="#openReply"> 
@@ -765,27 +750,7 @@ body {
 					</form>  
 					</td>
 				</tr>   
-            
-           
-				
-				<!-- ======================================= -->
-				<!-- 
-				<tbody class="reply-list-container${post.p_idgroup }" id="reply-list-container">
-				</tbody>
-				<tr>
-					<td colspan="4" align="center">
-						<input type="button" class="showReplies" onclick="showReplies('${post.p_idgroup}')" value="댓글보기">
-					</td>
-				</tr>
-				
-					<c:forEach var="reply" items="${replies}" begin="0" end="2">
-					<tr>
-						<td colspan="2">${reply.r_content }</td>
-						<td>${reply.m_id }</td>
-						<td>like</td>
-					</tr>
-					</c:forEach>
-				 -->
+
 			</table>
 		</c:forEach>
 		
