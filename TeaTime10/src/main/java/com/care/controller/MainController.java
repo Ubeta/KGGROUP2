@@ -30,6 +30,7 @@ import com.care.service.FPostListService;
 import com.care.service.FriendPostService;
 import com.care.service.GetCommentService;
 import com.care.service.IService;
+import com.care.service.IdSearch;
 import com.care.service.MCategoryService;
 import com.care.service.MInfoFixService;
 import com.care.service.MLoginPostService;
@@ -40,8 +41,11 @@ import com.care.service.MUserFindService;
 import com.care.service.PBoardListService;
 import com.care.service.PLikeUpService;
 import com.care.service.PWriteBoardService;
+import com.care.service.PwChange;
+import com.care.service.PwSearch;
 import com.care.service.RReplyListService;
 import com.care.service.RReplyWriteService;
+import com.care.service.TotalSearch;
 
 @Controller
 public class MainController {
@@ -160,6 +164,40 @@ public class MainController {
          return mainaja;
       }
    
+   	//---------------- 아이디 찾기 비번찾기 
+   @RequestMapping("idfind")
+   public String idfind(Model model, MemberDTO mdto) {
+	   System.out.println(mdto.getM_name());
+	   model.addAttribute("mdto",mdto);
+	   ser = context.getBean("idSearch", IdSearch.class);
+	   ser.execute(model);
+	   return "idpwfindpage";
+   }
+   @RequestMapping("pwfind")
+   public String pwfind(Model model, MemberDTO mdto) {
+	   model.addAttribute("mdto",mdto);
+	   ser = context.getBean("pwSearch",PwSearch.class);
+	   ser.execute(model);
+	   return "idpwfindpage";
+   }
+   @RequestMapping("pwchange")
+   public String pwchange(Model model, MemberDTO mdto) {
+	  System.out.println(mdto.getM_id() + ": pwchange");
+	  model.addAttribute("mdto",mdto);
+	  ser = context.getBean("pwChange",PwChange.class);
+	  ser.execute(model);
+	   return "login";
+   }
+   
+   @RequestMapping("totalsearch")
+   public String totalsearch(Model model, HttpServletRequest request) {
+	   model.addAttribute("request",request);
+	   ser = context.getBean("totalSearch",TotalSearch.class);
+	   ser.execute(model);
+	   return "main"; // 각각의 페이지로 바꿔주면 되는 거고, 메인페이지에서 c:if문으로 조건을 달아줘야 함.
+   }
+   // 이상호 끝
+   //////////////////////////////////////////////
    
    ////////////////////////////////////////////////
    //친구 게시글만 보는 페이지 

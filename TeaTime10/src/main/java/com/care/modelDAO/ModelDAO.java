@@ -7,10 +7,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
 
 import com.care.modelDTO.CategoryDTO;
 import com.care.modelDTO.MemberDTO;
@@ -190,7 +192,7 @@ public class ModelDAO {
 		ArrayList<ReplyDTO> replies = new ArrayList<ReplyDTO>();
 		System.out.println("getPostReplyPackets DAO entered");
 		String driver = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@192.168.0.30:1521:xe";
+		String url = "jdbc:oracle:thin:@192.168.0.9:1521:xe";
 		String uid = "jsp";
 		String upw = "1234";
 		String sql = "select B.* from (select rownum rn, A.* from "
@@ -239,6 +241,42 @@ public class ModelDAO {
 		return replies;
 		
 	}
+	
+	public String idfind(Model model) {
+		Map<String, Object> map  = model.asMap();
+		MemberDTO mdto = (MemberDTO)map.get("mdto");
+		System.out.println(mdto.getM_name() + ": 다오임");
+		System.out.println(mdto.getM_tel());
+		return sqlSession.selectOne(namespace + ".idfind",mdto);
+	}
+	
+	public String pwfind(Model model) {
+		Map<String, Object> map  = model.asMap();
+		MemberDTO mdto = (MemberDTO)map.get("mdto");
+		return sqlSession.selectOne(namespace + ".pwfind",mdto);
+	}
+	
+	public int pwchange(Model model) {
+		Map<String, Object> map  = model.asMap();
+		MemberDTO mdto = (MemberDTO)map.get("mdto");
+		return sqlSession.update(namespace+".pwchange",mdto);
+	}
+	
+	public List<PostDTO> hashsearch(String searchparam){
+		List<PostDTO> hashlist = new ArrayList<PostDTO>();
+		hashlist = sqlSession.selectList(namespace+".hashsearch",searchparam);
+		return hashlist;
+	}
+	
+	public List<PostDTO> catesearch(String searchparam){
+		List<PostDTO> catelist = new ArrayList<PostDTO>();
+		catelist = sqlSession.selectList(namespace+".catesearch",searchparam);
+		return catelist;
+	}
+	
+	
+	
+	//이상호 끝 이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝 
 	
 	//====================== John DAO 긑 ===========================================
 	

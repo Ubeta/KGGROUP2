@@ -350,7 +350,9 @@
 <body>
    <!-- 카카오로 로그인 했을 경우 -->
    <jsp:include page="/WEB-INF/views/header/m_header.jsp" />
+   
     <c:set var="postlist" value="${postlist }"/>
+   
    <c:if test="${mid!=null}">
    <div class="bodyall" align="center">
       <div class="left">
@@ -366,14 +368,18 @@
          
            <div class="mainlist" align="center">
            <h1>메인페이지</h1>
-         
+         <c:if test="${searchlist!=null }">
+			<c:forEach var="post" items="${searchlist }">
+				${post.p_title }
+			</c:forEach>
+         </c:if>
+         <c:if test="${searchlist == null }">
          <div class="divcount">
             <input type="hidden" id="realcount" value="${pdtosize }">
         </div>
         
             <c:forEach var="post" items="${pdto1 }">
             <hr>
-          
             <table class="post" align="center" border="1" class="postForm">
             <tr height="5%">
                <th width="15%">카테고리</th>
@@ -396,19 +402,17 @@
                <td align="center">${post.m_id }</td>
             </tr>
             <tr height="5%">
-               <td colspan="1" align="center">
-                        <!--12-01변경했음 mypage꺼  -->
-                  <input type="button" class="show_reply" onclick="reply_test(${post.p_idgroup })" value="show_reply"> 
+              <td colspan="1" align="center">
+                 <input type="button" class="show_reply" onclick="reply_test(${post.p_idgroup })" value="show_reply"> 
                <td id="replyLine" colspan="3" align="center">
                <form id="replyFrm">
-                  <input type="text" name="replyContent"><input type="button" class="replyPost" onclick="" value="답장">
+                  <input type="text" name="replyContent"><input type="button" class="replyPost" onclick="#" value="답장">
                </form>
                </td>
             </tr>   
             </table>
             
             
-<!--          댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글                                       -->              
               <a href="#openModal">Open Modal</a>
             <div id="openModal" class="modalDialog">
                <div>
@@ -421,10 +425,9 @@
                </div>
             </div>
               
-<!--          댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글댓글                                       -->              
         </c:forEach>
+            </c:if>
             </div>
-            
             
           <br><br>
         
