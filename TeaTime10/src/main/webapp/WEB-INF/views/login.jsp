@@ -1,14 +1,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!doctype html>
-<html lang="kr">
+<html>
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;" />
 <title>TeaTime</title>
 <spring:url value="/resources/images/naver.png" var="naver" />
 <spring:url value="/resources/images/KakaoTalk_loginbutton.png"   var="kakao" />
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-<style rel="stylesheet">
+<link rel="stylesheet">
+<style>
 @charset "UTF-8";
 
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
