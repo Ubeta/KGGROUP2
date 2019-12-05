@@ -37,9 +37,12 @@ import com.care.service.MMyInfoService;
 import com.care.service.MRegisterService;
 import com.care.service.MUserFindService;
 import com.care.service.PBoardListService;
+import com.care.service.PDeleteService;
 import com.care.service.PLikeChkService;
 import com.care.service.PLikeUpService;
 import com.care.service.PWriteBoardService;
+import com.care.service.RLikeChkService;
+import com.care.service.RLikeUpService;
 import com.care.service.RReplyListService;
 import com.care.service.RReplyWriteService;
 
@@ -328,8 +331,8 @@ public class MainController {
          }
        //============버튼 태스트
 			@ResponseBody
-			@RequestMapping(value = "btn_test")
-			public Map<String, Object> btn_test(Model model, PostDTO pldto) {
+			@RequestMapping(value = "p_like_btn")
+			public Map<String, Object> p_like_btn(Model model, PostDTO pldto) {
 				model.addAttribute("like_chk", pldto);
 				ser = context.getBean("PLikeChkService", PLikeChkService.class);
 				ser.execute(model);
@@ -344,7 +347,47 @@ public class MainController {
 					chk_map.put("chk", chk);
 				}
 				return chk_map;
-			}
+		}
+		//리플 좋아요 버튼 테스트=====================
+			 @ResponseBody
+	         @RequestMapping(value = "r_like_up")
+	         public Map<String, Object> r_like_up(Model model, ReplyDTO rdto) {
+	            model.addAttribute("r_like_up", rdto);
+	            ser = context.getBean("RLikeUpService", RLikeUpService.class);
+	            ser.execute(model);
+	            Map<String, Object> map = model.asMap();
+	            int chk = (Integer)map.get("chk");
+	            Map<String, Object> chk_map = new HashMap<String, Object>();
+	            chk_map.put("chk", chk);
+	            return chk_map;
+	         }
+	       //============버튼 태스트
+				@ResponseBody
+				@RequestMapping(value = "r_like_btn")
+				public Map<String, Object> r_like_btn(Model model, ReplyDTO rdto) {
+					model.addAttribute("r_like_chk", rdto);
+					ser = context.getBean("RLikeChkService", RLikeChkService.class);
+					ser.execute(model);
+					Map<String, Object> map = model.asMap();
+					Map<String, Object> chk_map = new HashMap<String, Object>();
+					int chk = (Integer)map.get("btnchk");
+					if(chk==1) {
+						int r_num = (Integer)map.get("r_num");
+						chk_map.put("chk", chk);
+						chk_map.put("r_num", r_num);
+					}else {
+						chk_map.put("chk", chk);
+					}
+					return chk_map;
+				}
+				//============글 지우기
+				@ResponseBody
+				@RequestMapping(value = "del_post")
+				public void del_post(Model model, PostDTO pdto) {
+					model.addAttribute("pdto", pdto);
+					ser = context.getBean("PDeleteService", PDeleteService.class);
+					ser.execute(model);
+				}
       ////////////////////////////////////////////////////////////////
          
          //댓글 추가

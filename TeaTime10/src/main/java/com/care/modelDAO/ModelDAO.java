@@ -18,6 +18,7 @@ import com.care.modelDTO.MyFriendDTO;
 import com.care.modelDTO.PostDTO;
 import com.care.modelDTO.PostLikeDTO;
 import com.care.modelDTO.ReplyDTO;
+import com.care.modelDTO.ReplyLikeDTO;
 
 @Repository
 public class ModelDAO {
@@ -294,8 +295,33 @@ public class ModelDAO {
 				sqlSession.update(namespace+".p_like_chk_down", pdto);
 			}
 			//===================================
-
-	
+			public void r_like_up(ReplyDTO rdto) {
+				sqlSession.update(namespace+".r_like_up", rdto);
+			}
+			public void r_like_down(ReplyDTO rdto) {
+				sqlSession.update(namespace+".r_like_down", rdto);
+			}
+			public void r_like_in(ReplyDTO rdto) {
+				sqlSession.insert(namespace+".r_like_in", rdto);
+			}
+			public ReplyLikeDTO r_like_chk(ReplyDTO rdto) {
+				return sqlSession.selectOne(namespace+".r_like_chk", rdto);
+			}
+			public void r_like_chk_up(ReplyDTO rdto) {
+				sqlSession.update(namespace+".r_like_chk_up", rdto);
+			}
+			public void r_like_chk_down(ReplyDTO rdto) {
+				sqlSession.update(namespace+".r_like_chk_down", rdto);
+			}
+			//=============================================
+			public void del_post(PostDTO pdto) {
+				System.out.println(pdto.getP_num());
+				sqlSession.delete(namespace+".del_post", pdto);
+				sqlSession.delete(namespace+".del_post_like", pdto);
+				sqlSession.delete(namespace+".del_re", pdto);
+				sqlSession.delete(namespace+".del_re_like", pdto);
+			}
+			//=============================================
 	public CategoryDTO mcategorychk(String m_id) {
 		return sqlSession.selectOne(namespace+".mcategorychk",m_id);
 	}

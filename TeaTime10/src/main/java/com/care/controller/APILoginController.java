@@ -32,7 +32,6 @@ import com.care.service.MLoginPostService;
 import com.care.service.MRegisterService;
 import com.care.service.NaverLoginBO;
 import com.care.service.NaverLoginService;
-import com.care.service.kakaoapi;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 
 @Controller
@@ -40,8 +39,6 @@ public class APILoginController {
 	private NaverLoginBO naverLoginBO;
 	private String apiResult = null;
 	private IService ser;
-	@Autowired
-	kakaoapi kakao;
 
 	@Autowired
 	private void setNaverLoginBO(NaverLoginBO naverLoginBO) {

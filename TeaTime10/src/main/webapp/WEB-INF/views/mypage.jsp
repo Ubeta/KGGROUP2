@@ -104,7 +104,16 @@
             text-align: center;
             border-top: 1px solid black;
          }
-         .write_board table{
+         .write_board h3{
+            height:45px;
+              margin-left:150px;
+             margin-right:150px;
+             color:#fff;
+              font-size:14px; 
+              line-height:45px; 
+              background-color:#495164;
+         }
+         .write_board_table{
             margin-left: auto;
             margin-right: auto;
          }
@@ -366,7 +375,7 @@
 			success: function(data) {
 				alert("success");
 				$('.reply-list-container'+idgroup).prepend("<tr class='appendedTr'>" +
-					"<td class='appendedTd'>like</td>" +
+					"<td class='appendedTd'><button onload='r_like_btn("+value.m_id+","+value.r_idgroup+","+value.r_num+")' id='rbtn"+value.r_num+"' class='rr_btn_class'  onclick='r_like("+value.r_idgroup+","+value.r_num+")' >좋아<br>"+value.r_like+"</button></td>" +
 					"<td>"+data.oneReply.m_id+"</td>" +
 					"<td colspan='2'>"+data.oneReply.r_content+"</td>" +
 					"</tr>");
@@ -392,13 +401,15 @@
 				'counter' : tempCounter
 				},
 			success: function(data) {
+				console.log(data)
 				alert("success");
 				
 				$.each(data.reply, function(index, value) {
 				console.log(index + "" + value.r_idgroup);
 					$('.reply-list-container'+value.r_idgroup).append("<tr class='appendedTr'>" +
-							"<td>like</td>" +
+							"<td><button onload='r_like_btn("+value.m_id+","+value.r_idgroup+","+value.r_num+")' id='rbtn"+value.r_num+"' class='r_btn_class'  onclick='r_like("+value.r_idgroup+","+value.r_num+")' >좋아<br>"+value.r_like+"</button></td>" +
 							"<td>"+value.m_id+"</td>" +
+							"<td>"+value.r_num+"</td>" +
 							"<td colspan='2'>"+value.r_content+"</td>" +
 							"</tr>");
 				});
@@ -410,6 +421,67 @@
 			}
 		});
 	}
+	
+	 function r_like(r_idgroup,r_num){
+         var r_num = r_num
+         var r_dto = {
+               m_id : m_id,
+               r_idgroup : r_idgroup,
+               r_num : r_num
+         }
+         
+         $.ajax({
+            url:"r_like_up",
+            type:"POST",
+            data: r_dto,
+            dataType: "json",
+            success: function(data){
+               if(data.chk==0){
+                  alert("댓글 좋아요 올리기 성공.")
+                  location.href='mypage';
+               }else if(data.chk==1){
+                  alert("댓글 좋아요 취소.")
+                  location.href='mypage';
+               }else if(data.chk==2){
+                  alert("댓글 좋아요 초기 올리기 성공.")
+                  location.href='mypage';
+               }
+            },
+             error:function(){
+                alert("문제가 발생 하였습니다.")
+            }
+         });
+      }
+	 
+		 $(function(id,r_idgroup , r_num){
+				$('.r_btn_class[onload]').trigger('onload');
+			});
+		 
+		var rbtn="#rbtn"
+		function r_like_btn(id,r_idgroup,r_num){
+		console.log('온로드')
+		var form = {
+				m_id : id,
+				r_idgroup :r_idgroup,
+				r_num : r_num
+		}
+		$.ajax({
+			url: "r_like_btn",
+			type: "POST",
+			data: form,
+			success: function(data) {
+				if(data.chk==1){
+				console.log(data.r_num)
+				$( rbtn+data.rr_num ).css({
+					color: "red"
+				});
+		}
+		},
+		error: function() {
+		
+			}
+		});
+		}
 	
 	function closeReplies(idgroup) {
 		$('.appendedTr').remove();
@@ -513,29 +585,41 @@
          var p_content =  $('#p_content').val();
          var p_img = $('#p_img').val();
          var p_scope = $('#p_scope').val();
-         var form = {
-               m_id : m_id,
-               p_cat : p_cat,
-               p_hash : p_hash,
-               p_title : p_title,
-               p_content : p_content,
-               p_img : p_img,
-               p_scope : p_scope,
-         }
-         console.log(form);
-         $.ajax({
-            url:"write_board",
-            type:"POST",
-            data: form,
-            cache    : false,
-            success: function(data){
-               alert("글 작성 완료.")
-               location.href='mypage';
-            },
-            error:function(){
-               alert("문제가 발생 하였습니다.")
-            }
-         });
+         if(p_title=="" || p_title==null){
+        	 alert('제목을 입력하세요')
+         }else{
+        	 if(p_cat=="" || p_cat==null){
+            	 alert('카테고리를 입력하세요')
+             }else{
+            	 if(p_scope=="" || p_scope==null){
+                	 alert('공개범위를 입력하세요')
+                 }else{
+                	 var form = {
+                             m_id : m_id,
+                             p_cat : p_cat,
+                             p_hash : p_hash,
+                             p_title : p_title,
+                             p_content : p_content,
+                             p_img : p_img,
+                             p_scope : p_scope,
+                       }
+                       console.log(form);
+                       $.ajax({
+                          url:"write_board",
+                          type:"POST",
+                          data: form,
+                          cache    : false,
+                          success: function(data){
+                             alert("글 작성 완료.")
+                             location.href='mypage';
+                          },
+                          error:function(){
+                             alert("문제가 발생 하였습니다.")
+                          }
+                       });
+                 }
+             }
+         }        
       }
       
       var cnt=0;
@@ -673,14 +757,14 @@
   				dataType: "JSON",
   				cache: false,
   				success: function(data) {
-  					console.log(data)
   					if (flag && data.morePosts) {
   						flag = false;
   						$('.loader').hide();
   							if (data != null) {
   								console.log(data.post.m_id)
   	  							console.log(data.post.p_idgroup)
-  							btn_test( data.post.m_id, data.post.p_idgroup );
+  	  							console.log(data.post.p_num)
+  							p_like_btn( data.post.m_id, data.post.p_idgroup );
   							
   							$(".post-container").append(
 									"<table class='post' align='center' border='1'>"+
@@ -700,9 +784,11 @@
 	  									"<th>해시</th>"+
 	  									"<td colspan='3'>"+data.post.p_hash+"</td>"+
 	  								"<tr height='5%'>" +
-	  									"<td><button onload='btn_test("+data.post.m_id+",'"+data.post.p_idgroup+"')' id='btn"+data.post.p_idgroup+"' class='p_btn_class'  onclick='p_like("+data.post.p_idgroup+")' >좋아요 : "+data.post.p_like+"</button></td>"+
-	  									"<th colspan='2'>작성자</th><td align='center'>"+data.post.m_id+"</td>"+
-	  								"</tr>"+  								"<tr height='5%'><td colspan='4' align='center'>" +
+	  									"<td><button onload='p_like_btn("+data.post.m_id+",'"+data.post.p_idgroup+"')' id='btn"+data.post.p_idgroup+"' class='p_btn_class'  onclick='p_like("+data.post.p_idgroup+")' >좋아요 : "+data.post.p_like+"</button></td>"+
+	  									"<th>작성자</th><td align='center'>"+data.post.m_id+"</td>"+
+	  									"<td><button class='del_post' onclick='del_post("+data.post.p_num+")'>글삭제</button></td>"+
+	  								"</tr>"+  								
+	  								"<tr height='5%'><td colspan='4' align='center'>" +
   								"<form action='#openReply'>" +
   								"<input type='hidden' value='"+data.post.p_idgroup+"' name='idgroup'>"+
   								"<input type='hidden' value='${mid }' name='u_id'>"+
@@ -726,25 +812,38 @@
   		}
   	});
       
+      function del_post(p_num){
+    	  var num = p_num;
+    	  var form = {
+				p_num : num
+    	  }
+    	  $.ajax({
+    			url: "del_post",
+	  			type: "POST",
+	  			data: form,
+	  			success: function() {
+	  				alert('글삭제 성공')
+	  				location.href="mypage"
+	  			},
+	  			error: function() {
+	  				
+	  			}
+	  		});
+      }
       
      
-  	
-  	
-  	
-  	
-  	
-  	$(function(id, idgroup){
+  $(function(id, idgroup){
 		$('.p_btn_class[onload]').trigger('onload');
 	});
   	
   	var btn="#btn"
-  	function btn_test(id,idgroup){
+  	function p_like_btn(id,idgroup){
   		var form = {
   				m_id : id,
   				p_idgroup : idgroup
   		}
   		$.ajax({
-  			url: "btn_test",
+  			url: "p_like_btn",
 			type: "POST",
 			data: form,
 			success: function(data) {
@@ -762,12 +861,6 @@
 		});
   	}
   	
-  	function test() {
-  		$( '.frm_test' ).css({
-			display: "block"
-		});
-	}
-  	
    </script>
 </head>
 <body>
@@ -784,10 +877,7 @@
 		  	<div id="openModal" class="modalDialog">
 		        <div>
 				<a href="#close" title="Close" class="close">X</a>
-						<input type="text" class="pw_chk"><br>
-						<button class="pw_btn" onclick="test()">비밀번호 재입력</button>
-					
-						<div class="frm_test" style="display:none;">
+						<div class="frm_test" >
 							<form action="fix_myinfo" method="post">
 							<table border="1" class="fix_table">
 							   <tr>
@@ -818,36 +908,36 @@
       </div>
       <div class="center">
             <div class="write_board" >
-            
-               <table border="1">
-               <tr>
-                  <td style="font-size: 0.5em;">제목</td><td colspan="3"><input type="text" id="p_title" style="width: 500px; height: 40px;"></td>
-               </tr>
-               <tr>
-                  <td colspan="4"><input type="text" id="p_content" placeholder="글내용" style="width: 700px; height: 200px;"></td>
-               </tr>
-               <tr>
-                  <td colspan="4"><input type="button" id="p_img" value="사진첨부"></td>
-               </tr>
-               <tr>
-                  <td>
-                     <select id="p_cat" name="category">
-                        <option value="" selected data-defaul>카테고리선택</option>
-                         <option value="news">뉴스</option>      <option value="sports">스포츠</option>   <option value="food">음식</option>   <option value="language">언어</option>   <option value="people">인물</option>
-                        <option value="animal">동물</option>      <option value="fashion">패션</option>      <option value="love">연애</option>   <option value="movie">영화</option>      <option value="religion">종교</option>
-                        <option value="knowledge">지식</option>   <option value="travel">여행</option>      <option value="cartoon">만화</option>   <option value="game">게임</option>      <option value="it">IT</option>
-                        <option value="weather">날씨</option>      <option value="music">음악</option>      <option value="car">자동차</option>   <option value="economy">경제</option>      <option value="etc">기타</option>
-                         <option value="job">직업</option>         <option value="living">리빙</option>      <option value="book">도서</option>   <option value="festival">축제</option>   <option value="health">건강</option>
-                     </select>
-                  </td>
-                  <td>
-                     <select id="p_scope" name="scope"><option value="" selected data-defaul>공개범위</option><option value="0">나만보기</option><option value="1">친구공개</option><option value="2">전체공개</option></select>
-                  </td>
-                  <td colspan="1" style="font-size: 0.5em;">해시태그<input type="text" id="p_hash" placeholder="해시태그 입력" style="width:350px; height: 40px;"></td>
-               </tr>
-               <tr>
-                  <td colspan="4"><input type="button" value="작성완료" onclick="write_board()"></td>
-               </tr>
+            	<h3>NEW POST</h3>
+               <table border="1" class="write_board_table" >
+	               <tr>
+	                  <td style="font-size: 0.5em;">제목</td><td colspan="3"><input type="text" id="p_title" style="width: 500px; height: 40px;"></td>
+	               </tr>
+	               <tr>
+	                  <td colspan="4"><input type="text" id="p_content" placeholder="글 내용 작성" style="width: 700px; height: 200px;"></td>
+	               </tr>
+	               <tr>
+	                  <td colspan="4"><input type="button" id="p_img" value="사진첨부"></td>
+	               </tr>
+	               <tr>
+	                  <td>
+	                     <select id="p_cat" name="category">
+	                        <option value="" selected data-defaul>카테고리선택</option>
+	                         <option value="news">뉴스</option>      <option value="sports">스포츠</option>   <option value="food">음식</option>   <option value="language">언어</option>   <option value="people">인물</option>
+	                        <option value="animal">동물</option>      <option value="fashion">패션</option>      <option value="love">연애</option>   <option value="movie">영화</option>      <option value="religion">종교</option>
+	                        <option value="knowledge">지식</option>   <option value="travel">여행</option>      <option value="cartoon">만화</option>   <option value="game">게임</option>      <option value="it">IT</option>
+	                        <option value="weather">날씨</option>      <option value="music">음악</option>      <option value="car">자동차</option>   <option value="economy">경제</option>      <option value="etc">기타</option>
+	                         <option value="job">직업</option>         <option value="living">리빙</option>      <option value="book">도서</option>   <option value="festival">축제</option>   <option value="health">건강</option>
+	                     </select>
+	                  </td>
+	                  <td>
+	                     <select id="p_scope" name="scope"><option value="" selected data-defaul>공개범위</option><option value="0">나만보기</option><option value="1">친구공개</option><option value="2">전체공개</option></select>
+	                  </td>
+	                  <td colspan="1" style="font-size: 0.5em;"><input type="text" id="p_hash" placeholder="해시태그 입력" style="width:350px; height: 40px; text-align: center;"></td>
+	               </tr>
+	               <tr>
+	                  <td colspan="4"><input type="button" value="작성완료" onclick="write_board()"></td>
+	               </tr>
             </table>
             
             </div>
@@ -875,12 +965,13 @@
 				<tr height="5%">
 					
 					<td>
-					<button onload="btn_test('${m_list.m_id }','${m_list.p_idgroup }')" id="btn${m_list.p_idgroup }" class="p_btn_class"  onclick="p_like('${m_list.p_idgroup }')" >좋아요 : ${m_list.p_like }</button>
+					<button onload="p_like_btn('${m_list.m_id }','${m_list.p_idgroup }')" id="btn${m_list.p_idgroup }" class="p_btn_class"  onclick="p_like('${m_list.p_idgroup }')" >좋아요 : ${m_list.p_like }</button>
 					</td>
 					
 					
-					<th colspan="2">작성자</th>
+					<th>작성자</th>
 					<td align="center">${m_list.m_id }</td>
+					<td><button class="del_post" onclick="del_post(${m_list.p_num })">글삭제</button></td>
 				</tr>
 				<!-- 댓글 수정 작업 -->
 				<tr height="5%">
