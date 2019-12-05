@@ -14,19 +14,19 @@
 		<c:when test="${du =='iddu' || catchk=='c_iddu'}">
 			<script>
 					alert("이미 등록된 아이디 입니다.");
-					location.href = "register";
+					location.href = "login";
 			</script>
 		</c:when>
 		<c:when test="${du =='teldu' || catchk=='c_teldu'}">
 			<script>
 					alert("이미 등록된 전화번호 입니다.");
-					location.href = "register";
+					location.href = "login";
 			</script>
 		</c:when>
 		<c:when test="${du =='maildu' || catchk=='c_maildu'}">
 			<script>
 					alert("이미 등록된 이메일 입니다.");
-					location.href = "register";
+					location.href = "login";
 			</script>
 		</c:when>
 		<c:when test="${du =='regiOk' && catchk=='catOk'}">
@@ -38,7 +38,7 @@
 		<c:otherwise>
 			<script>
 					alert("디비 에러 입니다.");
-					location.href = "register";
+					location.href = "login";
 			</script>
 		</c:otherwise>
 	</c:choose>
