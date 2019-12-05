@@ -202,7 +202,7 @@ public class ModelDAO {
 		System.out.println("getPostReplyPackets DAO entered");
 		String driver = "oracle.jdbc.driver.OracleDriver";
 
-		String url = "jdbc:oracle:thin:@192.168.0.9:1521:xe";
+		String url = "jdbc:oracle:thin:@192.168.0.6:1521:xe";
 
 		String uid = "jsp";
 		String upw = "1234";
@@ -291,7 +291,10 @@ public class ModelDAO {
 		return catelist;
 	}
 	
-	
+	public String idchk(String m_id) {
+		String resultId = sqlSession.selectOne(namespace+".idchk",m_id);
+		return resultId;
+	}
 	
 	//이상호 끝 이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝 
 

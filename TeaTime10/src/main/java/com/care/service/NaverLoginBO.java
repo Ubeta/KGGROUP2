@@ -27,7 +27,6 @@ public class NaverLoginBO {
 	/* 네이버 아이디로 인증 URL 생성 Method */
 	public String getAuthorizationUrl(HttpSession session) {
 	/* 세션 유효성 검증을 위하여 난수를 생성 */
-		System.out.println(session.getAttribute("sid"));
 	String state = generateRandomString();
 	/* 생성한 난수 값을 session에 저장 */
 	setSession(session,state);
