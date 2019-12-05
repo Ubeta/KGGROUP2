@@ -25,7 +25,7 @@ public class TotalSearch implements IService{
 		String searchparam = request.getParameter("m_search");
 		List<PostDTO> pdto1 = new ArrayList<PostDTO>();
 		List<PostDTO> searchlist = new ArrayList<PostDTO>();
-		List<PostDTO> ajaxlist = new ArrayList<>();
+		List<PostDTO> ajaxlist = new ArrayList<PostDTO>();
 		model.addAttribute("m_search",searchparam);
 		if (searchparam.contains("#")) {
 //			model.addAttribute("hashsearch", searchparam);
