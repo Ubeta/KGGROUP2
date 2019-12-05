@@ -5,12 +5,15 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
 
 import com.care.modelDTO.CategoryDTO;
 import com.care.modelDTO.MemberDTO;
@@ -178,6 +181,14 @@ public class ModelDAO {
 	public List<PostDTO> getUserPosts(String m_id) {
 		return sqlSession.selectList(namespace + ".getUserPosts", m_id);
 	}
+	
+	public List<PostDTO> getUserPostsFriendScope(String m_id) {
+		return sqlSession.selectList(namespace + ".getUserPostsFriendScope", m_id);
+	}
+	public List<PostDTO> getUserPostsPublicScope(String m_id) {
+		return sqlSession.selectList(namespace + ".getUserPostsPublicScope", m_id);
+	}
+	
 	public int inputPostReply(ReplyDTO redto) {
 		int result = 0;
 		result = sqlSession.insert(namespace + ".inputPostReply", redto);
@@ -191,7 +202,9 @@ public class ModelDAO {
 		ArrayList<ReplyDTO> replies = new ArrayList<ReplyDTO>();
 		System.out.println("getPostReplyPackets DAO entered");
 		String driver = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@localhost:1521:xe";
+
+		String url = "jdbc:oracle:thin:@192.168.0.6:1521:xe";
+
 		String uid = "jsp";
 		String upw = "1234";
 		String sql = "select B.* from (select rownum rn, A.* from "
@@ -240,12 +253,53 @@ public class ModelDAO {
 		return replies;
 		
 	}
-	
 	public ReplyDTO getPostReplyOne(int r_idgroup) {
 		return sqlSession.selectOne(namespace + ".getReplyOne", r_idgroup);
 	}
+
 	
 	//====================== John DAO 긑 ===========================================
+
+	public String idfind(Model model) {
+		Map<String, Object> map  = model.asMap();
+		MemberDTO mdto = (MemberDTO)map.get("mdto");
+		System.out.println(mdto.getM_name() + ": 다오임");
+		System.out.println(mdto.getM_tel());
+		return sqlSession.selectOne(namespace + ".idfind",mdto);
+	}
+	
+	public String pwfind(Model model) {
+		Map<String, Object> map  = model.asMap();
+		MemberDTO mdto = (MemberDTO)map.get("mdto");
+		return sqlSession.selectOne(namespace + ".pwfind",mdto);
+	}
+	
+	public int pwchange(Model model) {
+		Map<String, Object> map  = model.asMap();
+		MemberDTO mdto = (MemberDTO)map.get("mdto");
+		return sqlSession.update(namespace+".pwchange",mdto);
+	}
+	
+	public List<PostDTO> hashsearch(String searchparam){
+		List<PostDTO> hashlist = new ArrayList<PostDTO>();
+		hashlist = sqlSession.selectList(namespace+".hashsearch",searchparam);
+		return hashlist;
+	}
+	
+	public List<PostDTO> catesearch(String searchparam){
+		List<PostDTO> catelist = new ArrayList<PostDTO>();
+		catelist = sqlSession.selectList(namespace+".catesearch",searchparam);
+		return catelist;
+	}
+	
+	public String idchk(String m_id) {
+		String resultId = sqlSession.selectOne(namespace+".idchk",m_id);
+		return resultId;
+	}
+	
+	//이상호 끝 이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝 
+
+	
 	
 	//==============yang================
 			public MemberDTO my_info(String sessionid) {
@@ -328,9 +382,25 @@ public class ModelDAO {
 	
 
 	/*친구 목록 */
+	//========= John 수정 (12/4) ==============
 	public List<MemberDTO> friendLists(String m_id) {
-		return sqlSession.selectList(namespace+".friendLists", m_id);
+		List<MemberDTO> fList1 = null;
+		List<MemberDTO> fList2 = null;
+		try {
+			fList1 = sqlSession.selectList(namespace+".friendLists1", m_id);
+		} catch (Exception e) {
+			System.out.println("ModelDAO friendLists catch 1");
+		}
+		try {
+			fList2 = sqlSession.selectList(namespace+".friendLists2", m_id);
+		} catch (Exception e) {
+			System.out.println("ModelDAO friendLists catch 2");
+		}
+		fList1.addAll(fList2);
+		
+		return fList1;
 	}
+	//========================================
 	/*친구 게시글만 추출*/
 	public List<PostDTO> friendPost(String m_id){
 		return sqlSession.selectList(namespace+".friendPost", m_id);

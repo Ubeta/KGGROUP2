@@ -30,6 +30,8 @@ import com.care.service.UGetFriendRequestListService;
 import com.care.service.UGetReplyOneService;
 import com.care.service.UGetReplyPacketService;
 import com.care.service.ULookUpService;
+import com.care.service.UPostAllScopeService;
+import com.care.service.UPostFriendScopeService;
 import com.care.service.UPostService;
 import com.care.service.URejectFriendRequestService;
 import com.care.service.URemoveFriendService;
@@ -67,6 +69,7 @@ public class HomeController {
 
 		return "home";
 	}
+	
 
 	//Testing
 	@RequestMapping("/header/l_header")
@@ -99,10 +102,19 @@ public class HomeController {
 		model.addAttribute("request", request);
 		ser = context.getBean("ULookUpService", ULookUpService.class);
 		ser.execute(model);
-		ser = context.getBean("UPostService", UPostService.class);
-		ser.execute(model);
+		
 		ser = context.getBean("UCheckFriendService", UCheckFriendService.class);
 		ser.execute(model);
+		Map<String, Object> map = model.asMap();
+		String isFriend = (String)map.get("isFriend");
+		if (isFriend.equals("2")) {
+			ser = context.getBean("UPostFriendScopeService", UPostFriendScopeService.class);
+			ser.execute(model);
+		} else {
+			ser = context.getBean("UPostAllScopeService", UPostAllScopeService.class);
+			ser.execute(model);
+		}
+		
 		ser = context.getBean("UGetFriendRequestListService", UGetFriendRequestListService.class);
 		ser.execute(model);
 		return "u_page";
@@ -169,12 +181,23 @@ public class HomeController {
 	@RequestMapping("show_more_user_posts")
 	public Map<String, Object> showMoreUserPosts(Model model, HttpServletRequest request){
 		model.addAttribute("request", request);
-		ser = context.getBean("UPostService", UPostService.class);
+		
+		ser = context.getBean("UCheckFriendService", UCheckFriendService.class);
 		ser.execute(model);
+		Map<String, Object> map = model.asMap();
+		String isFriend = (String)map.get("isFriend");
+		if (isFriend.equals("2")) {
+			ser = context.getBean("UPostFriendScopeService", UPostFriendScopeService.class);
+			ser.execute(model);
+		} else {
+			ser = context.getBean("UPostAllScopeService", UPostAllScopeService.class);
+			ser.execute(model);
+		}
+		
 		int postCount = userPostCount;
 		Map<String, Object> userPosts = new HashMap<String, Object>();
-		Map<String, Object> map = model.asMap();
-		List<PostDTO> postList = (ArrayList<PostDTO>)map.get("userPosts");
+		Map<String, Object> map2 = model.asMap();
+		List<PostDTO> postList = (ArrayList<PostDTO>)map2.get("userPosts");
 		
 		System.out.println(postList);
 		
@@ -225,35 +248,6 @@ public class HomeController {
 		replyPackets.put("reply", replyPacketList);
 		return replyPackets;
 		
-		/*
-		model.addAttribute("request", request);
-		
-		ser = context.getBean("UReplyGetService", UReplyGetService.class);
-		ser.execute(model);
-		Map<String, Object> replies = new HashMap<String, Object>();
-		Map<String, Object> map = model.asMap();
-		ArrayList<ReplyDTO> getReplyList = (ArrayList<ReplyDTO>)map.get("userReplies");
-		
-		ArrayList<ReplyDTO> sendReplyList = new ArrayList<ReplyDTO>();
-		
-		int originalCounter = Integer.parseInt(request.getParameter("counter"));
-		int idgroup = Integer.parseInt(request.getParameter("r_idgroup"));
-		int lowerBoundCounter = originalCounter - 2;
-		int upperBoundCounter = originalCounter + 2;
-
-		System.out.println("counter:" + originalCounter);
-		//Have to modify here to show 5 at a time -John
-		for (int i = lowerBoundCounter; i < upperBoundCounter; i++) {
-			System.out.println("inside for loop replyList: " + getReplyList.get(i).getR_content());
-			System.out.println("inside replies" + replies);
-			sendReplyList.add(getReplyList.get(i));		
-			replies.put("reply", sendReplyList);
-		}
-		
-		System.out.println("outside replies: " + replies);
-		return replies;
-		//=========================================
-		*/
 	}
 	
 	@ResponseBody
