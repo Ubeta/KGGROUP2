@@ -516,7 +516,7 @@ px
                         <label for="remember">Remember me</label>
                         <div class="submit-wrap">
                            <input type="submit" value="Sign in" class="submit"> 
-                              <a href="#" class="more">Forgot your password?</a> //<!-- 패스워드 찾기   -->
+                              <a href="#" class="more">Forgot your password?</a> <!-- 패스워드 찾기   -->
                         </div>
                         <br>
                         <div id="naver_id_login">
