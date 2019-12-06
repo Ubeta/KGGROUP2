@@ -203,7 +203,7 @@ public class ModelDAO {
 		System.out.println("getPostReplyPackets DAO entered");
 		String driver = "oracle.jdbc.driver.OracleDriver";
 
-		String url = "jdbc:oracle:thin:@192.168.0.6:1521:xe";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 
 		String uid = "jsp";
 		String upw = "1234";

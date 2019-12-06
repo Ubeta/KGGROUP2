@@ -40,7 +40,7 @@ public class KakaoDAO {
 	public ArrayList<PostDTO> post(ArrayList<String> list,ArrayList<String> flist){
 		ArrayList<PostDTO> plist = new ArrayList<PostDTO>();
 		String driver = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@192.168.0.6:1521:xe";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String user = "jsp";
 		String pwd = "1234";
 		Connection con;

@@ -6,6 +6,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
+<jsp:useBean id="dao" class="com.care.modelDAO.ModelDAO"/>
 <meta charset="UTF-8">
 <title>Insert title here</title>
    <style type="text/css">
@@ -91,11 +93,15 @@
             text-align: center;
          }
          
-         .f_info{
+         .u_info{
             background-color: lightblue;
             text-align: center;
          }
-         
+         .u_info table{
+            background-color: lightblue;
+            margin-left: auto;
+            margin-right: auto;
+         }
          
         
          .write_board{
@@ -237,6 +243,10 @@
 
    .close:hover { background: #00d9ff; }
    
+   
+   
+   
+   
 </style>
    <style type="text/css">
    
@@ -312,14 +322,7 @@
    
    
    </style>
-   
-   
-   
-   
-   
-   
-   <script src="//code.jquery.com/jquery-3.3.1.min.js"></script>
-   <jsp:useBean id="dao" class="com.care.modelDAO.ModelDAO"/>
+
    
    <script type="text/javascript">
    $(document).ready(function(){
@@ -1043,24 +1046,23 @@
                 <input type="button" class="u_find_btn" value="Find" onclick="user_find()">
            </div>
          </div>
-         <div class="f_info">
+         <div class="u_info" >
             <h3>유저 찾기 성공</h3>
-           <table border="1">
+           <table border="1" >
               <tr>
-                 <td>아이디</td>
-                 <td id="td_id"></td>
+                 <td >아이디</td>
+                 <td id="td_id">&nbsp;</td>
               </tr>
               <tr>
-                 <td>이름</td>
-                 <td id="td_name"></td>
+                 <td >이름</td>
+                 <td id="td_name">&nbsp;</td>
               </tr>
               <tr>
                  <td>전화</td>
-                 <td id="td_tel"></td>
+                 <td id="td_tel">&nbsp;</td>
               </tr>
               <tr>
-                 <td>친구 추가</td>
-                 <td><input type="button" value="friend_page" onclick="friend_page()"></td>
+                 <td colspan="2"><input type="button" value="friend_page" onclick="friend_page()"></td>
               </tr>
            </table>
            
