@@ -29,6 +29,7 @@ import com.care.service.FPostListService;
 import com.care.service.FriendPostService;
 import com.care.service.GetCommentService;
 import com.care.service.IService;
+import com.care.service.IdSearch;
 import com.care.service.MCategoryService;
 import com.care.service.MInfoFixService;
 import com.care.service.MLoginPostService;
@@ -47,7 +48,8 @@ import com.care.service.PwChange;
 import com.care.service.PwSearch;
 import com.care.service.RReplyListService;
 import com.care.service.RReplyWriteService;
-
+import com.care.service.TotalSearch;
+import com.care.service.IDchk;
 @Controller
 public class MainController {
    IService ser;
@@ -80,23 +82,15 @@ public class MainController {
       Map<String, Object> map = model.asMap();
       String result = (String)map.get("login");
       if(result.equals("2")) {
-         System.out.println("result값 : " + result);
          HttpSession session = request.getSession();
          session.setAttribute("mid", request.getParameter("id"));
-         System.out.println("깃허브테스트때문에 쓴거임");
       }
       return "loginchk";
    }
    
-//   @RequestMapping("passwordFind") //<!-- 12-01추가  -->
-//   public String passwordFind(Model model, MemberDTO mdto) {
-//      
-//   }
-   /////////////////////////////////////////////////////////////////////////
    
    @RequestMapping("main")
    public String main(Model model,HttpServletRequest request,HttpSession session) {
-      System.out.println(session.getAttribute("mid") + " : main들어갈 때");
       if(session.getAttribute("mid")==null) {
          return "main";
       }
@@ -157,14 +151,103 @@ public class MainController {
             for (int i = postcount; i < postcount+3; i++) {
                list2.add(list.get(i));
             }
-            System.out.println("세개가져옴");
             mainaja.put("count",postcount+1);
             mainaja.put("list2",list2);
             mainaja.put("chk", "true");
          }
          return mainaja;
       }
+   	
+   @ResponseBody
+   @RequestMapping(value = "hashajax")
+   public Map<String, Object> hashajax(Model model,HttpServletRequest request){
+	  int hashcount = Integer.parseInt(request.getParameter("hashcount"));
+	  model.addAttribute("request",request);
+	  ser = context.getBean("totalSearch",TotalSearch.class);
+      ser.execute(model); // 
+      Map<String, Object> map = model.asMap();
+      ArrayList<PostDTO> list = (ArrayList<PostDTO>)map.get("ajaxlist");
+      ArrayList<PostDTO> list2 = new ArrayList<PostDTO>();           
+      Map<String, Object> mainaja = new HashMap<String, Object>();
+      if(list.size()==0) {
+         mainaja.put("chk","zero");
+      }else if(list.size()-hashcount==0) { 
+         mainaja.put("chk","false");
+      }else if (list.size()-hashcount==1) { 
+         for (int i = hashcount; i < hashcount+1; i++) { 
+            list2.add(list.get(i));
+         }
+         mainaja.put("count",hashcount+1);
+         mainaja.put("chk", '1');
+         mainaja.put("list2",list2);
+      }else if(list.size()-hashcount==2) {//2개가져옴
+         for (int i = hashcount; i < hashcount+2; i++) { 
+            list2.add(list.get(i));
+         }
+         mainaja.put("count",hashcount+1);
+         mainaja.put("chk", '2');
+         mainaja.put("list2",list2);
+      }else { 
+         for (int i = hashcount; i < hashcount+3; i++) {
+            list2.add(list.get(i));
+         }
+         mainaja.put("count",hashcount+1);
+         mainaja.put("list2",list2);
+         mainaja.put("chk", "true");
+      }
+      return mainaja;
+   }
    
+	//---------------- 아이디 찾기 비번찾기 
+   @RequestMapping("idfind")
+   public String idfind(Model model, MemberDTO mdto) {
+	   System.out.println(mdto.getM_name());
+	   model.addAttribute("mdto",mdto);
+	   ser = context.getBean("idSearch", IdSearch.class);
+	   ser.execute(model);
+	   return "idpwfindpage";
+   }
+   @RequestMapping("pwfind")
+   public String pwfind(Model model, MemberDTO mdto) {
+	   model.addAttribute("mdto",mdto);
+	   ser = context.getBean("pwSearch",PwSearch.class);
+	   ser.execute(model);
+	   return "idpwfindpage";
+   }
+   @RequestMapping("pwchange")
+   public String pwchange(Model model, MemberDTO mdto) {
+	  System.out.println(mdto.getM_id() + ": pwchange");
+	  model.addAttribute("mdto",mdto);
+	  ser = context.getBean("pwChange",PwChange.class);
+	  ser.execute(model);
+	   return "login";
+   }
+   
+   @RequestMapping("totalsearch")
+   public String totalsearch(Model model, HttpServletRequest request) {
+	   model.addAttribute("request",request);
+	   ser = context.getBean("totalSearch",TotalSearch.class);
+	   ser.execute(model);
+	   return "main"; // 각각의 페이지로 바꿔주면 되는 거고, 메인페이지에서 c:if문으로 조건을 달아줘야 함.
+   }
+   
+   @ResponseBody
+   @RequestMapping(value = "idchk",produces="application/json; charset=utf8")
+   public Map<String, Object> idchk(Model model,HttpServletRequest request) {
+	   String result = "";
+	   model.addAttribute("request",request);
+	   ser = context.getBean("IDchk",IDchk.class);
+	   ser.execute(model);
+	   Map<String, Object> idchkmap = new HashMap<String, Object>();
+	   Map<String, Object> map = model.asMap();
+	   result = (String) map.get("idresult");
+	   if (result.equals("ok")) { //회원가입가능
+		   idchkmap.put("result", result);
+	   }else {
+		   idchkmap.put("result", result);
+	   }
+	   return idchkmap;
+   }
    
    ////////////////////////////////////////////////
    //친구 게시글만 보는 페이지 
@@ -174,9 +257,6 @@ public class MainController {
       public String f_page(Model model, HttpSession session) {
          model.addAttribute("friendLists", session);
          String id = (String)session.getAttribute("mid");
-         System.out.println("@@@@@@@@@@@");
-         System.out.println(id);
-         System.out.println("@@@@@@@@@@@@");
          ser = context.getBean("FListService", FListService.class);
          ser.execute(model);
          ser = context.getBean("friendPostService", FriendPostService.class);
@@ -192,9 +272,6 @@ public class MainController {
       public List<PostDTO> fpostList(Model model, PostDTO pdto, HttpServletRequest request, HttpSession session) {
          HashMap<String, Object> fpageParameter = new HashMap<String, Object>();
          String mid = (String)session.getAttribute("mid");
-         System.out.println("===========");
-         System.out.println(mid);
-         System.out.println("===========");
          fpageParameter.put("sid", mid );
          fpageParameter.put("page_no", request.getParameter("page_no"));
          model.addAttribute("friendLists", fpageParameter);
