@@ -202,7 +202,8 @@ public class ModelDAO {
 		ArrayList<ReplyDTO> replies = new ArrayList<ReplyDTO>();
 		System.out.println("getPostReplyPackets DAO entered");
 		String driver = "oracle.jdbc.driver.OracleDriver";
-		String url = "jdbc:oracle:thin:@192.168.0.6:1521:xe";
+
+		String url = "jdbc:oracle:thin:@192.168.0.7:1521:xe";
 		String uid = "jsp";
 		String upw = "1234";
 		String sql = "select B.* from (select rownum rn, A.* from "
@@ -258,6 +259,8 @@ public class ModelDAO {
 	
 	//====================== John DAO 긑 ===========================================
 
+	
+	
 	public String idfind(Model model) {
 		Map<String, Object> map  = model.asMap();
 		MemberDTO mdto = (MemberDTO)map.get("mdto");
