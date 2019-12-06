@@ -260,6 +260,8 @@ public class ModelDAO {
 	
 	//====================== John DAO 긑 ===========================================
 
+	
+	
 	public String idfind(Model model) {
 		Map<String, Object> map  = model.asMap();
 		MemberDTO mdto = (MemberDTO)map.get("mdto");

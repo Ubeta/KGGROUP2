@@ -1,18 +1,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!doctype html>
-<html>
+<html lang="UTF-8">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8;" />
+<meta charset="UTF-8">
 <title>TeaTime</title>
 <spring:url value="/resources/images/naver.png" var="naver" />
 <spring:url value="/resources/images/KakaoTalk_loginbutton.png"   var="kakao" />
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-<link rel="stylesheet">
-<style>
+<style rel="stylesheet">
 @charset "UTF-8";
 
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+
 
 * {
    -moz-box-sizing: border-box;
@@ -133,9 +133,9 @@ body .container .content label {
    user-select: none;
 }
 
-body .container .content label:not
-([for='remember'])
-{display:none;}
+body .container .content label:not ([for='remember'] ) {
+	display: none;
+}
 body .container .content input.inpt {
    font-size: 14px;
    display: block;
@@ -172,7 +172,7 @@ body .container .content input.inpt::-moz-placeholder {
 body .container .content input.inpt:-ms-input-placeholder {
    font-size: 14px;
    color: #999999;
-   font-family: 'Lato', sans-serif;
+   font-family: 'Lato', sans-serif; 
 }
 
 body .container .content input.inpt:focus {
@@ -280,164 +280,60 @@ keyframes slideIn { 0% {
 100%
 {
 filter
-
-
-
-
 :
-
-
  
-
-
 progid
-
-
-
-
 :DXImageTransform
-
-
-
-
 .Microsoft
-
-
-
-
 .Alpha
-
-
-
-
-(
-enabled
-
-
-=
-false
-);
-
-
+(enabled=false);
 
     
-
-
 opacity
-
-
-
-
 :
-
-
  
-
-
 1;
 margin-left
-
-
-
-
 :
-
-
  
-
-
 0
 px
-
-
-
-
 ;
+
+  
 }
 }
 @
 -webkit-keyframes slideIn { 0% {
-   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-   opacity: 0;
-   margin-left: -320px;
+	filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+	opacity: 0;
+	margin-left: -320px;
 }
 
 100%
 {
 filter
-
-
-
-
 :
-
-
  
-
-
 progid
-
-
-
-
 :DXImageTransform
-
-
-
-
 .Microsoft
-
-
-
-
 .Alpha
-
-
-
-
-(
-enabled
-
-
-=
-false
-);
-
-
+(enabled=false);
 
     
-
-
 opacity
-
-
-
-
 :
-
-
  
-
-
 1;
 margin-left
-
-
-
-
 :
-
-
  
-
-
 0
 px
-
-
-
-
 ;
+
+  
 }
 }
 .credits {
@@ -462,7 +358,7 @@ px
    function kakaologin() {
 
       //<![CDATA[
-      // 사용할 앱의 JavaScript 키를 설정해 주세요.
+      // ì¬ì©í  ì±ì JavaScript í¤ë¥¼ ì¤ì í´ ì£¼ì¸ì.
       var id = null;
       var nickname = null;
       Kakao.init('b650720b5095783f10df72e812329f99');
@@ -494,7 +390,16 @@ px
          </script>
       </c:when>
       <c:otherwise>
+<<<<<<< HEAD
       <!-- 12-01추가  -->
+=======
+      <!-- 12-01ì¶ê°  -->
+      	 <c:if test="${pwchangeresult=='ok' }">
+      	 	<script charset="UTF-8">
+      	 		alert("Password Change Success!! Login please!");
+      	 	</script>
+      	 </c:if>
+>>>>>>> branch 'master' of https://github.com/Ubeta/KGGROUP2.git
          <c:if test="${not empty cookie.rememberId  }"><c:set value="checked" var="remember"/> </c:if>
          <section class="container">
             <article class="half">
@@ -508,16 +413,25 @@ px
                   <div class="signin-cont cont">
                      <form action="loginchk" method="post" name="frm">
                         <label for="email">Your ID</label> 
+<<<<<<< HEAD
                         <input type="text" name="id" id="email" class="inpt"
                            required="required" placeholder="Your id" value="${cookie.rememberId.value }"><!-- 12-01추가  -->
+=======
+                        <input type="text" name="id"  class="inpt"
+                           required="required" placeholder="Your id" value="${cookie.rememberId.value }"><!-- 12-01ì¶ê°  -->
+>>>>>>> branch 'master' of https://github.com/Ubeta/KGGROUP2.git
                         <label for="password">Your Password</label> 
                         <input type="password" name="pw" id="password" class="inpt" required="required"
                            placeholder="Your password"> 
-                        <input type="checkbox" id="remember" class="checkbox" name="remember" ${remember }> <!-- 12-01추가  -->
+                        <input type="checkbox" id="remember" class="checkbox" name="remember" ${remember }> <!-- 12-01ì¶ê°  -->
                         <label for="remember">Remember me</label>
                         <div class="submit-wrap">
                            <input type="submit" value="Sign in" class="submit"> 
+<<<<<<< HEAD
                               <a href="#" class="more">Forgot your password?</a> <!-- 패스워드 찾기   -->
+=======
+                              <a href="#" class="more">Forgot your password?</a> <!-- í¨ì¤ìë ì°¾ê¸°   -->
+>>>>>>> branch 'master' of https://github.com/Ubeta/KGGROUP2.git
                         </div>
                         <br>
                         <div id="naver_id_login">
@@ -530,38 +444,218 @@ px
                         </div>
                      </form>
                   </div>
+<<<<<<< HEAD
                   <div class="signup-cont cont"></div>
                </div>
+=======
+
+                  <!-- @@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작 -->
+                  <div class="signup-cont cont"> 
+					<form action="register_chk" onsubmit="return check_form(this)" id="regform" method="post" enctype="multipart/form-data">
+					 	<div id="register1">	
+					 		<label for="text">Your ID</label> 
+                      		<input type="text" name="m_id" id="m_id" required="required" placeholder="ID Input" class="inpt" onchange="idchk()"> 
+                      		<label for="password">Your Password</label> 
+                      		<input type="password" name="m_pw" id="m_pw" required="required" placeholder="Password Input" class="inpt"> 
+                      		<label for="password">Check Password</label> 
+                      		<input type="password" name="m_pkchk" id="m_pwchk" required="required" placeholder="Check Password" class="inpt"> 
+                      		<label for="text">Your Name</label> 
+                      		<input type="text" name="m_name" id="m_name" required="required" placeholder="Name Input" class="inpt"> 
+                      		<label for="text">Your Birthdate</label> 
+                      		<input type="text" name="m_idnum" id="m_idnum" required="required" placeholder="ex) 190101" class="inpt"> 
+                      		<input type="button" value="Next" onclick="next1()">
+                      		
+                      	</div>	
+                      	<div id="register2">
+                      		<label for="text">Your Gender</label><br>
+                      		Man<input type="radio" name="m_gender" id="m_gender" value="1" checked="checked">&nbsp;&nbsp;&nbsp;
+                      		Woman<input type="radio" name="m_gender" id="m_gender" value="0"><br><br>
+                      		<label for="text">Your Tel</label> 
+                      		<input type="text" name="m_tel" id="m_tel" placeholder="ex)010-1234-5678" required="required" class="inpt"> 
+                      		<label for="email">Your Email</label> 
+                      		<input type="email" name="m_mail" id="m_mail" placeholder="ex)abc@teatime.com" required="required" class="inpt"> 
+                      		<label for="text">Your Profile Picture</label>
+                      		<input type="file" id="profilePic" name="profilePic">
+                      		<img id="previewPic" src="${placeholder }" width="50px" height="50px">
+                      		<br>
+                      		<input type="button" value="Pre" name="pre" onclick="pre1()" >
+                      		<input type="button" value="Next" name="next" onclick="next2()" >
+                      	</div>	
+                      	<div style="overflow: auto; width: 270px; height: 350px;">
+							<table class="table2" id="cat" border="1">
+								<tr>
+									<td>News<br><input type="checkbox" class="check_cate" name="c_news" ></td>
+									<td>Sports<br><input type="checkbox" class="check_cate" name="c_sports" ></td>
+									<td>Food<br><input type="checkbox" class="check_cate" name="c_food" ></td>
+								</tr>
+								
+								<tr>
+									<td>Language<br><input type="checkbox" class="check_cate" name="c_language" ></td>
+									<td>People<br><input type="checkbox" class="check_cate" name="c_people" ></td>
+									<td>Animal<br><input type="checkbox" class="check_cate" name="c_animal" ></td>
+								</tr>
+						
+								<tr>
+									<td>Fashion<br><input type="checkbox" class="check_cate" name="c_fashion" ></td>
+									<td>Love<br><input type="checkbox" class="check_cate" name="c_love" ></td>
+									<td>Movie<br><input type="checkbox" class="check_cate" name="c_movie" ></td>
+								</tr>
+								
+								<tr>
+									<td>Religion<br><input type="checkbox" class="check_cate" name="c_religion" ></td>
+									<td>Knowledge<br><input type="checkbox" class="check_cate" name="c_knowledge" ></td>
+									<td>Travel<br><input type="checkbox" class="check_cate" name="c_travel" ></td>
+								</tr>
+								<tr>
+									<td>Cartoon<br><input type="checkbox" class="check_cate" name="c_cartoon" ></td>
+									<td>Game<br><input type="checkbox" class="check_cate" name="c_game" ></td>
+									<td>IT<br><input type="checkbox" class="check_cate" name="c_it" ></td>
+								</tr>
+								<tr>
+									<td>Weather<br><input type="checkbox" class="check_cate" name="c_weather" ></td>
+									<td>Music<br><input type="checkbox" class="check_cate" name="c_music" ></td>
+									<td>Car<br><input type="checkbox" class="check_cate" name="c_car" ></td>
+								</tr>
+								<tr>
+									<td>Economy<br><input type="checkbox" class="check_cate" name="c_economy" ></td>
+									<td>Etc<br><input type="checkbox" class="check_cate" name="c_etc" ></td>
+									<td>Job<br><input type="checkbox" class="check_cate" name="c_job" ></td>
+								</tr>
+								<tr>
+									<td>Living<br><input type="checkbox" class="check_cate" name="c_living" ></td>
+									<td>Book<br><input type="checkbox" class="check_cate" name="c_book" ></td>
+									<td>Festival<br><input type="checkbox" class="check_cate" name="c_festival" ></td>
+								</tr>
+								<tr>
+									<td>Health<br><input type="checkbox" class="check_cate" name="c_health" ></td>
+								</tr>
+							</table>
+						</div>
+						<input type="button" value="Pre" name="pre" onclick="pre2()" >
+						<input class="regButton" type="submit" name="sub" value="Register">
+					</form>
+		
+                  </div>
+                  <!-- @@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë -->
+
+                  <div class="find-cont cont" id="find-cont cont">
+					
+					<div class="tabs2">
+						<span class="tab2 idfind active"><a href="#idfinddiv">ID Search</a></span>
+						<span class="tab2 pwfind"><a href="#pwfinddiv">password Search</a></span>
+					</div>
+					
+					<div>
+						<div class="idfind cont2" id="aaa">
+							<form method="post" id="idfind" action="idfind">
+								<label for="m_name">Your name</label>
+								<input type="text" name="m_name" placeholder="Your name" class="inpt">
+								<label for="m_tel">Your tel</label>
+								<input type="text" name="m_tel" placeholder="Your phone number or tel" class="inpt">
+								<input type="submit" value="Find" class="submit">
+							</form>
+						</div>
+						
+						<div class="pwfind cont2" id="bbb">
+							<form method="post" id="pwfind" action="pwfind">
+								<label for="m_main">Your ID</label>
+								<input type="text" name="m_id" placeholder="Your ID" class="inpt">
+								<label for="m_main">Your email</label>
+								<input type="text" name="m_mail" placeholder="Your email" class="inpt">
+								<input type="submit" value="Find" class="submit">
+							</form>
+						</div>
+					</div>	
+					
+				</div>
+               </div> <!-- content div -->
+>>>>>>> branch 'master' of https://github.com/Ubeta/KGGROUP2.git
             </article>
             <div class="half bg"></div>
          </section>
       </c:otherwise>
    </c:choose>
 
-<script
-      src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-   <script type="text/javascript">
-      $('.tabs .tab').click(function() {
-         if ($(this).hasClass('signin')) {
-            $('.tabs .tab').removeClass('active');
-            $(this).addClass('active');
-            $('.cont').hide();
-            $('.signin-cont').show();
-         }
-         if ($(this).hasClass('signup')) {
-            $('.tabs .tab').removeClass('active');
-            $(this).addClass('active');
-            $('.cont').hide();
-            $('.signup-cont').show();
-         }
-      });
-      $('.container .bg').mousemove(
-            function(e) {
-               var amountMovedX = (e.pageX * -1 / 30);
-               var amountMovedY = (e.pageY * -1 / 9);
-               $(this).css('background-position',
-                     amountMovedX + 'px ' + amountMovedY + 'px');
-            });
-   </script>
+<script>src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  
+	<script type="text/javascript">
+$('.tabs .tab').click(function(){
+    if ($(this).hasClass('signin')) {
+        $('.tabs .tab').removeClass('active');
+        $(this).addClass('active');
+        $('.cont').hide();
+        $('.signin-cont').show();
+    } 
+    if ($(this).hasClass('signup')) {
+        $('.tabs .tab').removeClass('active');
+        $(this).addClass('active');
+        $('.cont').hide();
+        $('.signup-cont').show();
+    }
+    if ($(this).hasClass('find')) {
+    	$('.tabs .tab').removeClass('active');
+    	$(this).addClass('active');
+    	$('.cont').hide();
+    	$('.find-cont').show();
+    }
+});
+
+$('.tabs2 .tab2').click(function(){
+	if($(this).hasClass('idfind')) {
+	   $('.tabs2 .tab2').removeClass('active');
+	   $(this).addClass('active');
+	   $('.cont2').hide();
+	   $('.idfind').show();
+	}	
+	if($(this).hasClass('pwfind')) {
+	   $('.tabs2 .tab2').removeClass('active');
+	   $(this).addClass('active');
+	   $('.cont2').hide();
+	   $('.pwfind').show();
+	}	
+});
+
+$('.container .bg').mousemove(function(e){
+    var amountMovedX = (e.pageX * -1 / 30);
+    var amountMovedY = (e.pageY * -1 / 9);
+    $(this).css('background-position', amountMovedX + 'px ' + amountMovedY + 'px');
+});
+
+
+$(function() {
+    $("#profilePic").on('change', function(){
+        
+        readURL(this);
+    });
+});
+
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+    var reader = new FileReader();
+
+    reader.onload = function (e) {
+            $('#previewPic').attr('src', e.target.result);
+        }
+      reader.readAsDataURL(input.files[0]);
+    }
+}
+
+function check_form() {
+    $(".check_cate").each(function () {
+        if ($(this).is(":checked")) {
+            $(this).val("Y");
+        }else{
+        		var cat_name = $(this).attr("name");
+     	   $("#regform").append("<input type='hidden' name='"+cat_name+"' value='N'>");
+     	  // console.log(cat_name);
+        }
+    	});
+ 	//ì¤íí ë ì§ì°ê¸°
+}
+
+
+</script>
+>>>>>>> branch 'master' of https://github.com/Ubeta/KGGROUP2.git
 </body>
 </html>
