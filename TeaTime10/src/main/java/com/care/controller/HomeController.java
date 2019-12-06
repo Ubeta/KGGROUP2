@@ -69,6 +69,7 @@ public class HomeController {
 
 		return "home";
 	}
+	
 
 	//Testing
 	@RequestMapping("/header/l_header")

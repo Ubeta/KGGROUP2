@@ -36,61 +36,11 @@ $(function(){
 		}else{
 			$(".replyTag"+vid).fadeIn('fast');
 			getComment(vid);
-			/*
-			$.ajax({
-				type:'POST',
-			    url : "getComment",
-			    data: $("#replyForm"+vid).serialize()+"&re_no="+re_no,
-			    success : function(data){
-			    	re_no = 0;
-			    
-			    	console.log(data);
-			    	if(data.length > 0){
-			               for(i=0; i<data.length; i++){
-			            	   
-		                	var id = data[i].m_id;
-		     		    	var content = data[i].r_content;
-		     		    	var date = data[i].r_date;
-		     		    	var like = data[i].r_like;
-		     		    	
-		     		    	$(".replyTag"+vid).prepend (
-		     		    	"<tr>" +
-		     		    	"<td>"+id+"</td>"+
-		     		    	"<td>"+content+"</td>"+
-		     		   		"<td>"+date+"</td>"+
-		     		   		"<td>"+like+"</td>"+
-		     		   		"</tr>"
-		     		    	)
-		     		    	
-			               }
-			    	}
-			    //re_no += 5;
-			    },
-			    error:function(){
-			    	alert("에러 발생."); 
-			    }    
-			 });*/
 		}
-		
-		
-		
-		/*
-		$.ajax({
-	    	type:'POST',
-	       	url : "replyCount",
-		    success : function(data){
-		    	alert("ajax 성공!");
-		    	$('#replyCount').text(data);
-		 	},
-		    error:function(){
-		       	alert("에러 발생.");
-		 	}   
-		});
-		*/
-		
+
 	 });
 	
-//});
+
 
 //=================================================
 	//댓글 추가 하기
@@ -210,9 +160,9 @@ $(function(){
         })
        // postList();
     })
- 
+    
+//친구 게시글만 가져오는 함수
     let postList = function(){
-	
 		$.ajax({
 			url:"fpostList",
 			type:"POST",
@@ -225,12 +175,6 @@ $(function(){
 			
 				  if(data.length > 0){
 		               for(i=0; i<data.length; i++){
-		            	   
-		            	   
-		            	//   if(i==data.length) {
-			     		   // 	isEnd=true;
-			     		//    	return;
-			     		//    }
 	                	var id = data[i].m_id;
 	     		    	var title = data[i].p_title;
 	     		    	var cat = data[i].p_cat;
@@ -239,6 +183,7 @@ $(function(){
 	     		    	var img = data[i].p_img;
 	     		    	var date = data[i].p_date;
 	     		    	var pnum = data[i].p_num;
+	     		    	var pp = data[i].m_pic;
 	   
 	     		    	$("#friendPage").append(
 	     		    	"<table border='1' class='postForm'><tr>"+
@@ -256,7 +201,8 @@ $(function(){
 	     	               "<td colspan='3'>"+hash+"</td>"+
 	     	            "<tr height='5%'>"+
 	     	              "<td><input type='button' value='좋아요'><label id='likeCount'>0</label></td>"+
-	     	              "<th colspan='2'>작성자</th>"+
+	     	              "<th colspan='1'>작성자</th>"+
+	     	             "<td colspan='1'><img src='img/"+pp+"' width='75px' height='75px'>"+
 	     	              "<td align='center'>"+id+"</td>"+
 	     	            "</tr>"+
 	     	            "<tr height='5%'>"+
@@ -470,7 +416,8 @@ $(function(){
             </tr>
             <tr height="5%">
                <td><input type='button' value='좋아요'><label id='likeCount'>0</label></td>
-               <th colspan="2">작성자</th>
+               <th colspan="1">작성자</th>
+               <td colspan="1" align="center"><img class="postpp" src="img/${fPosts.m_pic }" width="100px" height="70px"></td>
                <td align="center">${fPosts.m_id }</td>
             </tr>
             <tr height="5%">

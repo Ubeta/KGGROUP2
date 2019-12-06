@@ -9,7 +9,7 @@
 		(#{m_id},#{m_pw},#{m_name},#{m_idnum},#{m_gender},#{m_tel},#{m_mail}, #{m_pic})
 	</insert>
 	<!-- 아이디 중복 체크 -->
-	<select id="idchk" resultType="String">
+	<select id="idchk" resultType="String" >
 		select m_id from member where m_id
 		= #{m_id}
 	</select>
@@ -60,8 +60,6 @@
   <select id="kakaocategorychk" parameterType="kdto" resultType="catdto">
    		select * from category where m_id=#{k_id}
    </select>
-   
-
   
    <!-- 네이버 아이디가 등록되어있는지 확인 -->
    <select id="naverloginchk" resultType="ndto" parameterType="ndto">
@@ -83,7 +81,6 @@
    		select * from category where m_id=#{m_id}
    </select>
    
-   
    <!-- 카테고리 메인에서 업데이트 -->
    <select id="updatecategory" parameterType="catdto">
    		update category set c_sports=#{c_sports}, c_news=#{c_news },
@@ -98,8 +95,35 @@
    		    c_living=#{c_living	}, c_book=#{c_book }, c_festival=#{c_festival }, 
    		    c_health=#{c_health } where m_id=#{m_id}  
    </select>
+
+   <!-- 로그인페이지에서 아이디찾기  -->
+   <select id="idfind" parameterType="memdto" resultType="String">
+   		select m_id from member where m_tel=#{m_tel} and m_name=#{m_name}
+   </select>
+
+   <!-- 로그인 페이지에서 패스워드 찾기 -->
+   <select id="pwfind" parameterType="memdto" resultType="String">
+   		select m_pw from member where m_mail=#{m_mail} and m_id=#{m_id}
+   </select>
    
-   <!-- 이상호 끝 -->
+   <!-- 로그인 페이지에서 패스워드 변경 -->
+   <select id="pwchange" parameterType="memdto" resultType="int">
+		update member set m_pw=#{m_pw} where m_id=#{m_id}   
+   </select>
+   
+   <!-- 해쉬태그 게시글 가져오기 -->
+   <select id="hashsearch" parameterType="String" resultType="podto">
+   <![CDATA[
+   		select * from post where p_scope=2 and p_hash like #{p_hash} order by p_date desc
+   		]]>
+   </select>
+   
+   <!-- 검색창으로 검색한 카테고리 게시글 가져오기 -->
+   <select id="catesearch" parameterType="String" resultType="podto">
+    	select * from post where p_cat=#{p_cat} and p_scope=2 order by p_date desc 
+   </select>
+   
+   <!-- 이상호 끝 이상호 끝 이상호 끝 이상호 끝 이상호 끝 이상호 끝 이상호 끝 이상호 끝 이상호 끝 이상호 끝 이상호 끝 이상호 끝 -->
 	
 	<!-- John(11/14): 사람 조회 select 문 -->
 	<select id="userLookUp" resultType="memdto" parameterType="String">
@@ -240,7 +264,7 @@
    </select>
    <!-- 내정보 수정 -->
    <update id="info_fix" parameterType="memdto">
-		update member set m_name=#{m_name}, m_tel=#{m_tel}, m_mail=#{m_mail} where m_id=#{m_id}
+		update member set m_pw=#{m_pw}, m_name=#{m_name}, m_tel=#{m_tel}, m_mail=#{m_mail} where m_id=#{m_id}
 	</update>
 	<!-- 친구 목록 확인 -->
 	<select id="f_list" resultType="mfdto" parameterType="String">
@@ -265,6 +289,10 @@
 		insert into reply (m_id, r_num, r_idgroup, r_content, r_date, r_like)
 		values(#{m_id}, p_num_seq.nextval, #{r_idgroup}, #{r_content}, sysdate, #{r_like})
 	</insert>
+	<!-- 좋아요 초기 입력 -->
+	<insert id="p_like_in" parameterType="podto">
+		insert into p_likeup values(#{m_id}, #{p_idgroup}, 1)
+	</insert>
 	<!-- 좋아요 업 -->
 	<update id="p_like_up" parameterType="podto">
 		update post set p_like=p_like+1 where p_idgroup=#{p_idgroup}
@@ -273,10 +301,6 @@
 	<update id="p_like_down" parameterType="podto">
 		update post set p_like=p_like-1 where p_idgroup=#{p_idgroup}
 	</update>
-	<!-- 좋아요 초기 입력 -->
-	<insert id="p_like_in" parameterType="podto">
-		insert into p_likeup values(#{m_id}, #{p_idgroup}, 1)
-	</insert>
 	<!-- 좋아요 확인 -->
 	<select id="p_like_chk" resultType="pldto" parameterType="podto">
 		select * from p_likeup where m_id=#{m_id} and p_idgroup=#{p_idgroup}
@@ -289,4 +313,45 @@
 	<update id="p_like_chk_down" parameterType="podto">
 		update p_likeup set p_likechk=p_likechk-1 where m_id=#{m_id} and p_idgroup=#{p_idgroup}
 	</update>
+	<!-- 리플 좋아요 작업 -->
+	<!-- 좋아요 초기 입력 -->
+	<insert id="r_like_in" parameterType="redto">
+		insert into r_likeup values(#{m_id}, #{r_idgroup}, 1, #{r_num})
+	</insert>
+	<!-- 좋아요 업 -->
+	<update id="r_like_up" parameterType="redto">
+		update reply set r_like=r_like+1 where r_num=#{r_num}
+	</update>
+	<!-- 좋아요 다운 -->
+	<update id="r_like_down" parameterType="redto">
+		update reply set r_like=r_like-1 where r_num=#{r_num}
+	</update>
+	<!-- 좋아요 확인 -->
+	<select id="r_like_chk" resultType="rldto" parameterType="redto">
+		select * from r_likeup where m_id=#{m_id} and r_num=#{r_num}
+	</select>
+	<!-- 좋아요 확인 업-->
+	<update id="r_like_chk_up" parameterType="redto">
+		update r_likeup set r_likechk=r_likechk+1 where m_id=#{m_id} and r_num=#{r_num}
+	</update>
+	<!-- 좋아요 확인 다운-->
+	<update id="r_like_chk_down" parameterType="redto">
+		update r_likeup set r_likechk=r_likechk-1 where m_id=#{m_id} and r_num=#{r_num}
+	</update>
+	<!-- 포스트 삭제 -->
+	<delete id="del_post" parameterType="podto">
+		DELETE FROM post WHERE p_num = #{p_num}
+	</delete>
+	<!-- 포스트 좋아요 삭제 -->
+	<delete id="del_post_like" parameterType="podto">
+		DELETE FROM p_likeup WHERE p_idgroup = #{p_num}
+	</delete>
+	<!-- 리플 삭제 -->
+	<delete id="del_re" parameterType="podto">
+		DELETE FROM reply WHERE r_idgroup = #{p_num}
+	</delete>
+	<!-- 리플 좋아요 삭제 -->
+	<delete id="del_re_like" parameterType="podto">
+		DELETE FROM r_likeup WHERE r_idgroup = #{p_num}
+	</delete>
 </mapper>

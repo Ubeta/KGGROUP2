@@ -30,6 +30,7 @@ import com.care.service.FPostListService;
 import com.care.service.FriendPostService;
 import com.care.service.GetCommentService;
 import com.care.service.IService;
+import com.care.service.IdSearch;
 import com.care.service.MCategoryService;
 import com.care.service.MInfoFixService;
 import com.care.service.MLoginPostService;
@@ -38,14 +39,21 @@ import com.care.service.MMyInfoService;
 import com.care.service.MRegisterService;
 import com.care.service.MUserFindService;
 import com.care.service.PBoardListService;
+import com.care.service.PDeleteService;
 import com.care.service.PLikeChkService;
 import com.care.service.PLikeUpService;
 import com.care.service.PWriteBoardService;
+import com.care.service.RLikeChkService;
+import com.care.service.RLikeUpService;
+import com.care.service.PwChange;
+import com.care.service.PwSearch;
 import com.care.service.RReplyListService;
 import com.care.service.RReplyWriteService;
-
+import com.care.service.TotalSearch;
+import com.care.service.IDchk;
 @Controller
 public class MainController {
+
 	IService ser;
 
 	@Autowired
@@ -54,119 +62,207 @@ public class MainController {
 	//======== John 수정 / Post Profile pic (12/5) ========
 	private static MemberDTO mypageMemberDTO = new MemberDTO();
 	//===================================================
-
-
-	@RequestMapping(value = "register")
-	public String register(Model model, HttpServletRequest request) {
-		return "register";
-	}
-
-	@RequestMapping(value = "register_chk")
-	public String register_chk(Model model, MultipartHttpServletRequest request) {
-		model.addAttribute("register", request);
-		//model.addAttribute("multipartRequest", multipartRequest);
-		ser = context.getBean("MRegisterService", MRegisterService.class);
-		ser.execute(model); // du = ok
-		ser = context.getBean("MCategoryService", MCategoryService.class);
-		ser.execute(model); //
-		return "registerchk";
-	}
-	@RequestMapping("loginchk") //<!-- 12-01추가한 것들 있음  -->
-	public String loginchk(Model model, HttpServletRequest request,HttpServletResponse response) { // HttpServletResponse response 12-01추가
-		model.addAttribute("request", request);
-		model.addAttribute("response",response); // model.addAttribute("response",response); 12-01추가
-		ser = context.getBean("MLoginService", MLoginService.class);
-		ser.execute(model);
-		Map<String, Object> map = model.asMap();
-		String result = (String)map.get("login");
-		if(result.equals("2")) {
-			System.out.println("result값 : " + result);
-			HttpSession session = request.getSession();
-			session.setAttribute("mid", request.getParameter("id"));
-			System.out.println("깃허브테스트때문에 쓴거임");
-		}
-		return "loginchk";
-	}
-
-	//   @RequestMapping("passwordFind") //<!-- 12-01추가  -->
-	//   public String passwordFind(Model model, MemberDTO mdto) {
-	//      
-	//   }
-	/////////////////////////////////////////////////////////////////////////
-
-	@RequestMapping("main")
-	public String main(Model model,HttpServletRequest request,HttpSession session) {
-		System.out.println(session.getAttribute("mid") + " : main들어갈 때");
-		if(session.getAttribute("mid")==null) {
-			return "main";
-		}
-		model.addAttribute("session",session);
-		ser = context.getBean("MLoginPostService",MLoginPostService.class);
-		ser.execute(model);
-		Map<String,Object> map = model.asMap();
-		int size = (Integer)map.get("endcount");
-		ArrayList<PostDTO> pdto = (ArrayList<PostDTO>) map.get("postlist");
-		ArrayList<PostDTO> pdto1 = new ArrayList<PostDTO>();
-
-		if(size>=3) {
-			pdto1.add(pdto.get(0));
-			pdto1.add(pdto.get(1));
-			pdto1.add(pdto.get(2));
-
-		}else if(size==2) {
-			pdto1.add(pdto.get(0));
-			pdto1.add(pdto.get(1));
-		}else if(size==1) {
-			pdto1.add(pdto.get(0));
-		}
-		model.addAttribute("pdto1",pdto1);
-		model.addAttribute("pdtosize",pdto1.size());
-		return "main";
-	}
-
-	@ResponseBody
-	@RequestMapping(value = "mainajax")
-	public Map<String, Object> mainajax(Model model,CountForm countform,HttpSession session){
-		int postcount = countform.getCountform();
-		model.addAttribute("session",session);
-		ser = context.getBean("MLoginPostService",MLoginPostService.class);
-		ser.execute(model); // 
-		Map<String, Object> map = model.asMap();
-		ArrayList<PostDTO> list = (ArrayList<PostDTO>)map.get("postlist");
-		ArrayList<PostDTO> list2 = new ArrayList<PostDTO>();           
-		Map<String, Object> mainaja = new HashMap<String, Object>();
-		if(list.size()==0) {
-			mainaja.put("chk","zero");
-		}else if(list.size()-postcount==0) { 
-			mainaja.put("chk","false");
-		}else if (list.size()-postcount==1) { 
-			for (int i = postcount; i < postcount+1; i++) { 
-				list2.add(list.get(i));
-			}
-			mainaja.put("count",postcount+1);
-			mainaja.put("chk", '1');
-			mainaja.put("list2",list2);
-		}else if(list.size()-postcount==2) {//2개가져옴
-			for (int i = postcount; i < postcount+2; i++) { 
-				list2.add(list.get(i));
-			}
-			mainaja.put("count",postcount+1);
-			mainaja.put("chk", '2');
-			mainaja.put("list2",list2);
-		}else { 
-			for (int i = postcount; i < postcount+3; i++) {
-				list2.add(list.get(i));
-			}
-			System.out.println("세개가져옴");
-			mainaja.put("count",postcount+1);
-			mainaja.put("list2",list2);
-			mainaja.put("chk", "true");
-		}
-		return mainaja;
-	}
+   
+   @RequestMapping(value = "register")
+   public String register(Model model, HttpServletRequest request) {
+      return "register";
+   }
+   
+   @RequestMapping(value = "register_chk")
+   public String register_chk(Model model, MultipartHttpServletRequest request) {
+      model.addAttribute("register", request);
+      //model.addAttribute("multipartRequest", multipartRequest);
+      ser = context.getBean("MRegisterService", MRegisterService.class);
+      ser.execute(model); // du = ok
+      ser = context.getBean("MCategoryService", MCategoryService.class);
+      ser.execute(model); //
+      return "registerchk";
+   }
+   @RequestMapping("loginchk") //<!-- 12-01추가한 것들 있음  -->
+   public String loginchk(Model model, HttpServletRequest request,HttpServletResponse response) { // HttpServletResponse response 12-01추가
+      model.addAttribute("request", request);
+      model.addAttribute("response",response); // model.addAttribute("response",response); 12-01추가
+      ser = context.getBean("MLoginService", MLoginService.class);
+      ser.execute(model);
+      Map<String, Object> map = model.asMap();
+      String result = (String)map.get("login");
+      if(result.equals("2")) {
+         HttpSession session = request.getSession();
+         session.setAttribute("mid", request.getParameter("id"));
+      }
+      return "loginchk";
+   }
+   
+   
+   @RequestMapping("main")
+   public String main(Model model,HttpServletRequest request,HttpSession session) {
+      if(session.getAttribute("mid")==null) {
+         return "main";
+      }
+      model.addAttribute("session",session);
+      ser = context.getBean("MLoginPostService",MLoginPostService.class);
+      ser.execute(model);
+      Map<String,Object> map = model.asMap();
+      int size = (Integer)map.get("endcount");
+      ArrayList<PostDTO> pdto = (ArrayList<PostDTO>) map.get("postlist");
+      ArrayList<PostDTO> pdto1 = new ArrayList<PostDTO>();
+      
+      if(size>=3) {
+         pdto1.add(pdto.get(0));
+         pdto1.add(pdto.get(1));
+         pdto1.add(pdto.get(2));
+      
+      }else if(size==2) {
+         pdto1.add(pdto.get(0));
+         pdto1.add(pdto.get(1));
+      }else if(size==1) {
+         pdto1.add(pdto.get(0));
+      }
+      model.addAttribute("pdto1",pdto1);
+      model.addAttribute("pdtosize",pdto1.size());
+      return "main";
+   }
+   
+   @ResponseBody
+      @RequestMapping(value = "mainajax")
+      public Map<String, Object> mainajax(Model model,CountForm countform,HttpSession session){
+         int postcount = countform.getCountform();
+         model.addAttribute("session",session);
+         ser = context.getBean("MLoginPostService",MLoginPostService.class);
+         ser.execute(model); // 
+         Map<String, Object> map = model.asMap();
+         ArrayList<PostDTO> list = (ArrayList<PostDTO>)map.get("postlist");
+         ArrayList<PostDTO> list2 = new ArrayList<PostDTO>();           
+         Map<String, Object> mainaja = new HashMap<String, Object>();
+         if(list.size()==0) {
+            mainaja.put("chk","zero");
+         }else if(list.size()-postcount==0) { 
+            mainaja.put("chk","false");
+         }else if (list.size()-postcount==1) { 
+            for (int i = postcount; i < postcount+1; i++) { 
+               list2.add(list.get(i));
+            }
+            mainaja.put("count",postcount+1);
+            mainaja.put("chk", '1');
+            mainaja.put("list2",list2);
+         }else if(list.size()-postcount==2) {//2개가져옴
+            for (int i = postcount; i < postcount+2; i++) { 
+               list2.add(list.get(i));
+            }
+            mainaja.put("count",postcount+1);
+            mainaja.put("chk", '2');
+            mainaja.put("list2",list2);
+         }else { 
+            for (int i = postcount; i < postcount+3; i++) {
+               list2.add(list.get(i));
+            }
+            mainaja.put("count",postcount+1);
+            mainaja.put("list2",list2);
+            mainaja.put("chk", "true");
+         }
+         return mainaja;
+      }
+   	
+   @ResponseBody
+   @RequestMapping(value = "hashajax")
+   public Map<String, Object> hashajax(Model model,HttpServletRequest request){
+	  int hashcount = Integer.parseInt(request.getParameter("hashcount"));
+	  model.addAttribute("request",request);
+	  ser = context.getBean("totalSearch",TotalSearch.class);
+      ser.execute(model); // 
+      Map<String, Object> map = model.asMap();
+      ArrayList<PostDTO> list = (ArrayList<PostDTO>)map.get("ajaxlist");
+      ArrayList<PostDTO> list2 = new ArrayList<PostDTO>();           
+      Map<String, Object> mainaja = new HashMap<String, Object>();
+      if(list.size()==0) {
+         mainaja.put("chk","zero");
+      }else if(list.size()-hashcount==0) { 
+         mainaja.put("chk","false");
+      }else if (list.size()-hashcount==1) { 
+         for (int i = hashcount; i < hashcount+1; i++) { 
+            list2.add(list.get(i));
+         }
+         mainaja.put("count",hashcount+1);
+         mainaja.put("chk", '1');
+         mainaja.put("list2",list2);
+      }else if(list.size()-hashcount==2) {//2개가져옴
+         for (int i = hashcount; i < hashcount+2; i++) { 
+            list2.add(list.get(i));
+         }
+         mainaja.put("count",hashcount+1);
+         mainaja.put("chk", '2');
+         mainaja.put("list2",list2);
+      }else { 
+         for (int i = hashcount; i < hashcount+3; i++) {
+            list2.add(list.get(i));
+         }
+         mainaja.put("count",hashcount+1);
+         mainaja.put("list2",list2);
+         mainaja.put("chk", "true");
+      }
+      return mainaja;
+   }
+   
+	//---------------- 아이디 찾기 비번찾기 
+   @RequestMapping("idfind")
+   public String idfind(Model model, MemberDTO mdto) {
+	   System.out.println(mdto.getM_name());
+	   model.addAttribute("mdto",mdto);
+	   ser = context.getBean("idSearch", IdSearch.class);
+	   ser.execute(model);
+	   return "idpwfindpage";
+   }
+   @RequestMapping("pwfind")
+   public String pwfind(Model model, MemberDTO mdto) {
+	   model.addAttribute("mdto",mdto);
+	   ser = context.getBean("pwSearch",PwSearch.class);
+	   ser.execute(model);
+	   return "idpwfindpage";
+   }
+   @RequestMapping("pwchange")
+   public String pwchange(Model model, MemberDTO mdto) {
+	  System.out.println(mdto.getM_id() + ": pwchange");
+	  model.addAttribute("mdto",mdto);
+	  ser = context.getBean("pwChange",PwChange.class);
+	  ser.execute(model);
+	   return "login";
+   }
+   
+   @RequestMapping("totalsearch")
+   public String totalsearch(Model model, HttpServletRequest request) {
+	   model.addAttribute("request",request);
+	   ser = context.getBean("totalSearch",TotalSearch.class);
+	   ser.execute(model);
+	   return "main"; // 각각의 페이지로 바꿔주면 되는 거고, 메인페이지에서 c:if문으로 조건을 달아줘야 함.
+   }
+   
+   @ResponseBody
+   @RequestMapping(value = "idchk",produces="application/json; charset=utf8")
+   public Map<String, Object> idchk(Model model,HttpServletRequest request) {
+	   String result = "";
+	   model.addAttribute("request",request);
+	   ser = context.getBean("IDchk",IDchk.class);
+	   ser.execute(model);
+	   Map<String, Object> idchkmap = new HashMap<String, Object>();
+	   Map<String, Object> map = model.asMap();
+	   result = (String) map.get("idresult");
+	   if (result.equals("ok")) { //회원가입가능
+		   idchkmap.put("result", result);
+	   }else {
+		   idchkmap.put("result", result);
+	   }
+	   return idchkmap;
+   }
+   
+   ////////////////////////////////////////////////
+   //친구 게시글만 보는 페이지 
+      
+   
+         
 
 
 	////////////////////////////////////////////////
+	
 	//친구 게시글만 보는 페이지 
 	ArrayList<PostDTO> flist = new ArrayList<PostDTO>();
 	ArrayList<ReplyDTO> rlist = new ArrayList<ReplyDTO>();
@@ -274,27 +370,15 @@ public class MainController {
 		}
 		return user_info;
 	}
+	
 	//===========================개시글 작성===========================
 	@RequestMapping(value = "write_board", method = RequestMethod.POST)
 	public String write_board(Model model, PostDTO pdto, HttpSession session, MultipartHttpServletRequest request) {
 		model.addAttribute("request", request);
 		String m_id = (String)session.getAttribute("mid");
-		pdto.setM_id(m_id);
-		pdto.setP_img("");
-		System.out.println("imgFile" + request);
-		System.out.println("pdto:" + pdto.getM_id());
-		System.out.println("pdto:" + pdto.getP_cat());
-		System.out.println("pdto img:" + pdto.getP_img());
-		System.out.println("pdto:" + pdto.getP_content());
-		System.out.println("pdto:" + pdto.getP_num());
-		System.out.println("pdto:" + pdto.getP_scope());
-		System.out.println("pdto:" + pdto.getP_title());
-		System.out.println("pdto:" + pdto.getP_hash());
-		System.out.println("pdto:" + pdto.getP_like());
-		System.out.println("pdto" + pdto.getM_pic());
-		System.out.println("pdto" + pdto.getP_idgroup());
 		
 		//======== John 수정 / Post Profile pic (12/5) ========
+		pdto.setM_id(m_id);
 		pdto.setM_pic(mypageMemberDTO.getM_pic());
 		//===================================================
 		model.addAttribute("write_board", pdto);
@@ -327,89 +411,132 @@ public class MainController {
 		}
 	}
 	//===========================댓글 리스트===========================
-	@ResponseBody
-	@RequestMapping(value = "replylist")
-	public Map<String, Object> replylist(Model model, PostDTO pdto) {
-		model.addAttribute("idgroup", pdto.getP_idgroup());
-		ser = context.getBean("RReplyListService", RReplyListService.class);
-		ser.execute(model);
-		Map<String, Object> map = model.asMap();
-		replylist = (ArrayList<ReplyDTO>) map.get("replylist");
-		Map<String, Object> replylist_map = new HashMap<String, Object>();
-		replylist_map.put("replylist_1", replylist);
-		return replylist_map;
+    @ResponseBody
+    @RequestMapping(value = "replylist")
+    public Map<String, Object> replylist(Model model, PostDTO pdto) {
+       model.addAttribute("idgroup", pdto.getP_idgroup());
+       ser = context.getBean("RReplyListService", RReplyListService.class);
+       ser.execute(model);
+       Map<String, Object> map = model.asMap();
+       replylist = (ArrayList<ReplyDTO>) map.get("replylist");
+       Map<String, Object> replylist_map = new HashMap<String, Object>();
+       replylist_map.put("replylist_1", replylist);
+       return replylist_map;
+    }
+    //===========================댓글 작성===========================
+    @ResponseBody
+    @RequestMapping(value = "reply_write")
+    public void reply_write(Model model, ReplyDTO rdto) {
+       model.addAttribute("reply_write", rdto);
+       ser = context.getBean("RReplyWriteService", RReplyWriteService.class);
+       ser.execute(model);
+    }
+    //===========================좋아요 값 올리기===========================
+    @ResponseBody
+    @RequestMapping(value = "like_up")
+    public Map<String, Object> like_up(Model model, PostDTO pdto) {
+       model.addAttribute("like_up", pdto);
+       ser = context.getBean("PLikeUpService", PLikeUpService.class);
+       ser.execute(model);
+       Map<String, Object> map = model.asMap();
+       int chk = (Integer)map.get("chk");
+       Map<String, Object> chk_map = new HashMap<String, Object>();
+       chk_map.put("chk", chk);
+       return chk_map;
+    }
+  //============버튼 태스트
+		@ResponseBody
+		@RequestMapping(value = "p_like_btn")
+		public Map<String, Object> p_like_btn(Model model, PostDTO pldto) {
+			model.addAttribute("like_chk", pldto);
+			ser = context.getBean("PLikeChkService", PLikeChkService.class);
+			ser.execute(model);
+			Map<String, Object> map = model.asMap();
+			Map<String, Object> chk_map = new HashMap<String, Object>();
+			int chk = (Integer)map.get("btnchk");
+			if(chk==1) {
+				int idgroup = (Integer)map.get("idgroup");
+				chk_map.put("chk", chk);
+				chk_map.put("idgroup", idgroup);
+			}else {
+				chk_map.put("chk", chk);
+			}
+			return chk_map;
 	}
-	//===========================댓글 작성===========================
-	@ResponseBody
-	@RequestMapping(value = "reply_write")
-	public void reply_write(Model model, ReplyDTO rdto) {
-		model.addAttribute("reply_write", rdto);
-		ser = context.getBean("RReplyWriteService", RReplyWriteService.class);
-		ser.execute(model);
-	}
-	//===========================좋아요 값 올리기===========================
-	@ResponseBody
-	@RequestMapping(value = "like_up")
-	public Map<String, Object> like_up(Model model, PostDTO pdto) {
-		model.addAttribute("like_up", pdto);
-		ser = context.getBean("PLikeUpService", PLikeUpService.class);
-		ser.execute(model);
-		Map<String, Object> map = model.asMap();
-		int chk = (Integer)map.get("chk");
-		Map<String, Object> chk_map = new HashMap<String, Object>();
-		chk_map.put("chk", chk);
-		return chk_map;
-	}
-	//============버튼 태스트
-	@ResponseBody
-	@RequestMapping(value = "btn_test")
-	public Map<String, Object> btn_test(Model model, PostDTO pldto) {
-		model.addAttribute("like_chk", pldto);
-		ser = context.getBean("PLikeChkService", PLikeChkService.class);
-		ser.execute(model);
-		Map<String, Object> map = model.asMap();
-		Map<String, Object> chk_map = new HashMap<String, Object>();
-		int chk = (Integer)map.get("btnchk");
-		if(chk==1) {
-			int idgroup = (Integer)map.get("idgroup");
-			chk_map.put("chk", chk);
-			chk_map.put("idgroup", idgroup);
-		}else {
-			chk_map.put("chk", chk);
-		}
-		return chk_map;
-	}
+	//리플 좋아요 버튼 테스트=====================
+		 @ResponseBody
+        @RequestMapping(value = "r_like_up")
+        public Map<String, Object> r_like_up(Model model, ReplyDTO rdto) {
+           model.addAttribute("r_like_up", rdto);
+           ser = context.getBean("RLikeUpService", RLikeUpService.class);
+           ser.execute(model);
+           Map<String, Object> map = model.asMap();
+           int chk = (Integer)map.get("chk");
+           Map<String, Object> chk_map = new HashMap<String, Object>();
+           chk_map.put("chk", chk);
+           return chk_map;
+        }
+      //============버튼 태스트
+			@ResponseBody
+			@RequestMapping(value = "r_like_btn")
+			public Map<String, Object> r_like_btn(Model model, ReplyDTO rdto) {
+				model.addAttribute("r_like_chk", rdto);
+				ser = context.getBean("RLikeChkService", RLikeChkService.class);
+				ser.execute(model);
+				Map<String, Object> map = model.asMap();
+				Map<String, Object> chk_map = new HashMap<String, Object>();
+				int chk = (Integer)map.get("btnchk");
+				if(chk==1) {
+					int r_num = (Integer)map.get("r_num");
+					chk_map.put("chk", chk);
+					chk_map.put("r_num", r_num);
+				}else {
+					chk_map.put("chk", chk);
+				}
+				return chk_map;
+			}
+			//============글 지우기
+			@ResponseBody
+			@RequestMapping(value = "del_post")
+			public void del_post(Model model, PostDTO pdto) {
+				model.addAttribute("pdto", pdto);
+				ser = context.getBean("PDeleteService", PDeleteService.class);
+				ser.execute(model);
+			}
 	////////////////////////////////////////////////////////////////
 
-	//댓글 추가
-	@ResponseBody
-	@RequestMapping(value="addComment",produces="application/json; charset=utf8")
-	public void addComment(Model model, HttpSession session, ReplyDTO redto) {
-		model.addAttribute("replyId", session);
-		model.addAttribute("reply_dto", redto);
-		ser = context.getBean("addCommentService", AddCommentService.class);
-		ser.execute(model);
-	}
-
-	// 댓글 가져오기 
-	@ResponseBody
-	@RequestMapping(value="getComment", produces="application/json; charset=utf8")
-	public List<ReplyDTO> getComment(Model model, HttpServletRequest request, ReplyDTO redto) {
-		HashMap<String, Object> replyParameter = new HashMap<String, Object>();
-		replyParameter.put("re_no", request.getParameter("re_no"));
-		replyParameter.put("p_num", redto.getR_idgroup());
-		System.out.println("파라미터 받앗나? : " + replyParameter.get("re_no"));
-		System.out.println("p_num 받앗나? : " + replyParameter.get("p_num"));
-		model.addAttribute("replyList", replyParameter);
-		ser = context.getBean("getCommentService", GetCommentService.class);
-		ser.execute(model);
-		Map<String, Object> map = model.asMap();
-		rlist = (ArrayList<ReplyDTO>) map.get("rList");
-		return rlist;
-	}
-
+	
+         
+      ////////////////////////////////////////////////////////////////
+         
+         //댓글 추가
+         @ResponseBody
+         @RequestMapping(value="addComment",produces="application/json; charset=utf8")
+         public void addComment(Model model, HttpSession session, ReplyDTO redto) {
+            model.addAttribute("replyId", session);
+            model.addAttribute("reply_dto", redto);
+            ser = context.getBean("addCommentService", AddCommentService.class);
+            ser.execute(model);
+         }
+         
+         // 댓글 가져오기 
+         @ResponseBody
+         @RequestMapping(value="getComment", produces="application/json; charset=utf8")
+         public List<ReplyDTO> getComment(Model model, HttpServletRequest request, ReplyDTO redto) {
+            HashMap<String, Object> replyParameter = new HashMap<String, Object>();
+            replyParameter.put("re_no", request.getParameter("re_no"));
+            replyParameter.put("p_num", redto.getR_idgroup());
+            System.out.println("파라미터 받앗나? : " + replyParameter.get("re_no"));
+            System.out.println("p_num 받앗나? : " + replyParameter.get("p_num"));
+            model.addAttribute("replyList", replyParameter);
+            ser = context.getBean("getCommentService", GetCommentService.class);
+            ser.execute(model);
+            Map<String, Object> map = model.asMap();
+            rlist = (ArrayList<ReplyDTO>) map.get("rList");
+            return rlist;
+         }
+         
 }
-
 
 
 

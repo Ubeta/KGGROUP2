@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.ui.Model;
 
 import com.care.modelDTO.CategoryDTO;
 import com.care.modelDTO.MemberDTO;
@@ -19,6 +21,7 @@ import com.care.modelDTO.MyFriendDTO;
 import com.care.modelDTO.PostDTO;
 import com.care.modelDTO.PostLikeDTO;
 import com.care.modelDTO.ReplyDTO;
+import com.care.modelDTO.ReplyLikeDTO;
 
 @Repository
 public class ModelDAO {
@@ -199,6 +202,7 @@ public class ModelDAO {
 		ArrayList<ReplyDTO> replies = new ArrayList<ReplyDTO>();
 		System.out.println("getPostReplyPackets DAO entered");
 		String driver = "oracle.jdbc.driver.OracleDriver";
+
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String uid = "jsp";
 		String upw = "1234";
@@ -248,12 +252,55 @@ public class ModelDAO {
 		return replies;
 		
 	}
-	
 	public ReplyDTO getPostReplyOne(int r_idgroup) {
 		return sqlSession.selectOne(namespace + ".getReplyOne", r_idgroup);
 	}
+
 	
 	//====================== John DAO 긑 ===========================================
+
+	
+	
+	public String idfind(Model model) {
+		Map<String, Object> map  = model.asMap();
+		MemberDTO mdto = (MemberDTO)map.get("mdto");
+		System.out.println(mdto.getM_name() + ": 다오임");
+		System.out.println(mdto.getM_tel());
+		return sqlSession.selectOne(namespace + ".idfind",mdto);
+	}
+	
+	public String pwfind(Model model) {
+		Map<String, Object> map  = model.asMap();
+		MemberDTO mdto = (MemberDTO)map.get("mdto");
+		return sqlSession.selectOne(namespace + ".pwfind",mdto);
+	}
+	
+	public int pwchange(Model model) {
+		Map<String, Object> map  = model.asMap();
+		MemberDTO mdto = (MemberDTO)map.get("mdto");
+		return sqlSession.update(namespace+".pwchange",mdto);
+	}
+	
+	public List<PostDTO> hashsearch(String searchparam){
+		List<PostDTO> hashlist = new ArrayList<PostDTO>();
+		hashlist = sqlSession.selectList(namespace+".hashsearch",searchparam);
+		return hashlist;
+	}
+	
+	public List<PostDTO> catesearch(String searchparam){
+		List<PostDTO> catelist = new ArrayList<PostDTO>();
+		catelist = sqlSession.selectList(namespace+".catesearch",searchparam);
+		return catelist;
+	}
+	
+	public String idchk(String m_id) {
+		String resultId = sqlSession.selectOne(namespace+".idchk",m_id);
+		return resultId;
+	}
+	
+	//이상호 끝 이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝  이상호 끝 
+
+	
 	
 	//==============yang================
 			public MemberDTO my_info(String sessionid) {
@@ -303,8 +350,33 @@ public class ModelDAO {
 				sqlSession.update(namespace+".p_like_chk_down", pdto);
 			}
 			//===================================
-
-	
+			public void r_like_up(ReplyDTO rdto) {
+				sqlSession.update(namespace+".r_like_up", rdto);
+			}
+			public void r_like_down(ReplyDTO rdto) {
+				sqlSession.update(namespace+".r_like_down", rdto);
+			}
+			public void r_like_in(ReplyDTO rdto) {
+				sqlSession.insert(namespace+".r_like_in", rdto);
+			}
+			public ReplyLikeDTO r_like_chk(ReplyDTO rdto) {
+				return sqlSession.selectOne(namespace+".r_like_chk", rdto);
+			}
+			public void r_like_chk_up(ReplyDTO rdto) {
+				sqlSession.update(namespace+".r_like_chk_up", rdto);
+			}
+			public void r_like_chk_down(ReplyDTO rdto) {
+				sqlSession.update(namespace+".r_like_chk_down", rdto);
+			}
+			//=============================================
+			public void del_post(PostDTO pdto) {
+				System.out.println(pdto.getP_num());
+				sqlSession.delete(namespace+".del_post", pdto);
+				sqlSession.delete(namespace+".del_post_like", pdto);
+				sqlSession.delete(namespace+".del_re", pdto);
+				sqlSession.delete(namespace+".del_re_like", pdto);
+			}
+			//=============================================
 	public CategoryDTO mcategorychk(String m_id) {
 		return sqlSession.selectOne(namespace+".mcategorychk",m_id);
 	}

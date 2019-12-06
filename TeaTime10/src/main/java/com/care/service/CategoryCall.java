@@ -58,8 +58,6 @@ public class CategoryCall implements IService{
 		Iterator<String> iterator = listmap.keySet().iterator();
 		while(iterator.hasNext()) {
 			String key = (String)iterator.next();
-			System.out.println(key);
-			System.out.println(listmap.get(key));
 			if(listmap.get(key).equals("Y")) {
 				ymap.put(key, key);
 			}else {
@@ -69,20 +67,7 @@ public class CategoryCall implements IService{
 		Map<String, Object> totalmap = new HashMap<String, Object>();
 		totalmap.put("Y", ymap);
 		totalmap.put("N", nmap);
-		System.out.println(totalmap);
 		model.addAttribute("totalmap",totalmap);
-//		System.out.println(totalmap);
-//		
-//		Map map2 = (Map)totalmap.get("Y");
-//		Iterator<String> iterator1 = map2.keySet().iterator();
-//		while(iterator1.hasNext()) {
-//			String key = (String)iterator1.next();
-//			if(map2.get(key).equals("Y")) {
-//				System.out.println(map2.get(key));
-//			}else {
-//				System.out.println("안됨");
-//			}
-//		}
 			
 	}
 	
