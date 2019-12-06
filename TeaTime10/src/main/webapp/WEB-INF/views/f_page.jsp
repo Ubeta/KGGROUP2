@@ -160,9 +160,9 @@ $(function(){
         })
        // postList();
     })
- 
+    
+//친구 게시글만 가져오는 함수
     let postList = function(){
-	
 		$.ajax({
 			url:"fpostList",
 			type:"POST",
@@ -175,12 +175,6 @@ $(function(){
 			
 				  if(data.length > 0){
 		               for(i=0; i<data.length; i++){
-		            	   
-		            	   
-		            	//   if(i==data.length) {
-			     		   // 	isEnd=true;
-			     		//    	return;
-			     		//    }
 	                	var id = data[i].m_id;
 	     		    	var title = data[i].p_title;
 	     		    	var cat = data[i].p_cat;

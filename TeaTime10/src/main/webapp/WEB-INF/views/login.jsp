@@ -617,7 +617,7 @@ window.onload = function () {
 	
    function kakaologin() {
       //<![CDATA[
-      // 사용할 앱의 JavaScript 키를 설정해 주세요.
+      // ì¬ì©í  ì±ì JavaScript í¤ë¥¼ ì¤ì í´ ì£¼ì¸ì.
       var id = null;
       var nickname = null;
       Kakao.init('b650720b5095783f10df72e812329f99');
@@ -649,7 +649,7 @@ window.onload = function () {
          </script>
       </c:when>
       <c:otherwise>
-      <!-- 12-01추가  -->
+      <!-- 12-01ì¶ê°  -->
       	 <c:if test="${pwchangeresult=='ok' }">
       	 	<script charset="UTF-8">
       	 		alert("Password Change Success!! Login please!");
@@ -671,15 +671,15 @@ window.onload = function () {
                      <form action="loginchk" method="post" name="frm">
                         <label for="email">Your ID</label> 
                         <input type="text" name="id"  class="inpt"
-                           required="required" placeholder="Your id" value="${cookie.rememberId.value }"><!-- 12-01추가  -->
+                           required="required" placeholder="Your id" value="${cookie.rememberId.value }"><!-- 12-01ì¶ê°  -->
                         <label for="password">Your Password</label> 
                         <input type="password" name="pw" id="password" class="inpt" required="required"
                            placeholder="Your password"> 
-                        <input type="checkbox" id="remember" class="checkbox" name="remember" ${remember }> <!-- 12-01추가  -->
+                        <input type="checkbox" id="remember" class="checkbox" name="remember" ${remember }> <!-- 12-01ì¶ê°  -->
                         <label for="remember">Remember me</label>
                         <div class="submit-wrap">
                            <input type="submit" value="Sign in" class="submit"> 
-                              <a href="#" class="more">Forgot your password?</a> <!-- 패스워드 찾기   -->
+                              <a href="#" class="more">Forgot your password?</a> <!-- í¨ì¤ìë ì°¾ê¸°   -->
                         </div>
                         <br>
                         <div id="naver_id_login">
@@ -693,7 +693,7 @@ window.onload = function () {
                      </form>
                   </div>
 
-                  <!-- @@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작 -->
+                  <!-- @@ìì@@ìì@@ìì@@ìì@@ìì@@ìì@@ìì@@ìì@@ìì@@ìì@@ìì@@ìì@@ìì@@ìì@@ìì@@ìì@@ìì@@ìì -->
                   <div class="signup-cont cont">
 					<form action="register_chk" onsubmit="return check_form(this)" id="regform" method="post" enctype="multipart/form-data">
 					 	<div id="register1">	
@@ -780,7 +780,7 @@ window.onload = function () {
 					</form>
 		
                   </div>
-                  <!-- @@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝 -->
+                  <!-- @@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë -->
 
                   <div class="find-cont cont" id="find-cont cont">
 					
@@ -894,7 +894,7 @@ function check_form() {
      	  // console.log(cat_name);
         }
     	});
- 	//실행할때 지우기
+ 	//ì¤íí ë ì§ì°ê¸°
 }
 
 
