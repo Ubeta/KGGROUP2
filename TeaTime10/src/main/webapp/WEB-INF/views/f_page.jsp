@@ -248,12 +248,9 @@ $(function(){
 	     	               "<th width='20%'>제목</th>"+
 	     	               "<td width='50%' align='center'>"+title+"</td>"+
 	     	           	"</tr>"+
-	     	           	"<tr height='40%'>"+
-	     	               "<td colspan='4' align='center'>"+content+"</td>"+
-	     	            "</tr>"+
-	     	            "<tr height='30%'>"+
-	     	               "<td colspan='4' align='center'>"+img+"</td>"+
-	     	            "</tr>"+
+	     	           	
+	     	           "<tbody height='40%' class='post-image"+pnum+"'></tbody>"+
+	     	            
 	     	            "<tr height='5%'>"+
 	     	               "<th>해시</th>"+
 	     	               "<td colspan='3'>"+hash+"</td>"+
@@ -279,6 +276,16 @@ $(function(){
  						"</table>"+
  						"</div><br>"
 	     				);
+	     		    	if (img != 'null') {
+							$(".post-image"+pnum).append("<tr height='40%'>"+
+									"<td height='40%' colspan='3' align='center'>"+content+"</td>"+
+									"<td height='40%' colspan='1' align='center'><img src='img/"+img+"' width='200px' height='200px'></td>"+
+								"</tr>");
+						} else {
+							$(".post-image"+pnum).append("<tr height='40%'>"+
+									"<td height='200px' colspan='4' align='center'>"+content+"</td>"+
+									"</tr>");
+						}
 			     		   
 	     		    	ctn+=1;
 	     		    	$(document).ready(function() {
@@ -442,12 +449,21 @@ $(function(){
                <th width="20%">제목</th>
                <td width="50%" align="center">${fPosts.p_title }</td>
             </tr>
-            <tr height="40%">
-               <td colspan="4" align="center">${fPosts.p_content }</td>
-            </tr>
-            <tr height="30%">
-               <td colspan="4" align="center">${fPosts.p_img}</td>
-            </tr>
+            <!-- ============ POST PICTURE PART ============ -->
+				<c:choose>
+				<c:when test="${fPosts.p_img != 'null'}">
+				<tr height="40%">
+					<td colspan="3" align="center">${fPosts.p_content }</td>
+					<td colspan="1" align="center"><img src="img/${fPosts.p_img }" width="200px" height="200px"></td>
+				</tr>
+				</c:when>
+				<c:otherwise>
+				<tr height="40%">
+					<td colspan="4" align="center">${fPosts.p_content }</td>
+				</tr>
+				</c:otherwise>
+				</c:choose>
+				<!-- =========================================== -->
             <tr height="5%">
                <th>해시</th>
                <td colspan="3">${fPosts.p_hash }</td>

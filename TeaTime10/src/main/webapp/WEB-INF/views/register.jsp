@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
     <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-    <spring:url value="/resources/images/placeholder.jpg" var="placeholder" />
+    <spring:url value="/resources/images/defaultprofile.jpg" var="defaultprofile" />
     
 <!DOCTYPE html>
 <html>
@@ -222,7 +222,7 @@
 				</tr>
 				<tr>
 					<td align="center"><font size="4em">프로필 사진</font><br><input type="file" id="profilePic" name="profilePic"></td>
-					<td align="center"><img id="previewPic" src="${placeholder }" width="300px" height="300px"></td>
+					<td align="center"><img id="previewPic" src="${defaultprofile }" width="250px" height="250px"></td>
 				</tr>
 				<tr>
 					<td colspan="2" style="text-align: center "><input class="regButton" type="button" value="다음" name="next" onclick="reg_chk()" ></td>

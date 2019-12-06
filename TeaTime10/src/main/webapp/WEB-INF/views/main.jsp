@@ -434,8 +434,9 @@
 								$("#post"+(data.count+i)).append("<tbody><tr height='5%'>" + 
 										"<th width='15%'>카테고리</th><td width='15%' align='center'>"+data.list2[i].p_cat+"</td>" + 
 										"<th width='20%'>제목</th><td width='50%' align='center'>"+data.list2[i].p_title+"</td>" +
-										"</tr><tr height='40%'><td colspan='4' align='center'>"+data.list2[i].p_content+"</td></tr>" +
-										"<tr height='30%'><td colspan='4' align='center'>"+data.list2[i].p_img +"</td></tr>" + 
+										
+										"<tbody height='40%' class='post-image"+data.list2[i].p_num+"'></tbody>"+
+										
 										"<tr height='5%'><th>해시</th><td colspan='3'>"+data.list2[i].p_hash+"</td><tr height='5%'><td>like</td>" + 
 										"<th colspan='2'>작성자</th><td align='center'>"+data.list2[i].m_id+"</td></tr>" +
 										"<tr height='5%'><td colspan='4' align='center'>" +
@@ -444,6 +445,16 @@
 										"<input type='hidden' value='${param.u_id }' name='u_id'>"+
 										"<input type='submit' value='댓글보기'>"+
 										"</form></td></tr></table>");
+								if (data.list2[i].p_img != 'null') {
+									$(".post-image"+data.list2[i].p_num).append("<tr height='40%'>"+
+											"<td height='40%' colspan='3' align='center'>"+data.list2[i].p_content+"</td>"+
+											"<td height='40%' colspan='1' align='center'><img src='img/"+data.list2[i].p_img+"' width='200px' height='200px'></td>"+
+										"</tr>");
+								} else {
+									$(".post-image"+data.list2[i].p_num).append("<tr height='40%'>"+
+											"<td height='200px' colspan='4' align='center'>"+data.list2[i].p_content+"</td>"+
+											"</tr>");
+								}
 										createReplyArray(data.list2[i].p_idgroup);
 										$('.replyLineClass').hide();
 								
@@ -465,8 +476,9 @@
 								$("#post"+(data.count+i)).append("<tbody><tr height='5%'>" + 
 										"<th width='15%'>카테고리</th><td width='15%' align='center'>"+data.list2[i].p_cat+"</td>" + 
 										"<th width='20%'>제목</th><td width='50%' align='center'>"+data.list2[i].p_title+"</td>" +
-										"</tr><tr height='40%'><td colspan='4' align='center'>"+data.list2[i].p_content+"</td></tr>" +
-										"<tr height='30%'><td colspan='4' align='center'>"+data.list2[i].p_img +"</td></tr>" + 
+										
+										"<tbody height='40%' class='post-image"+data.list2[i].p_num+"'></tbody>"+
+										
 										"<tr height='5%'><th>해시</th><td colspan='3'>"+data.list2[i].p_hash+"</td><tr height='5%'><td>like</td>" + 
 										"<th colspan='2'>작성자</th><td align='center'>"+data.list2[i].m_id+"</td></tr>" +
 										"<tr height='5%'><td colspan='4' align='center'>" +
@@ -475,6 +487,16 @@
 										"<input type='hidden' value='${param.u_id }' name='u_id'>"+
 										"<input type='submit' value='댓글보기'>"+
 										"</form></td></tr></table>");
+								if (data.list2[i].p_img != 'null') {
+									$(".post-image"+data.list2[i].p_num).append("<tr height='40%'>"+
+											"<td height='40%' colspan='3' align='center'>"+data.list2[i].p_content+"</td>"+
+											"<td height='40%' colspan='1' align='center'><img src='img/"+data.list2[i].p_img+"' width='200px' height='200px'></td>"+
+										"</tr>");
+								} else {
+									$(".post-image"+data.list2[i].p_num).append("<tr height='40%'>"+
+											"<td height='200px' colspan='4' align='center'>"+data.list2[i].p_content+"</td>"+
+											"</tr>");
+								}
 										createReplyArray(data.list2[i].p_idgroup);
 										$('.replyLineClass').hide();
 								
@@ -496,8 +518,9 @@
 								$("#post"+(data.count+i)).append("<tbody><tr height='5%'>" + 
 										"<th width='15%'>카테고리</th><td width='15%' align='center'>"+data.list2[i].p_cat+"</td>" + 
 										"<th width='20%'>제목</th><td width='50%' align='center'>"+data.list2[i].p_title+"</td>" +
-										"</tr><tr height='40%'><td colspan='4' align='center'>"+data.list2[i].p_content+"</td></tr>" +
-										"<tr height='30%'><td colspan='4' align='center'>"+data.list2[i].p_img +"</td></tr>" + 
+										
+										"<tbody height='40%' class='post-image"+data.list2[i].p_num+"'></tbody>"+ 
+										
 										"<tr height='5%'><th>해시</th><td colspan='3'>"+data.list2[i].p_hash+"</td><tr height='5%'><td>like</td>" + 
 										"<th colspan='2'>작성자</th><td align='center'>"+data.list2[i].m_id+"</td></tr>" +
 										"<tr height='5%'><td colspan='4' align='center'>" +
@@ -506,6 +529,16 @@
 										"<input type='hidden' value='${param.u_id }' name='u_id'>"+
 										"<input type='submit' value='댓글보기'>"+
 										"</form></td></tr></table>");
+								if (data.list2[i].p_img != 'null') {
+									$(".post-image"+data.list2[i].p_num).append("<tr height='40%'>"+
+											"<td height='40%' colspan='3' align='center'>"+data.list2[i].p_content+"</td>"+
+											"<td height='40%' colspan='1' align='center'><img src='img/"+data.list2[i].p_img+"' width='200px' height='200px'></td>"+
+										"</tr>");
+								} else {
+									$(".post-image"+data.list2[i].p_num).append("<tr height='40%'>"+
+											"<td height='200px' colspan='4' align='center'>"+data.list2[i].p_content+"</td>"+
+											"</tr>");
+								}
 										createReplyArray(data.list2[i].p_idgroup);
 										$('.replyLineClass').hide();
 							}
@@ -724,12 +757,21 @@
                <th width="20%">제목</th>
                <td width="50%" align="center">${post.p_title }</td>
             </tr>
-            <tr height="40%">
-               <td colspan="4" align="center">${post.p_content }</td>
-            </tr>
-            <tr height="30%">
-               <td colspan="4" align="center"><!--  ${post.p_img }-->사진첨부해야됨</td>
-            </tr>
+            <!-- ============ POST PICTURE PART ============ -->
+				<c:choose>
+				<c:when test="${post.p_img != 'null'}">
+				<tr height="40%">
+					<td colspan="3" align="center">${post.p_content }</td>
+					<td colspan="1" align="center"><img src="img/${post.p_img }" width="200px" height="200px"></td>
+				</tr>
+				</c:when>
+				<c:otherwise>
+				<tr height="40%">
+					<td colspan="4" align="center">${post.p_content }</td>
+				</tr>
+				</c:otherwise>
+				</c:choose>
+				<!-- =========================================== -->
             <tr height="5%">
                <th>해시</th>
                <td colspan="3">${post.p_hash }</td>
