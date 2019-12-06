@@ -1,18 +1,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!doctype html>
-<html>
+<html lang="UTF-8">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8;" />
+<meta charset="UTF-8">
 <title>TeaTime</title>
 <spring:url value="/resources/images/naver.png" var="naver" />
 <spring:url value="/resources/images/KakaoTalk_loginbutton.png"   var="kakao" />
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-<link rel="stylesheet">
-<style>
+<style rel="stylesheet">
 @charset "UTF-8";
 
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+
 
 * {
    -moz-box-sizing: border-box;
@@ -169,9 +169,9 @@ body .container .content label {
    user-select: none;
 }
 
-body .container .content label:not
-([for='remember'])
-{display:none;}
+body .container .content label:not ([for='remember'] ) {
+	display: none;
+}
 body .container .content input.inpt {
    font-size: 14px;
    display: block;
@@ -208,7 +208,7 @@ body .container .content input.inpt::-moz-placeholder {
 body .container .content input.inpt:-ms-input-placeholder {
    font-size: 14px;
    color: #999999;
-   font-family: 'Lato', sans-serif;
+   font-family: 'Lato', sans-serif; 
 }
 
 body .container .content input.inpt:focus {
@@ -320,164 +320,60 @@ keyframes slideIn { 0% {
 100%
 {
 filter
-
-
-
-
 :
-
-
  
-
-
 progid
-
-
-
-
 :DXImageTransform
-
-
-
-
 .Microsoft
-
-
-
-
 .Alpha
-
-
-
-
-(
-enabled
-
-
-=
-false
-);
-
-
+(enabled=false);
 
     
-
-
 opacity
-
-
-
-
 :
-
-
  
-
-
 1;
 margin-left
-
-
-
-
 :
-
-
  
-
-
 0
 px
-
-
-
-
 ;
+
+  
 }
 }
 @
 -webkit-keyframes slideIn { 0% {
-   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-   opacity: 0;
-   margin-left: -320px;
+	filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+	opacity: 0;
+	margin-left: -320px;
 }
 
 100%
 {
 filter
-
-
-
-
 :
-
-
  
-
-
 progid
-
-
-
-
 :DXImageTransform
-
-
-
-
 .Microsoft
-
-
-
-
 .Alpha
-
-
-
-
-(
-enabled
-
-
-=
-false
-);
-
-
+(enabled=false);
 
     
-
-
 opacity
-
-
-
-
 :
-
-
  
-
-
 1;
 margin-left
-
-
-
-
 :
-
-
  
-
-
 0
 px
-
-
-
-
 ;
+
+  
 }
 }
 .credits {
@@ -693,7 +589,7 @@ window.onload = function () {
                   </div>
 
                   <!-- @@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작 -->
-                  <div class="signup-cont cont">
+                  <div class="signup-cont cont"> 
 					<form action="register_chk" onsubmit="return check_form(this)" id="regform" method="post" enctype="multipart/form-data">
 					 	<div id="register1">	
 					 		<label for="text">Your ID</label> 
