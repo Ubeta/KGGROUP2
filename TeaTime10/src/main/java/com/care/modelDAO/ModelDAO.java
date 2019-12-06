@@ -204,7 +204,6 @@ public class ModelDAO {
 		String driver = "oracle.jdbc.driver.OracleDriver";
 
 		String url = "jdbc:oracle:thin:@192.168.0.7:1521:xe";
-
 		String uid = "jsp";
 		String upw = "1234";
 		String sql = "select B.* from (select rownum rn, A.* from "

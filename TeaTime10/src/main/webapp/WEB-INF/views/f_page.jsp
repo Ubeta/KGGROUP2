@@ -36,61 +36,11 @@ $(function(){
 		}else{
 			$(".replyTag"+vid).fadeIn('fast');
 			getComment(vid);
-			/*
-			$.ajax({
-				type:'POST',
-			    url : "getComment",
-			    data: $("#replyForm"+vid).serialize()+"&re_no="+re_no,
-			    success : function(data){
-			    	re_no = 0;
-			    
-			    	console.log(data);
-			    	if(data.length > 0){
-			               for(i=0; i<data.length; i++){
-			            	   
-		                	var id = data[i].m_id;
-		     		    	var content = data[i].r_content;
-		     		    	var date = data[i].r_date;
-		     		    	var like = data[i].r_like;
-		     		    	
-		     		    	$(".replyTag"+vid).prepend (
-		     		    	"<tr>" +
-		     		    	"<td>"+id+"</td>"+
-		     		    	"<td>"+content+"</td>"+
-		     		   		"<td>"+date+"</td>"+
-		     		   		"<td>"+like+"</td>"+
-		     		   		"</tr>"
-		     		    	)
-		     		    	
-			               }
-			    	}
-			    //re_no += 5;
-			    },
-			    error:function(){
-			    	alert("에러 발생."); 
-			    }    
-			 });*/
 		}
-		
-		
-		
-		/*
-		$.ajax({
-	    	type:'POST',
-	       	url : "replyCount",
-		    success : function(data){
-		    	alert("ajax 성공!");
-		    	$('#replyCount').text(data);
-		 	},
-		    error:function(){
-		       	alert("에러 발생.");
-		 	}   
-		});
-		*/
-		
+
 	 });
 	
-//});
+
 
 //=================================================
 	//댓글 추가 하기
