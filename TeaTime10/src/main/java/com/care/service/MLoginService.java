@@ -43,7 +43,6 @@ public class MLoginService implements IService{
             HttpSession session = request.getSession();
             session.setAttribute("sid", request.getParameter("id"));
             model.addAttribute("login","2");
-            //<!-- 12-01추가  -->
             Cookie cookie = new Cookie("rememberId", id);
             if(remember != null) {
                cookie.setMaxAge(60*60*24*30);
@@ -53,7 +52,6 @@ public class MLoginService implements IService{
                response.addCookie(cookie);
             }
             model.addAttribute("idcookie", cookie);
-            //<!-- 12-01추가  여기까지 이프문 전부 다 추가-->
          }
       }
    

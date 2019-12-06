@@ -50,10 +50,7 @@ public class MCategoryService implements IService{
 		cdto.setC_living(request.getParameter("c_living"));
 		cdto.setC_festival(request.getParameter("c_festival"));
 		cdto.setC_health(request.getParameter("c_health"));
-		System.out.println("mdao.category전");
 		model.addAttribute("catchk",mdao.category(cdto));	
-		System.out.println("mdao.category후");
-		//test file
 	}
 	
 }

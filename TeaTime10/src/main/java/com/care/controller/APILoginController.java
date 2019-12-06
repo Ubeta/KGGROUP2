@@ -32,7 +32,6 @@ import com.care.service.MLoginPostService;
 import com.care.service.MRegisterService;
 import com.care.service.NaverLoginBO;
 import com.care.service.NaverLoginService;
-import com.care.service.kakaoapi;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 
 @Controller
@@ -40,8 +39,6 @@ public class APILoginController {
 	private NaverLoginBO naverLoginBO;
 	private String apiResult = null;
 	private IService ser;
-	@Autowired
-	kakaoapi kakao;
 
 	@Autowired
 	private void setNaverLoginBO(NaverLoginBO naverLoginBO) {
@@ -107,9 +104,7 @@ public class APILoginController {
 	//로그아웃
 	@RequestMapping(value = "logout", method = { RequestMethod.GET, RequestMethod.POST })
 	public String logout(HttpSession session)throws IOException {
-		System.out.println(session.getAttribute("sid") + "  :  세션아이디");
 		session.invalidate();
-		System.out.println("깃허브테스트때문에 쓴거임");
 		return "redirect:login";
 	}
 	///////////////////////////////////////////////////////////
@@ -135,7 +130,6 @@ public class APILoginController {
 			session.setAttribute("mid", request.getParameter("id"));
 			return "redirect:main";
 		}else {
-			System.out.println("kakao_loginchk : " + "새로가입");
 			return "kakaoFirstRegister";
 		}
 	}
@@ -154,14 +148,11 @@ public class APILoginController {
 	@RequestMapping("everylogout")
 	public String everylogout(HttpSession session,Model model) {
 		if(session.getAttribute("sid")!=null) {
-			System.out.println(session.getAttribute("sid") + ": every sid");
 			return "logout2";
 		}else if(session.getAttribute("nid")!=null) {
-			System.out.println(session.getAttribute("nid") + ": every nid");
 			model.addAttribute("lo","logout");
 			return "naversessionend";
 		}else {
-			System.out.println(session.getAttribute("kid") + ": every kid");
 			return "kakaologout2";
 		}
 		
@@ -172,25 +163,14 @@ public class APILoginController {
 		model.addAttribute("sessionid",cdto);
 		ser = context.getBean("categoryCall", CategoryCall.class);
 		ser.execute(model);
-		System.out.println("categorycall갔다옴");
 		Map<String, Object> maincat = model.asMap();
 		Map<String, Object> maincat_map = (Map<String, Object>) maincat.get("totalmap"); 
-		System.out.println(maincat_map.get("Y"));
-		System.out.println(maincat_map.get("N"));
-//		System.out.println(maincat_map.get("sports")); N이 드러옴
-		
-		System.out.println("리턴전");
 		return maincat_map;
 		
 	}
 	
 	@RequestMapping("catupdate")
 	public String aaaaa(CategoryDTO cdto,Model model) {
-		System.out.println("=================================");
-		System.out.println("제대로 왔음");
-		System.out.println(cdto.getC_book());
-		System.out.println(cdto.getC_news() + "news");
-		System.out.println("=================================");
 		model.addAttribute("cateupdate",cdto);
 		ser = context.getBean("categoryUpdate",CategoryUpdate.class);
 		ser.execute(model);

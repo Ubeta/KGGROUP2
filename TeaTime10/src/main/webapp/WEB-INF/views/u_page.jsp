@@ -68,7 +68,7 @@
 	
 	.repliesTable {
 		width: 100%;
-		overflow: auto;
+		overflow-y: auto;
 	}
 	
 	.replyButtonsTable .table2{
@@ -77,17 +77,19 @@
 	#reply-list-container {
 		
 		display: block;
-		overflow: auto;
+		overflow-y: auto;
 		height: 200px;
 		width: 100%;
 		
 	}
 	#reply-list-container th, #reply-list-container td, #reply-list-container tr {
 		text-align: center;
+		word-break:break-all;
 	}
 	.repliesTable .table1 {
 		text-align: center;
 		margin: 0 auto;
+
 	}
 	.reply-list-big-container {
 		text-align: center;
@@ -95,15 +97,22 @@
 	}
 	.appendedTr {
 		text-align: center;
+		word-break:break-all;
+		width: 400px;
 	}
 	.appendedTd {
 		text-align: center;
+		word-break:break-all;
+		width: 400px;
+	}
+	textarea {
+		resize: none;
 	}
 	
 body {
 	width: 1950px;
 	height: 100%;
-	overflow: auto;
+	overflow-y: auto;
 }
 
 .wrapper {
@@ -780,7 +789,7 @@ body {
 						</td>
 						<td onload="createReplyArray('${param.idgroup}')" class="replyLineClass" id="replyLine${param.idgroup }" colspan="3" align="center">
 						<form id="replyFrm">
-							<input class="replyBody" id="replyBody${param.idgroup }" type="text" name="replyContent">
+							<textarea class="replyBody" id="replyBody${param.idgroup }" name="replyContent"></textarea>
 							<input type="button" class="replyPost" onclick="replyPost('${param.idgroup}')" value="답장">
 						</form>
 						</td>					

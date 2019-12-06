@@ -23,12 +23,14 @@ public class MInfoFixService implements IService{
 		HttpServletRequest request = (HttpServletRequest) map.get("info_fix");
 		
 		String id = request.getParameter("my_id");
+		String pw = request.getParameter("my_pw");
 		String name = request.getParameter("my_name");
 		String tel = request.getParameter("my_tel");
 		String mail = request.getParameter("my_mail");
 		
 		MemberDTO mdto = new MemberDTO();
 		mdto.setM_id(id);
+		mdto.setM_pw(pw);
 		mdto.setM_name(name);
 		mdto.setM_tel(tel);
 		mdto.setM_mail(mail);

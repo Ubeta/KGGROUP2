@@ -220,20 +220,20 @@ a {
 	<div class="header-wrapper">
 
 		<div class="img-container">
-			<img class="logo" src="${logo }" width="50px" height="50px">
+			<a href="main"><img class="logo" src="${logo }" width="50px" height="50px"></a>
 		</div>
 		<div class="title-container">
-			<span class="title">Tea Time</span>
+			<a href="main"><span class="title">Tea Time</span></a>
 		</div>
 
 		<div class="search-container">
-			<form id="sFrm" action="main-search" method="get">
+			<form id="sFrm" action="totalsearch" method="get">
 				<div class="search-bar-container">
-					<input class="search-bar" type="text" name="m_search">
+					<input class="search-bar" type="text" name="m_search" placeholder="#해쉬태그 or 카테고리명을 검색하세요">
 				</div>
 				<div class="search-button-container">
 					<img class="search-button" src="${searchicon }"
-						onclick="searchFunc">
+						onclick="searchFunc()">
 				</div>
 			</form>
 		</div>
