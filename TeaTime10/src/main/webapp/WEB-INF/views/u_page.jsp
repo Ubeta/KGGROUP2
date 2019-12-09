@@ -12,6 +12,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <style>
+.post-image {
+	height: auto;
+	min-height: 200px;
+	display: block;
+}
+.postpp {
+	border: 1px solid black;
+	border-radius: 3px;
+}
+
 .replyList {
 	position: fixed;
 	font-family: Arial, Helvetica, sans-serif;
@@ -253,6 +263,7 @@ body {
 	height: 16em;
 	border-spacing: 0.2em;
 	border-collapse: seperate;
+	table-layout: fixed;
 }
 .post-container table th {
 	padding: 0.5em;
@@ -543,16 +554,37 @@ body {
 							$(".post-container").append("<table class='post' align='center' border='1'><tr height='5%'>" + 
 							"<th width='15%'>카테고리</th><td width='15%' align='center'>"+data.post.p_cat+"</td>" + 
 							"<th width='20%'>제목</th><td width='50%' align='center'>"+data.post.p_title+"</td>" +
-							"</tr><tr height='40%'><td colspan='4' align='center'>"+data.post.p_content+"</td></tr>" +
-							"<tr height='30%'><td colspan='4' align='center'>"+data.post.p_img +"</td></tr>" + 
-							"<tr height='5%'><th>해시</th><td colspan='3'>"+data.post.p_hash+"</td><tr height='5%'><td>like</td>" + 
-							"<th colspan='2'>작성자</th><td align='center'>"+data.post.m_id+"</td></tr>" +
+							
+							
+							"<tbody height='40%' class='post-image"+data.post.p_num+"'></tbody>"+
+							
+							
+							"<tr height='5%'><th>해시</th><td colspan='3'>"+data.post.p_hash+"</td><tr height='5%'><td>like</td>" +
+							"<th colspan='1'>작성자</th>"+
+							"<td colspan='1'><img src='img/"+data.post.m_pic+"' width='75px' height='75px'>"+
+							"<td align='center'>"+data.post.m_id+"</td></tr>" +
 							"<tr height='5%'><td colspan='4' align='center'>" +
 							"<form action='#openReply'>" +
 							"<input type='hidden' value='"+data.post.p_idgroup+"' name='idgroup'>"+
 							"<input type='hidden' value='${param.u_id }' name='u_id'>"+
 							"<input type='submit' value='댓글보기'>"+
 							"</form></td></tr></table>");
+							
+							
+							
+							if (data.post.p_img != 'null') {
+								$(".post-image"+data.post.p_num).append("<tr height='40%'>"+
+										"<td height='40%' colspan='3' align='center'>"+data.post.p_content+"</td>"+
+										"<td height='40%' colspan='1' align='center'><img src='img/"+data.post.p_img+"' width='200px' height='200px'></td>"+
+									"</tr>");
+							} else {
+								$(".post-image"+data.post.p_num).append("<tr height='40%'>"+
+										"<td height='200px' colspan='4' align='center'>"+data.post.p_content+"</td>"+
+										"</tr>");
+							}
+							
+							
+							
 							createReplyArray(data.post.p_idgroup);
 							$('.replyLineClass').hide();
 							
@@ -570,6 +602,8 @@ body {
 			});
 		}
 	});
+	
+	
 	
 
 	function sendFriend(button){
@@ -726,18 +760,29 @@ body {
 					<th width="20%">제목</th>
 					<td width="50%" align="center">${post.p_title }</td>
 				</tr>
+				<!-- ============ POST PICTURE PART ============ -->
+				<c:choose>
+				<c:when test="${post.p_img != 'null'}">
+				<tr height="40%">
+					<td colspan="3" align="center">${post.p_content }</td>
+					<td colspan="1" align="center"><img src="img/${post.p_img }" width="200px" height="200px"></td>
+				</tr>
+				</c:when>
+				<c:otherwise>
 				<tr height="40%">
 					<td colspan="4" align="center">${post.p_content }</td>
 				</tr>
-				<tr height="30%">
-					<td colspan="4" align="center">${post.p_img }</td>
-				</tr>
+				</c:otherwise>
+				</c:choose>
+				<!-- =========================================== -->
+				
 				<tr height="5%">
 					<th>해시</th>
 					<td colspan="3">${post.p_hash }</td>
 				<tr height="5%">
 					<td>like</td>
-					<th colspan="2">작성자</th>
+					<th colspan="1">작성자</th>
+					<td colspan="1" align="center"><img class="postpp" src="img/${post.m_pic }" width="100px" height="70px"></td>
 					<td align="center">${post.m_id }</td>
 				</tr>
 

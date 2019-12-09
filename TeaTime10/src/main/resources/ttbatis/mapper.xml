@@ -272,8 +272,9 @@
    </select>
 	<!-- 글쓰기 -->
 	<insert id="write_board" parameterType="podto">
-		insert into post (m_id, p_num, p_title, p_content, p_img, p_cat, p_hash, p_idgroup, p_scope, p_date, p_like)
-		values(#{m_id}, p_num_seq.nextval, #{p_title}, #{p_content}, #{p_img}, #{p_cat}, #{p_hash}, p_num_seq.currval, #{p_scope}, sysdate, #{p_like})
+	<!-- ======== John 수정 / Post Profile pic (12/5) ========  -->
+		insert into post (m_id, p_num, p_title, p_content, p_img, p_cat, p_hash, p_idgroup, p_scope, p_date, p_like, m_pic)
+		values(#{m_id}, p_num_seq.nextval, #{p_title}, #{p_content}, #{p_img}, #{p_cat}, #{p_hash}, p_num_seq.currval, #{p_scope}, sysdate, #{p_like}, #{m_pic})
 	</insert>
 	<!-- 글리스트 가져오기 -->
 	<select id="board_list" resultType="podto" parameterType="String">

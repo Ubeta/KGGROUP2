@@ -32,7 +32,7 @@ public class MRegisterService implements IService{
 		MultipartFile multipartFile = request.getFile("profilePic");
 		String originalFileName = multipartFile.getOriginalFilename();
 		System.out.println("MRegisterService Picture originalName: " + originalFileName);
-		String storedFileName = "placeholder.jpg";
+		String storedFileName = "defaultprofile.jpg";
 		if (originalFileName != "") {
 			storedFileName = System.currentTimeMillis() + originalFileName;
 		} 

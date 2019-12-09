@@ -202,8 +202,7 @@ public class ModelDAO {
 		ArrayList<ReplyDTO> replies = new ArrayList<ReplyDTO>();
 		System.out.println("getPostReplyPackets DAO entered");
 		String driver = "oracle.jdbc.driver.OracleDriver";
-
-		String url = "jdbc:oracle:thin:@192.168.0.7:1521:xe";
+		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String uid = "jsp";
 		String upw = "1234";
 		String sql = "select B.* from (select rownum rn, A.* from "
@@ -319,9 +318,17 @@ public class ModelDAO {
 				return sqlSession.selectList(namespace+".f_list", user_id);
 			}
 			
-			public void write_board(PostDTO pdto) {
-				sqlSession.insert(namespace+".write_board", pdto);
+			//============ John 수정 (12/9) ===========
+			public int write_board(PostDTO pdto) {
+				int result = 0;
+				try {
+					result = sqlSession.insert(namespace+".write_board", pdto);
+				} catch (Exception e) {
+					System.out.println("ModelDAO write_board catch");
+				}
+				return result;
 			}
+			//=======================================
 			public List<PostDTO> board_list(String sessionid) {
 				return sqlSession.selectList(namespace+".board_list", sessionid);
 			}
