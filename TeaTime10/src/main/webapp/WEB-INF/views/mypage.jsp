@@ -995,48 +995,49 @@
 		  </div>
       </div>
       <div class="center">
-            <div class="write_board" >
+      		<div class="write_board" >
+            	<h3>NEW POST</h3>
 
             <form action="write_board" name="postForm" id="frm" method="post" enctype="multipart/form-data">
-               <table border="1">
-               <tr>
-                  <td colspan="1" style="font-size: 0.5em;">제목</td><td colspan="5"><input type="text" id="p_title" name="p_title" style="width: 500px; height: 40px;" required></td>
-               </tr>
-               <tr>
-                  <td colspan="6"><input type="text" id="p_content" name="p_content" placeholder="글내용" style="width: 700px; height: 200px;" required></td>
-               </tr>
-               <tr>
-                  <td colspan="1"><input type="file" id="postImage" name="postImage" value="사진첨부"></td>
-                  <td colspan="5" align="center"><img id="previewPic" src="${placeholder}" width="200px" height="200px"></td>
-               </tr>
-               <tr>
-                  <td colspan="1">
-                  <span>카테고리선택</span>
-                     <select id="p_cat" name="p_cat">
-                     <!-- 
-                        <option value="" selected data-default>카테고리선택</option>
-                         -->
-                         <option value="news">뉴스</option>      <option value="sports">스포츠</option>   <option value="food">음식</option>   <option value="language">언어</option>   <option value="people">인물</option>
-                        <option value="animal">동물</option>      <option value="fashion">패션</option>      <option value="love">연애</option>   <option value="movie">영화</option>      <option value="religion">종교</option>
-                        <option value="knowledge">지식</option>   <option value="travel">여행</option>      <option value="cartoon">만화</option>   <option value="game">게임</option>      <option value="it">IT</option>
-                        <option value="weather">날씨</option>      <option value="music">음악</option>      <option value="car">자동차</option>   <option value="economy">경제</option>      <option value="etc">기타</option>
-                         <option value="job">직업</option>         <option value="living">리빙</option>      <option value="book">도서</option>   <option value="festival">축제</option>   <option value="health">건강</option>
-                     </select>
-                  </td>
-                  <td colspan="1">
-                  <span>공개범위</span>
-                     <select id="p_scope" name="p_scope">
-                     <!-- 
-                     <option value="" selected data-default>공개범위</option>
-                      -->
-                     <option value="0">나만보기</option><option value="1">친구공개</option><option value="2">전체공개</option></select>
-                  </td>
-                  <td colspan="4" style="font-size: 0.5em;">해시태그<input type="text" id="p_hash" name="p_hash" placeholder="해시태그 입력" style="width:350px; height: 40px;"></td>
-               </tr>
-               <tr>
-                  <td colspan="6"><input type="submit" id="sub" value="작성완료"></td>
-               </tr>
-            </table>
+	              <table border="1">
+	               <tr>
+	                  <td colspan="1" style="font-size: 0.5em;">제목</td><td colspan="5"><input type="text" id="p_title" name="p_title" style="width: 500px; height: 40px;" required></td>
+	               </tr>
+	               <tr>
+	                  <td colspan="6"><input type="text" id="p_content" name="p_content" placeholder="글내용" style="width: 700px; height: 200px;" required></td>
+	               </tr>
+	               <tr>
+	                  <td colspan="1"><input type="file" id="postImage" name="postImage" value="사진첨부"></td>
+	                  <td colspan="5" align="center"><img id="previewPic" src="${placeholder}" width="200px" height="200px"></td>
+	               </tr>
+	               <tr>
+	                  <td colspan="1">
+	                  <span>카테고리선택</span>
+	                     <select id="p_cat" name="p_cat">
+	                     <!-- 
+	                        <option value="" selected data-default>카테고리선택</option>
+	                         -->
+	                         <option value="news">뉴스</option>      <option value="sports">스포츠</option>   <option value="food">음식</option>   <option value="language">언어</option>   <option value="people">인물</option>
+	                        <option value="animal">동물</option>      <option value="fashion">패션</option>      <option value="love">연애</option>   <option value="movie">영화</option>      <option value="religion">종교</option>
+	                        <option value="knowledge">지식</option>   <option value="travel">여행</option>      <option value="cartoon">만화</option>   <option value="game">게임</option>      <option value="it">IT</option>
+	                        <option value="weather">날씨</option>      <option value="music">음악</option>      <option value="car">자동차</option>   <option value="economy">경제</option>      <option value="etc">기타</option>
+	                         <option value="job">직업</option>         <option value="living">리빙</option>      <option value="book">도서</option>   <option value="festival">축제</option>   <option value="health">건강</option>
+	                     </select>
+	                  </td>
+	                  <td colspan="1">
+	                  <span>공개범위</span>
+	                     <select id="p_scope" name="p_scope">
+	                     <!-- 
+	                     <option value="" selected data-default>공개범위</option>
+	                      -->
+	                     <option value="0">나만보기</option><option value="1">친구공개</option><option value="2">전체공개</option></select>
+	                  </td>
+	                  <td colspan="4" style="font-size: 0.5em;">해시태그<input type="text" id="p_hash" name="p_hash" placeholder="해시태그 입력" style="width:350px; height: 40px;"></td>
+	               </tr>
+	               <tr>
+	                  <td colspan="6"><input type="submit" id="sub" value="작성완료"></td>
+	               </tr>
+	            </table>
             </form>
             
             </div>
