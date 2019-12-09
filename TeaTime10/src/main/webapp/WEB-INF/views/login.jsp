@@ -1,18 +1,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!doctype html>
-<html lang="UTF-8">
+<html>
 <head>
-<meta charset="UTF-8">
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8;" />
 <title>TeaTime</title>
 <spring:url value="/resources/images/naver.png" var="naver" />
 <spring:url value="/resources/images/KakaoTalk_loginbutton.png"   var="kakao" />
 <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-<style rel="stylesheet">
+<link rel="stylesheet">
+<style>
 @charset "UTF-8";
 
 @import url(https://fonts.googleapis.com/css?family=Lato:400,700);
-
 
 * {
    -moz-box-sizing: border-box;
@@ -21,8 +21,8 @@
 }
 
 body {
-   font-family: 'Lato', sans-serif;
-   background-color: #f8f8f8;
+   font-family: "Lato", sans-serif;
+   background-color: #c4dec2;
 }
 
 body .container {
@@ -98,40 +98,40 @@ body .container .tabs .tab.active {
 }
 
 body .container .tabs2 {
-	width: 100%;
-	margin-bottom: 29px;
-	border-bottom: 1px solid #d9d9d9;
+   width: 100%;
+   margin-bottom: 29px;
+   border-bottom: 1px solid #d9d9d9;
 }
 
 body .container .tabs2 .tab2 {
-	display: inline-block;
-	margin-bottom: -1px;
-	padding: 20px 15px 10px;
-	cursor: pointer;
-	letter-spacing: 0;
-	border-bottom: 1px solid #d9d9d9;
-	-moz-user-select: -moz-none;
-	-ms-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
-	transition: all 0.1s ease-in-out;
+   display: inline-block;
+   margin-bottom: -1px;
+   padding: 20px 15px 10px;
+   cursor: pointer;
+   letter-spacing: 0;
+   border-bottom: 1px solid #d9d9d9;
+   -moz-user-select: -moz-none;
+   -ms-user-select: none;
+   -webkit-user-select: none;
+   user-select: none;
+   transition: all 0.1s ease-in-out;
 }
 
 body .container .tabs2 .tab2 a {
-	font-size: 11px;
-	text-decoration: none;
-	text-transform: uppercase;
-	color: #d9d9d9;
-	transition: all 0.1s ease-in-out;
+   font-size: 11px;
+   text-decoration: none;
+   text-transform: uppercase;
+   color: #d9d9d9;
+   transition: all 0.1s ease-in-out;
 }
 
 body .container .tabs2 .tab2.active a, body .container .tabs .tab:hover a
-	{
-	color: #263238;
+   {
+   color: #263238;
 }
 
 body .container .tabs2 .tab2.active {
-	border-bottom: 1px solid #263238;
+   border-bottom: 1px solid #263238;
 }
 
 body .container .content form {
@@ -169,9 +169,9 @@ body .container .content label {
    user-select: none;
 }
 
-body .container .content label:not ([for='remember'] ) {
-	display: none;
-}
+body .container .content label:not
+([for='remember'])
+{display:none;}
 body .container .content input.inpt {
    font-size: 14px;
    display: block;
@@ -190,25 +190,25 @@ body .container .content input.inpt {
 body .container .content input.inpt::-webkit-input-placeholder {
    font-size: 14px;
    color: #999999;
-   font-family: 'Lato', sans-serif;
+   font-family: "Lato", sans-serif;
 }
 
 body .container .content input.inpt:-moz-placeholder {
    font-size: 14px;
    color: #999999;
-   font-family: 'Lato', sans-serif;
+   font-family: "Lato", sans-serif;
 }
 
 body .container .content input.inpt::-moz-placeholder {
    font-size: 14px;
    color: #999999;
-   font-family: 'Lato', sans-serif;
+   font-family: "Lato", sans-serif;
 }
 
 body .container .content input.inpt:-ms-input-placeholder {
    font-size: 14px;
    color: #999999;
-   font-family: 'Lato', sans-serif; 
+   font-family: "Lato", sans-serif;
 }
 
 body .container .content input.inpt:focus {
@@ -307,7 +307,7 @@ body .container .content .signup-cont {
 }
 
 body .container .content .find-cont{
-	display : none;
+   display : none;
 }
 
 @
@@ -320,60 +320,164 @@ keyframes slideIn { 0% {
 100%
 {
 filter
+
+
+
+
 :
+
+
  
+
+
 progid
+
+
+
+
 :DXImageTransform
+
+
+
+
 .Microsoft
+
+
+
+
 .Alpha
-(enabled=false);
+
+
+
+
+(
+enabled
+
+
+=
+false
+);
+
+
 
     
+
+
 opacity
+
+
+
+
 :
+
+
  
+
+
 1;
 margin-left
+
+
+
+
 :
+
+
  
+
+
 0
 px
-;
 
-  
+
+
+
+;
 }
 }
 @
 -webkit-keyframes slideIn { 0% {
-	filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
-	opacity: 0;
-	margin-left: -320px;
+   filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=0);
+   opacity: 0;
+   margin-left: -320px;
 }
 
 100%
 {
 filter
+
+
+
+
 :
+
+
  
+
+
 progid
+
+
+
+
 :DXImageTransform
+
+
+
+
 .Microsoft
+
+
+
+
 .Alpha
-(enabled=false);
+
+
+
+
+(
+enabled
+
+
+=
+false
+);
+
+
 
     
+
+
 opacity
+
+
+
+
 :
+
+
  
+
+
 1;
 margin-left
+
+
+
+
 :
+
+
  
+
+
 0
 px
-;
 
-  
+
+
+
+;
 }
 }
 .credits {
@@ -395,125 +499,125 @@ px
 }
 
 #register2 {
-	display: none;
+   display: none;
 }
 
 #cat{
-	display: none;
+   display: none;
 }
 </style>
 <script type='text/javascript'>
 window.onload = function () {
-	$("#m_id").focus();
-	  $("#cat").hide();
+   $("#m_id").focus();
+     $("#cat").hide();
 }
 
-	function next1() {
-		var id = document.getElementById("m_id").value;
-		var pw = document.getElementById("m_pw").value;
-		var pwchk = document.getElementById("m_pwchk").value;
-		var name = document.getElementById("m_name").value;
-		var idnum = document.getElementById("m_idnum").value;
-		if(!(id==null || id=='')){
-			if(pw!=null && pw!=""){
-				if(pw==pwchk){
-					if(name!=null && name!=""){
-						if(idnum!=null && idnum!=""){
-							if(idnum.length==6){
-								document.getElementById("register1").style.display = "none";
-								document.getElementById("register2").style.display = "block"; 
-							}else{
-								document.getElementById("m_idnum").value="";
-								alert("please birthdate input YYMMDD");
-							}
-						}else{
-							alert("please birthdate input YYMMDD");
-						}
-					}else{
-						alert("please name input");
-					}
-				}else{
-					document.getElementById("m_pw").value="";
-					document.getElementById("m_pwchk").value="";
-					alert("not equals password");
-				}
-			}else{
-				alert("please input password");
-			}	
-		}else{
-			alert("please input id");
-		}
-	}
+   function next1() {
+      var id = document.getElementById("m_id").value;
+      var pw = document.getElementById("m_pw").value;
+      var pwchk = document.getElementById("m_pwchk").value;
+      var name = document.getElementById("m_name").value;
+      var idnum = document.getElementById("m_idnum").value;
+      if(!(id==null || id=='')){
+         if(pw!=null && pw!=""){
+            if(pw==pwchk){
+               if(name!=null && name!=""){
+                  if(idnum!=null && idnum!=""){
+                     if(idnum.length==6){
+                        document.getElementById("register1").style.display = "none";
+                        document.getElementById("register2").style.display = "block"; 
+                     }else{
+                        document.getElementById("m_idnum").value="";
+                        alert("please birthdate input YYMMDD");
+                     }
+                  }else{
+                     alert("please birthdate input YYMMDD");
+                  }
+               }else{
+                  alert("please name input");
+               }
+            }else{
+               document.getElementById("m_pw").value="";
+               document.getElementById("m_pwchk").value="";
+               alert("not equals password");
+            }
+         }else{
+            alert("please input password");
+         }   
+      }else{
+         alert("please input id");
+      }
+   }
 
-	function next2() {
-		var gender = $(":input:radio[name=m_gender]:checked").val();
-		var tel = document.getElementById("m_tel").value;
-		var mail = document.getElementById("m_mail").value;
-		var aa = '@';
-		
-		if(gender!=null && gender!=""){
-			if(tel!=null && tel!=""){
-				if(mail!=null && mail!=""){
-					if(mail.indexOf(aa)!=-1){
-						document.getElementById("cat").style.display = "block";
-						document.getElementById("register2").style.display = "none";
-						$("#cat").show();
-					}else{
-						alert("not is not a valid email address")
-					}
-					
-				}else{
-					alert("please mail input");
-				}
-			}else{
-				alert("please tel input");
-			}
-		}else{
-			alert("please choice gender");
-		}
-		
-		
-	}
-	
-	function pre1() {
-		document.getElementById("register1").style.display="block";
-		document.getElementById("register2").style.display="none";
-		$("#cat").hide();
-	}
-	function pre2() {
-		document.getElementById("register2").style.display="block";
-		document.getElementById("register1").style.display="none";
-		$("#cat").hide();
-	}
-	
-	function idchk() {
-		var idchk = {m_id : $('#m_id').val()}
-			$.ajax({
-				url:"idchk",
-				type:"POST",
-				data:idchk,
-				dataType: "json",
-				cache 	: false,
-				success: function(data){
-					if (data.result=='ok') {
-						if (confirm('Username is available. Do you want to use it?')) {
-							
-						}else{
-							document.getElementById("m_id").value="";
-							document.getElementById("m_id").focus();
-						}
-					}else{
-						alert("This ID is already registered.")
-						document.getElementById("m_id").value="";
-						document.getElementById("m_id").focus();
-					}					
-				}
-		});
-	}
-	
+   function next2() {
+      var gender = $(":input:radio[name=m_gender]:checked").val();
+      var tel = document.getElementById("m_tel").value;
+      var mail = document.getElementById("m_mail").value;
+      var aa = '@';
+      
+      if(gender!=null && gender!=""){
+         if(tel!=null && tel!=""){
+            if(mail!=null && mail!=""){
+               if(mail.indexOf(aa)!=-1){
+                  document.getElementById("cat").style.display = "block";
+                  document.getElementById("register2").style.display = "none";
+                  $("#cat").show();
+               }else{
+                  alert("not is not a valid email address")
+               }
+               
+            }else{
+               alert("please mail input");
+            }
+         }else{
+            alert("please tel input");
+         }
+      }else{
+         alert("please choice gender");
+      }
+      
+      
+   }
+   
+   function pre1() {
+      document.getElementById("register1").style.display="block";
+      document.getElementById("register2").style.display="none";
+      $("#cat").hide();
+   }
+   function pre2() {
+      document.getElementById("register2").style.display="block";
+      document.getElementById("register1").style.display="none";
+      $("#cat").hide();
+   }
+   
+   function idchk() {
+      var idchk = {m_id : $('#m_id').val()}
+         $.ajax({
+            url:"idchk",
+            type:"POST",
+            data:idchk,
+            dataType: "json",
+            cache    : false,
+            success: function(data){
+               if (data.result=='ok') {
+                  if (confirm('Username is available. Do you want to use it?')) {
+                     
+                  }else{
+                     document.getElementById("m_id").value="";
+                     document.getElementById("m_id").focus();
+                  }
+               }else{
+                  alert("This ID is already registered.")
+                  document.getElementById("m_id").value="";
+                  document.getElementById("m_id").focus();
+               }               
+            }
+      });
+   }
+   
    function kakaologin() {
       //<![CDATA[
-      // ì¬ì©í  ì±ì JavaScript í¤ë¥¼ ì¤ì í´ ì£¼ì¸ì.
+      // 사용할 앱의 JavaScript 키를 설정해 주세요.
       var id = null;
       var nickname = null;
       Kakao.init('b650720b5095783f10df72e812329f99');
@@ -545,12 +649,12 @@ window.onload = function () {
          </script>
       </c:when>
       <c:otherwise>
-      <!-- 12-01ì¶ê°  -->
-      	 <c:if test="${pwchangeresult=='ok' }">
-      	 	<script charset="UTF-8">
-      	 		alert("Password Change Success!! Login please!");
-      	 	</script>
-      	 </c:if>
+      <!-- 12-01추가  -->
+          <c:if test="${pwchangeresult=='ok' }">
+             <script charset="UTF-8">
+                alert("Password Change Success!! Login please!");
+             </script>
+          </c:if>
          <c:if test="${not empty cookie.rememberId  }"><c:set value="checked" var="remember"/> </c:if>
          <section class="container">
             <article class="half">
@@ -567,15 +671,14 @@ window.onload = function () {
                      <form action="loginchk" method="post" name="frm">
                         <label for="email">Your ID</label> 
                         <input type="text" name="id"  class="inpt"
-                           required="required" placeholder="Your id" value="${cookie.rememberId.value }"><!-- 12-01ì¶ê°  -->
+                           required="required" placeholder="Your id" value="${cookie.rememberId.value }"><!-- 12-01추가  -->
                         <label for="password">Your Password</label> 
                         <input type="password" name="pw" id="password" class="inpt" required="required"
                            placeholder="Your password"> 
-                        <input type="checkbox" id="remember" class="checkbox" name="remember" ${remember }> <!-- 12-01ì¶ê°  -->
+                        <input type="checkbox" id="remember" class="checkbox" name="remember" ${remember }> <!-- 12-01추가  -->
                         <label for="remember">Remember me</label>
                         <div class="submit-wrap">
                            <input type="submit" value="Sign in" class="submit"> 
-                              <a href="#" class="more">Forgot your password?</a> <!-- í¨ì¤ìë ì°¾ê¸°   -->
                         </div>
                         <br>
                         <div id="naver_id_login">
@@ -590,134 +693,142 @@ window.onload = function () {
                   </div>
 
                   <!-- @@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작@@시작 -->
-                  <div class="signup-cont cont"> 
-					<form action="register_chk" onsubmit="return check_form(this)" id="regform" method="post" enctype="multipart/form-data">
-					 	<div id="register1">	
-					 		<label for="text">Your ID</label> 
-                      		<input type="text" name="m_id" id="m_id" required="required" placeholder="ID Input" class="inpt" onchange="idchk()"> 
-                      		<label for="password">Your Password</label> 
-                      		<input type="password" name="m_pw" id="m_pw" required="required" placeholder="Password Input" class="inpt"> 
-                      		<label for="password">Check Password</label> 
-                      		<input type="password" name="m_pkchk" id="m_pwchk" required="required" placeholder="Check Password" class="inpt"> 
-                      		<label for="text">Your Name</label> 
-                      		<input type="text" name="m_name" id="m_name" required="required" placeholder="Name Input" class="inpt"> 
-                      		<label for="text">Your Birthdate</label> 
-                      		<input type="text" name="m_idnum" id="m_idnum" required="required" placeholder="ex) 190101" class="inpt"> 
-                      		<input type="button" value="Next" onclick="next1()">
-                      		
-                      	</div>	
-                      	<div id="register2">
-                      		<label for="text">Your Gender</label><br>
-                      		Man<input type="radio" name="m_gender" id="m_gender" value="1" checked="checked">&nbsp;&nbsp;&nbsp;
-                      		Woman<input type="radio" name="m_gender" id="m_gender" value="0"><br><br>
-                      		<label for="text">Your Tel</label> 
-                      		<input type="text" name="m_tel" id="m_tel" placeholder="ex)010-1234-5678" required="required" class="inpt"> 
-                      		<label for="email">Your Email</label> 
-                      		<input type="email" name="m_mail" id="m_mail" placeholder="ex)abc@teatime.com" required="required" class="inpt"> 
-                      		<label for="text">Your Profile Picture</label>
-                      		<input type="file" id="profilePic" name="profilePic">
-                      		<img id="previewPic" src="${placeholder }" width="50px" height="50px">
-                      		<br>
-                      		<input type="button" value="Pre" name="pre" onclick="pre1()" >
-                      		<input type="button" value="Next" name="next" onclick="next2()" >
-                      	</div>	
-                      	<div style="overflow: auto; width: 270px; height: 350px;">
-							<table class="table2" id="cat" border="1">
-								<tr>
-									<td>News<br><input type="checkbox" class="check_cate" name="c_news" ></td>
-									<td>Sports<br><input type="checkbox" class="check_cate" name="c_sports" ></td>
-									<td>Food<br><input type="checkbox" class="check_cate" name="c_food" ></td>
-								</tr>
-								
-								<tr>
-									<td>Language<br><input type="checkbox" class="check_cate" name="c_language" ></td>
-									<td>People<br><input type="checkbox" class="check_cate" name="c_people" ></td>
-									<td>Animal<br><input type="checkbox" class="check_cate" name="c_animal" ></td>
-								</tr>
-						
-								<tr>
-									<td>Fashion<br><input type="checkbox" class="check_cate" name="c_fashion" ></td>
-									<td>Love<br><input type="checkbox" class="check_cate" name="c_love" ></td>
-									<td>Movie<br><input type="checkbox" class="check_cate" name="c_movie" ></td>
-								</tr>
-								
-								<tr>
-									<td>Religion<br><input type="checkbox" class="check_cate" name="c_religion" ></td>
-									<td>Knowledge<br><input type="checkbox" class="check_cate" name="c_knowledge" ></td>
-									<td>Travel<br><input type="checkbox" class="check_cate" name="c_travel" ></td>
-								</tr>
-								<tr>
-									<td>Cartoon<br><input type="checkbox" class="check_cate" name="c_cartoon" ></td>
-									<td>Game<br><input type="checkbox" class="check_cate" name="c_game" ></td>
-									<td>IT<br><input type="checkbox" class="check_cate" name="c_it" ></td>
-								</tr>
-								<tr>
-									<td>Weather<br><input type="checkbox" class="check_cate" name="c_weather" ></td>
-									<td>Music<br><input type="checkbox" class="check_cate" name="c_music" ></td>
-									<td>Car<br><input type="checkbox" class="check_cate" name="c_car" ></td>
-								</tr>
-								<tr>
-									<td>Economy<br><input type="checkbox" class="check_cate" name="c_economy" ></td>
-									<td>Etc<br><input type="checkbox" class="check_cate" name="c_etc" ></td>
-									<td>Job<br><input type="checkbox" class="check_cate" name="c_job" ></td>
-								</tr>
-								<tr>
-									<td>Living<br><input type="checkbox" class="check_cate" name="c_living" ></td>
-									<td>Book<br><input type="checkbox" class="check_cate" name="c_book" ></td>
-									<td>Festival<br><input type="checkbox" class="check_cate" name="c_festival" ></td>
-								</tr>
-								<tr>
-									<td>Health<br><input type="checkbox" class="check_cate" name="c_health" ></td>
-								</tr>
-							</table>
-						</div>
-						<input type="button" value="Pre" name="pre" onclick="pre2()" >
-						<input class="regButton" type="submit" name="sub" value="Register">
-					</form>
-		
+                  <div class="signup-cont cont">
+               <form action="register_chk" onsubmit="return check_form(this)" id="regform" method="post" enctype="multipart/form-data">
+                   <div id="register1">   
+                      <label for="text">Your ID</label> 
+                            <input type="text" name="m_id" id="m_id" required="required" placeholder="ID Input" class="inpt" onchange="idchk()"> 
+                            <label for="password">Your Password</label> 
+                            <input type="password" name="m_pw" id="m_pw" required="required" placeholder="Password Input" class="inpt"> 
+                            <label for="password">Check Password</label> 
+                            <input type="password" name="m_pkchk" id="m_pwchk" required="required" placeholder="Check Password" class="inpt"> 
+                            <label for="text">Your Name</label> 
+                            <input type="text" name="m_name" id="m_name" required="required" placeholder="Name Input" class="inpt"> 
+                            <label for="text">Your Birthdate</label> 
+                            <input type="text" name="m_idnum" id="m_idnum" required="required" placeholder="ex) 190101" class="inpt"> 
+                            <input type="button" value="Next" onclick="next1()">
+                            
+                         </div>   
+                         <div id="register2">
+                            <label for="text">Your Gender</label><br>
+                            Man<input type="radio" name="m_gender" id="m_gender" value="1" checked="checked">&nbsp;&nbsp;&nbsp;
+                            Woman<input type="radio" name="m_gender" id="m_gender" value="0"><br><br>
+                            <label for="text">Your Tel</label> 
+                            <input type="text" name="m_tel" id="m_tel" placeholder="ex)010-1234-5678" required="required" class="inpt"> 
+                            <label for="email">Your Email</label> 
+                            <input type="email" name="m_mail" id="m_mail" placeholder="ex)abc@teatime.com" required="required" class="inpt"> 
+                            <label for="text">Your Profile Picture</label>
+                            <input type="file" id="profilePic" name="profilePic">
+                            <img id="previewPic" src="${placeholder }" width="50px" height="50px">
+                            <br>
+                            <input type="button" value="Pre" name="pre" onclick="pre1()" >
+                            <input type="button" value="Next" name="next" onclick="next2()" >
+                         </div>   
+                         <div style="overflow: auto; width: 270px; height: 350px;">
+                     <table class="table2" id="cat" border="1">
+                        <tr>
+                           <td>News<br><input type="checkbox" class="check_cate" name="c_news" ></td>
+                           <td>Sports<br><input type="checkbox" class="check_cate" name="c_sports" ></td>
+                           <td>Food<br><input type="checkbox" class="check_cate" name="c_food" ></td>
+                        </tr>
+                        
+                        <tr>
+                           <td>Language<br><input type="checkbox" class="check_cate" name="c_language" ></td>
+                           <td>People<br><input type="checkbox" class="check_cate" name="c_people" ></td>
+                           <td>Animal<br><input type="checkbox" class="check_cate" name="c_animal" ></td>
+                        </tr>
+                  
+                        <tr>
+                           <td>Fashion<br><input type="checkbox" class="check_cate" name="c_fashion" ></td>
+                           <td>Love<br><input type="checkbox" class="check_cate" name="c_love" ></td>
+                           <td>Movie<br><input type="checkbox" class="check_cate" name="c_movie" ></td>
+                        </tr>
+                        
+                        <tr>
+                           <td>Religion<br><input type="checkbox" class="check_cate" name="c_religion" ></td>
+                           <td>Knowledge<br><input type="checkbox" class="check_cate" name="c_knowledge" ></td>
+                           <td>Travel<br><input type="checkbox" class="check_cate" name="c_travel" ></td>
+                        </tr>
+                        <tr>
+                           <td>Cartoon<br><input type="checkbox" class="check_cate" name="c_cartoon" ></td>
+                           <td>Game<br><input type="checkbox" class="check_cate" name="c_game" ></td>
+                           <td>IT<br><input type="checkbox" class="check_cate" name="c_it" ></td>
+                        </tr>
+                        <tr>
+                           <td>Weather<br><input type="checkbox" class="check_cate" name="c_weather" ></td>
+                           <td>Music<br><input type="checkbox" class="check_cate" name="c_music" ></td>
+                           <td>Car<br><input type="checkbox" class="check_cate" name="c_car" ></td>
+                        </tr>
+                        <tr>
+                           <td>Economy<br><input type="checkbox" class="check_cate" name="c_economy" ></td>
+                           <td>Etc<br><input type="checkbox" class="check_cate" name="c_etc" ></td>
+                           <td>Job<br><input type="checkbox" class="check_cate" name="c_job" ></td>
+                        </tr>
+                        <tr>
+                           <td>Living<br><input type="checkbox" class="check_cate" name="c_living" ></td>
+                           <td>Book<br><input type="checkbox" class="check_cate" name="c_book" ></td>
+                           <td>Festival<br><input type="checkbox" class="check_cate" name="c_festival" ></td>
+                        </tr>
+                        <tr>
+                           <td>Health<br><input type="checkbox" class="check_cate" name="c_health" ></td>
+                        </tr>
+                     </table>
                   </div>
-                  <!-- @@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë@@ë -->
+                  <input type="button" value="Pre" name="pre" onclick="pre2()" >
+                  <input class="regButton" type="submit" name="sub" value="Register">
+               </form>
+      
+                  </div>
+                  <!-- @@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝@@끝 -->
 
                   <div class="find-cont cont" id="find-cont cont">
-					
-					<div class="tabs2">
-						<span class="tab2 idfind active"><a href="#idfinddiv">ID Search</a></span>
-						<span class="tab2 pwfind"><a href="#pwfinddiv">password Search</a></span>
-					</div>
-					
-					<div>
-						<div class="idfind cont2" id="aaa">
-							<form method="post" id="idfind" action="idfind">
-								<label for="m_name">Your name</label>
-								<input type="text" name="m_name" placeholder="Your name" class="inpt">
-								<label for="m_tel">Your tel</label>
-								<input type="text" name="m_tel" placeholder="Your phone number or tel" class="inpt">
-								<input type="submit" value="Find" class="submit">
-							</form>
-						</div>
-						
-						<div class="pwfind cont2" id="bbb">
-							<form method="post" id="pwfind" action="pwfind">
-								<label for="m_main">Your ID</label>
-								<input type="text" name="m_id" placeholder="Your ID" class="inpt">
-								<label for="m_main">Your email</label>
-								<input type="text" name="m_mail" placeholder="Your email" class="inpt">
-								<input type="submit" value="Find" class="submit">
-							</form>
-						</div>
-					</div>	
-					
-				</div>
+               
+               <div class="tabs2">
+                  <span class="tab2 idfind active"><a href="#idfinddiv">ID Search</a></span>
+                  <span class="tab2 pwfind"><a href="#pwfinddiv">password Search</a></span>
+               </div>
+               
+               <div>
+                  <div class="idfind cont2" id="aaa">
+                     <form method="post" id="idfind" action="idfind">
+                        <label for="m_name">Your name</label>
+                        <input type="text" name="m_name" placeholder="Your name" class="inpt">
+                        <label for="m_tel">Your tel</label>
+                        <input type="text" name="m_tel" placeholder="Your phone number or tel" class="inpt">
+                        <input type="submit" value="Find" class="submit">
+                     </form>
+                  </div>
+                  
+                  <div class="pwfind cont2" id="bbb">
+                     <form method="post" id="pwfind" action="pwfind">
+                        <label for="m_main">Your ID</label>
+                        <input type="text" name="m_id" placeholder="Your ID" class="inpt">
+                        <label for="m_main">Your email</label>
+                        <input type="text" name="m_mail" placeholder="Your email" class="inpt">
+                        <input type="submit" value="Find" class="submit">
+                     </form>
+                  </div>
+               </div>   
+               
+            </div>
                </div> <!-- content div -->
             </article>
             <div class="half bg"></div>
          </section>
       </c:otherwise>
    </c:choose>
-
+   <br>
+   <br>
+   <br>
+   <br>
+   <br>
+   <div style="width: 100%; text-align: center;">
+         <h3><font color="#476600">Copyright 2019. SYL2 All rights reseved.</font></h3>
+   </div>
+</body>
 <script
-		src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-	<script type="text/javascript">
+      src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+   <script type="text/javascript">
 $('.tabs .tab').click(function(){
     if ($(this).hasClass('signin')) {
         $('.tabs .tab').removeClass('active');
@@ -732,26 +843,26 @@ $('.tabs .tab').click(function(){
         $('.signup-cont').show();
     }
     if ($(this).hasClass('find')) {
-    	$('.tabs .tab').removeClass('active');
-    	$(this).addClass('active');
-    	$('.cont').hide();
-    	$('.find-cont').show();
+       $('.tabs .tab').removeClass('active');
+       $(this).addClass('active');
+       $('.cont').hide();
+       $('.find-cont').show();
     }
 });
 
 $('.tabs2 .tab2').click(function(){
-	if($(this).hasClass('idfind')) {
-	   $('.tabs2 .tab2').removeClass('active');
-	   $(this).addClass('active');
-	   $('.cont2').hide();
-	   $('.idfind').show();
-	}	
-	if($(this).hasClass('pwfind')) {
-	   $('.tabs2 .tab2').removeClass('active');
-	   $(this).addClass('active');
-	   $('.cont2').hide();
-	   $('.pwfind').show();
-	}	
+   if($(this).hasClass('idfind')) {
+      $('.tabs2 .tab2').removeClass('active');
+      $(this).addClass('active');
+      $('.cont2').hide();
+      $('.idfind').show();
+   }   
+   if($(this).hasClass('pwfind')) {
+      $('.tabs2 .tab2').removeClass('active');
+      $(this).addClass('active');
+      $('.cont2').hide();
+      $('.pwfind').show();
+   }   
 });
 
 $('.container .bg').mousemove(function(e){
@@ -785,15 +896,15 @@ function check_form() {
         if ($(this).is(":checked")) {
             $(this).val("Y");
         }else{
-        		var cat_name = $(this).attr("name");
-     	   $("#regform").append("<input type='hidden' name='"+cat_name+"' value='N'>");
-     	  // console.log(cat_name);
+              var cat_name = $(this).attr("name");
+           $("#regform").append("<input type='hidden' name='"+cat_name+"' value='N'>");
+          // console.log(cat_name);
         }
-    	});
- 	//ì¤íí ë ì§ì°ê¸°
+       });
+    //실행할때 지우기
 }
 
 
 </script>
-</body>
+
 </html>
