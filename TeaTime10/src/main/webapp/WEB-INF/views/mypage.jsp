@@ -243,6 +243,10 @@
 
    .close:hover { background: #00d9ff; }
    
+   
+   
+   
+   
 </style>
    <style type="text/css">
    
@@ -318,20 +322,12 @@
    
    
    </style>
+
    
    <script type="text/javascript">
    $(document).ready(function(){
 	  	$('.replyLineClass').hide();
 		$('.closeReplies').hide();
-		console.log('${postSuccess}');
-		if ('${postSuccess}' != "") {
-			console.log('${postSuccess}');
-			if ('${postSuccess}' == '1') {
-				alert("글 작성 완료");
-			} else {
-				alert("문제 발생");
-			}
-		}
  });
   
   
@@ -585,62 +581,13 @@
          location.href='u_page?u_id='+f_id;
       }
       
-      /*
       function write_board(){
-    	  alert("1")
-    	  alert("2")
          var p_cat = $("#p_cat option:selected").val();
          var p_hash = $('#p_hash').val();
          var p_title = $('#p_title').val();
          var p_content =  $('#p_content').val();
-         var p_img = $('#postImage').val();
+         var p_img = $('#p_img').val();
          var p_scope = $('#p_scope').val();
-<<<<<<< HEAD
-         var form = {
-               m_id : m_id,
-               p_cat : p_cat,
-               p_hash : p_hash,
-               p_title : p_title,
-               p_content : p_content,
-               p_img : p_img,
-               p_scope : p_scope,
-         };
-         
-         
-         var formData = new FormData();
-         formData.append('p_cat', $("#p_cat option:selected").val())
-         formData.append('p_hash', $('#p_hash').val())
-         formData.append('p_title', $('#p_title').val())
-         formData.append('p_content', $('#p_content').val())
-         formData.append('p_scope', $('#p_scope').val())
-         formData.append("pImg", $('#postImage').files[0]);
-         
-         
-         var formData = new FormData();
-         if ($('#postImage').get(0).files.length === 0 ) {
-        	 formData.append("pImg", null);
-         } else {
-         	formData.append("pImg", $('#postImage').files[0]);
-         }
-         console.log(form);
-         $.ajax({
-            url:"write_board",
-            type:"POST",
-            data: { 'pdto' : form, 'formData' : formData},
-            processData: false,
-            contentType: false,
-            enctype:"multipart/form-data",
-            success: function(data){
-               alert("글 작성 완료.")
-               location.href='mypage';
-            },
-            error:function(){
-               alert("문제가 발생 하였습니다.")
-            }
-         });
-      
- 	 };
-
          if(p_title=="" || p_title==null){
         	 alert('제목을 입력하세요')
          }else{
@@ -677,10 +624,6 @@
              }
          }        
       }
-
-      */
-      
-      
       
       var cnt=0;
       function reply_test(p_idgroup) {
@@ -834,9 +777,12 @@
 	  									"<th width='20%'>제목</th>"+
 	  									"<td width='50%' align='center'>"+data.post.p_title+"</td>"+
 	  								"</tr>"+
-	  								
-	  								"<tbody height='40%' class='post-image"+data.post.p_num+"'></tbody>"+
-	  								
+	  								"<tr height='40%'>"+
+	  									"<td colspan='4' align='center'>"+data.post.p_content+"</td>"+
+	  								"</tr>" +
+	  								"<tr height='30%'>"+
+	  									"<td colspan='4' align='center'>"+data.post.p_img +"</td>"+
+	  								"</tr>"+ 
 	  								"<tr height='5%'>"+
 	  									"<th>해시</th>"+
 	  									"<td colspan='3'>"+data.post.p_hash+"</td>"+
@@ -851,16 +797,6 @@
   								"<input type='hidden' value='${mid }' name='u_id'>"+
   								"<input type='submit' value='댓글보기'>"+
   								"</form></td></tr></table>");
-  							if (data.post.p_img != 'null') {
-								$(".post-image"+data.post.p_num).append("<tr height='40%'>"+
-										"<td height='40%' colspan='3' align='center'>"+data.post.p_content+"</td>"+
-										"<td height='40%' colspan='1' align='center'><img src='img/"+data.post.p_img+"' width='200px' height='200px'></td>"+
-									"</tr>");
-							} else {
-								$(".post-image"+data.post.p_num).append("<tr height='40%'>"+
-										"<td height='200px' colspan='4' align='center'>"+data.post.p_content+"</td>"+
-										"</tr>");
-							}
   								createReplyArray(data.post.p_idgroup);
   								$('.replyLineClass').hide();
   							
@@ -929,27 +865,6 @@
   	}
   	
    </script>
-   
-   <script type="text/javascript">
-    
-        $(function() {
-            $("#postImage").on('change', function(){
-                
-                readURL(this);
-            });
-        });
-        function readURL(input) {
-            if (input.files && input.files[0]) {
-            var reader = new FileReader();
- 
-            reader.onload = function (e) {
-                    $('#previewPic').attr('src', e.target.result);
-                }
-              reader.readAsDataURL(input.files[0]);
-            }
-        }
-    </script>
-   
 </head>
 <body>
 <div class="pagewrap">
@@ -995,28 +910,23 @@
 		  </div>
       </div>
       <div class="center">
-      		<div class="write_board" >
+            <div class="write_board" >
             	<h3>NEW POST</h3>
-
-            <form action="write_board" name="postForm" id="frm" method="post" enctype="multipart/form-data">
-	              <table border="1">
+            	 
+               <table border="1" class="write_board_table" >
 	               <tr>
-	                  <td colspan="1" style="font-size: 0.5em;">제목</td><td colspan="5"><input type="text" id="p_title" name="p_title" style="width: 500px; height: 40px;" required></td>
+	                  <td style="font-size: 0.5em;">제목</td><td colspan="3"><input type="text" id="p_title" style="width: 500px; height: 40px;"></td>
 	               </tr>
 	               <tr>
-	                  <td colspan="6"><input type="text" id="p_content" name="p_content" placeholder="글내용" style="width: 700px; height: 200px;" required></td>
+	                  <td colspan="4"><input type="text" id="p_content" placeholder="글 내용 작성" style="width: 700px; height: 200px;"></td>
 	               </tr>
 	               <tr>
-	                  <td colspan="1"><input type="file" id="postImage" name="postImage" value="사진첨부"></td>
-	                  <td colspan="5" align="center"><img id="previewPic" src="${placeholder}" width="200px" height="200px"></td>
+	                  <td colspan="4"><input type="button" id="p_img" value="사진첨부"></td>
 	               </tr>
 	               <tr>
-	                  <td colspan="1">
-	                  <span>카테고리선택</span>
-	                     <select id="p_cat" name="p_cat">
-	                     <!-- 
-	                        <option value="" selected data-default>카테고리선택</option>
-	                         -->
+	                  <td>
+	                     <select id="p_cat" name="category">
+	                        <option value="" selected data-defaul>카테고리선택</option>
 	                         <option value="news">뉴스</option>      <option value="sports">스포츠</option>   <option value="food">음식</option>   <option value="language">언어</option>   <option value="people">인물</option>
 	                        <option value="animal">동물</option>      <option value="fashion">패션</option>      <option value="love">연애</option>   <option value="movie">영화</option>      <option value="religion">종교</option>
 	                        <option value="knowledge">지식</option>   <option value="travel">여행</option>      <option value="cartoon">만화</option>   <option value="game">게임</option>      <option value="it">IT</option>
@@ -1024,21 +934,15 @@
 	                         <option value="job">직업</option>         <option value="living">리빙</option>      <option value="book">도서</option>   <option value="festival">축제</option>   <option value="health">건강</option>
 	                     </select>
 	                  </td>
-	                  <td colspan="1">
-	                  <span>공개범위</span>
-	                     <select id="p_scope" name="p_scope">
-	                     <!-- 
-	                     <option value="" selected data-default>공개범위</option>
-	                      -->
-	                     <option value="0">나만보기</option><option value="1">친구공개</option><option value="2">전체공개</option></select>
+	                  <td>
+	                     <select id="p_scope" name="scope"><option value="" selected data-defaul>공개범위</option><option value="0">나만보기</option><option value="1">친구공개</option><option value="2">전체공개</option></select>
 	                  </td>
-	                  <td colspan="4" style="font-size: 0.5em;">해시태그<input type="text" id="p_hash" name="p_hash" placeholder="해시태그 입력" style="width:350px; height: 40px;"></td>
+	                  <td colspan="1" style="font-size: 0.5em;"><input type="text" id="p_hash" placeholder="해시태그 입력" style="width:350px; height: 40px; text-align: center;"></td>
 	               </tr>
 	               <tr>
-	                  <td colspan="6"><input type="submit" id="sub" value="작성완료"></td>
+	                  <td colspan="4"><input type="button" value="작성완료" onclick="write_board()"></td>
 	               </tr>
-	            </table>
-            </form>
+            </table>
             
             </div>
          <hr>
@@ -1053,21 +957,12 @@
 					<th width="20%">제목</th>
 					<td width="50%" align="center">${m_list.p_title }</td>
 				</tr>
-				<!-- ============ POST PICTURE PART ============ -->
-				<c:choose>
-				<c:when test="${m_list.p_img != 'null'}">
-				<tr height="40%">
-					<td colspan="3" align="center">${m_list.p_content }</td>
-					<td colspan="1" align="center"><img src="img/${m_list.p_img }" width="200px" height="200px"></td>
-				</tr>
-				</c:when>
-				<c:otherwise>
 				<tr height="40%">
 					<td colspan="4" align="center">${m_list.p_content }</td>
 				</tr>
-				</c:otherwise>
-				</c:choose>
-				<!-- =========================================== -->
+				<tr height="30%">
+					<td colspan="4" align="center">${m_list.p_img }</td>
+				</tr>
 				<tr height="5%">
 					<th>해시</th>
 					<td colspan="3">${m_list.p_hash }</td>
@@ -1168,8 +1063,7 @@
                  <td id="td_tel">&nbsp;</td>
               </tr>
               <tr>
-                 <td>친구 추가</td>
-                 <td><input type="button" value="friend_page" onclick="friend_page()"></td>
+                 <td colspan="2"><input type="button" value="friend_page" onclick="friend_page()"></td>
               </tr>
            </table>
            

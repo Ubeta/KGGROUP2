@@ -22,8 +22,7 @@ public class MMyInfoService implements IService{
 		//세션 아이디 받기
 		Map<String, Object> map = model.asMap();
 		String sessionid = (String)map.get("sessionid");
-		//String sessionid = "1";
-		
+				
 		model.addAttribute("myinfo", mdao.my_info(sessionid));
 		
 		

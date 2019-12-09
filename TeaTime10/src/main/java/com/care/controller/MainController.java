@@ -1,5 +1,7 @@
 package com.care.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,10 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.care.modelDTO.CountForm;
 import com.care.modelDTO.MemberDTO;
-import com.care.modelDTO.MyFriendDTO;
 import com.care.modelDTO.PostDTO;
 import com.care.modelDTO.ReplyDTO;
 import com.care.service.AddCommentService;
@@ -28,6 +31,7 @@ import com.care.service.FListService;
 import com.care.service.FPostListService;
 import com.care.service.FriendPostService;
 import com.care.service.GetCommentService;
+import com.care.service.IDchk;
 import com.care.service.IService;
 import com.care.service.IdSearch;
 import com.care.service.MCategoryService;
@@ -42,21 +46,24 @@ import com.care.service.PDeleteService;
 import com.care.service.PLikeChkService;
 import com.care.service.PLikeUpService;
 import com.care.service.PWriteBoardService;
-import com.care.service.RLikeChkService;
-import com.care.service.RLikeUpService;
 import com.care.service.PwChange;
 import com.care.service.PwSearch;
+import com.care.service.RLikeChkService;
+import com.care.service.RLikeUpService;
 import com.care.service.RReplyListService;
 import com.care.service.RReplyWriteService;
 import com.care.service.TotalSearch;
-import com.care.service.IDchk;
 @Controller
 public class MainController {
-   IService ser;
-   
-   @Autowired
-   ApplicationContext context = ApplicationContextprovider.applicationContext;
-   
+
+	IService ser;
+
+	@Autowired
+	ApplicationContext context = ApplicationContextprovider.applicationContext;
+
+	//======== John 수정 / Post Profile pic (12/5) ========
+	private static MemberDTO mypageMemberDTO = new MemberDTO();
+	//===================================================
    
    @RequestMapping(value = "register")
    public String register(Model model, HttpServletRequest request) {
@@ -251,222 +258,272 @@ public class MainController {
    
    ////////////////////////////////////////////////
    //친구 게시글만 보는 페이지 
-      ArrayList<PostDTO> flist = new ArrayList<PostDTO>();
-      ArrayList<ReplyDTO> rlist = new ArrayList<ReplyDTO>();
-      @RequestMapping("f_page")
-      public String f_page(Model model, HttpSession session) {
-         model.addAttribute("friendLists", session);
-         String id = (String)session.getAttribute("mid");
-         ser = context.getBean("FListService", FListService.class);
-         ser.execute(model);
-         ser = context.getBean("friendPostService", FriendPostService.class);
-         ser.execute(model);
-         //Map<String, Object> map = model.asMap();
-         //flist = (ArrayList<PostDTO>) map.get("fPost");   
-         return "f_page";
-      }
+      
    
-      //친구 게시글 ajax 출력
-      @ResponseBody
-      @RequestMapping(value="fpostList")
-      public List<PostDTO> fpostList(Model model, PostDTO pdto, HttpServletRequest request, HttpSession session) {
-         HashMap<String, Object> fpageParameter = new HashMap<String, Object>();
-         String mid = (String)session.getAttribute("mid");
-         fpageParameter.put("sid", mid );
-         fpageParameter.put("page_no", request.getParameter("page_no"));
-         model.addAttribute("friendLists", fpageParameter);
-         ser = context.getBean("FPostListService", FPostListService.class);
-         ser.execute(model);
-         Map<String, Object> map = model.asMap();
-         flist = (ArrayList<PostDTO>) map.get("fPost"); 
-         return flist;
-      }
-   
-   //============================양진영=============================
-         //============================내 페이지===========================
-         ArrayList<PostDTO> list = new ArrayList<PostDTO>();
-         ArrayList<ReplyDTO> replylist = new ArrayList<ReplyDTO>();
-         @RequestMapping(value = "mypage")
-         public String mypage(Model model,HttpSession session){
-            String sessionid = (String)session.getAttribute("mid");
-            model.addAttribute("sessionid",sessionid);
-            ser = context.getBean("PBoardListService", PBoardListService.class);
-            ser.execute(model);
-            Map<String, Object> map = model.asMap();
-            list = (ArrayList<PostDTO>) map.get("boardlist");
-            cnt=3;
-            return "mypage";
-         }
-         //===========================회원정보 수정 후 리다이렉트================
-         @RequestMapping(value = "fix_myinfo" , method = RequestMethod.POST)
-         public String fix_myinfo(Model model, HttpServletRequest request){
-            model.addAttribute("info_fix",request);
-            ser = context.getBean("MInfoFixService", MInfoFixService.class);
-            ser.execute(model);
-            return "redirect:mypage";
-         }
-         //===========================내정보 리스트 받기===========================
-         @ResponseBody
-         @RequestMapping(value = "my_info")
-         public Map<String, Object> my_info(Model model, HttpSession session) {
-            String sessionid = (String)session.getAttribute("mid");
-            model.addAttribute("sessionid",sessionid);
-            ser = context.getBean("MMyInfoService", MMyInfoService.class);
-            ser.execute(model);   
-            //========================
-            Map<String, Object> map = model.asMap();
-            MemberDTO dto = (MemberDTO)map.get("myinfo");
-            //=====================
-            Map<String, Object> my_info = new HashMap<String, Object>();
-            my_info.put("memdto", dto);
-            return my_info;
-         }
-         //===========================유저 찾기===========================
-         @ResponseBody
-         @RequestMapping(value = "user_find")
-         public Map<String, Object> user_find(Model model, MemberDTO mdto) {
-            String user_friend = mdto.getM_id();
-            model.addAttribute("user_id", user_friend);
-            
-            Map<String, Object> map = model.asMap();
-            ser = context.getBean("MUserFindService", MUserFindService.class);
-            ser.execute(model);   
-            MemberDTO dto = (MemberDTO)map.get("userinfo");
-            Map<String, Object> user_info = new HashMap<String, Object>();
-            
-            if(dto==null) {
-               user_info.put("chk", 0);
-            }else if( dto!=null) {
-               user_info.put("chk", 1);
-               user_info.put("dto", dto);
-            }
-            return user_info;
-         }
-         //===========================개시글 작성===========================
-         @ResponseBody
-         @RequestMapping(value = "write_board")
-         public void write_board(Model model, PostDTO pdto) {
-            model.addAttribute("write_board", pdto);
-            ser = context.getBean("PWriteBoardService", PWriteBoardService.class);
-            ser.execute(model);
-         }
-         //===========================개시글 리스트===========================
-         private int cnt=3;
-			@ResponseBody
-			@RequestMapping(value = "boardlist")
-			public Map<String, Object> boardlist(Model model, PostDTO podto) {
-				Map<String, Object> boardlist_map = new HashMap<String, Object>();
-				
-				int i = cnt;
-				
-				if(i<list.size()) {
-					boardlist_map.put("chk", "true");
-					boardlist_map.put("morePosts", true);
-					boardlist_map.put("post", list.get(i));
-					++cnt;
-					return boardlist_map;
-				}else if(list.size()==0){
-					boardlist_map.put("chk", "non");
-					return boardlist_map;
-				}else{
-					boardlist_map.put("chk", "false");
-					boardlist_map.put("morePosts", false);
-					return boardlist_map;
-				}
+         
+
+
+	////////////////////////////////////////////////
+	
+	//친구 게시글만 보는 페이지 
+	ArrayList<PostDTO> flist = new ArrayList<PostDTO>();
+	ArrayList<ReplyDTO> rlist = new ArrayList<ReplyDTO>();
+	@RequestMapping("f_page")
+	public String f_page(Model model, HttpSession session) {
+		model.addAttribute("friendLists", session);
+		String id = (String)session.getAttribute("mid");
+		System.out.println("@@@@@@@@@@@");
+		System.out.println(id);
+		System.out.println("@@@@@@@@@@@@");
+		ser = context.getBean("FListService", FListService.class);
+		ser.execute(model);
+		ser = context.getBean("friendPostService", FriendPostService.class);
+		ser.execute(model);
+		//Map<String, Object> map = model.asMap();
+		//flist = (ArrayList<PostDTO>) map.get("fPost");   
+		return "f_page";
+	}
+
+	//친구 게시글 ajax 출력
+	@ResponseBody
+	@RequestMapping(value="fpostList")
+	public List<PostDTO> fpostList(Model model, PostDTO pdto, HttpServletRequest request, HttpSession session) {
+		HashMap<String, Object> fpageParameter = new HashMap<String, Object>();
+		String mid = (String)session.getAttribute("mid");
+		System.out.println("===========");
+		System.out.println(mid);
+		System.out.println("===========");
+		fpageParameter.put("sid", mid );
+		fpageParameter.put("page_no", request.getParameter("page_no"));
+		model.addAttribute("friendLists", fpageParameter);
+		ser = context.getBean("FPostListService", FPostListService.class);
+		ser.execute(model);
+		Map<String, Object> map = model.asMap();
+		flist = (ArrayList<PostDTO>) map.get("fPost"); 
+		return flist;
+	}
+
+	//============================양진영=============================
+	//============================내 페이지===========================
+	ArrayList<PostDTO> list = new ArrayList<PostDTO>();
+	ArrayList<ReplyDTO> replylist = new ArrayList<ReplyDTO>();
+	@RequestMapping(value = "mypage")
+	public String mypage(Model model,HttpSession session, HttpServletResponse response) throws IOException{
+		String sessionid = (String)session.getAttribute("mid");
+		model.addAttribute("sessionid",sessionid);
+		//======== John 수정 / Post Profile pic (12/5) ========
+		ser = context.getBean("MMyInfoService", MMyInfoService.class);
+		ser.execute(model);   
+		Map<String, Object> map = model.asMap();
+		MemberDTO dto = (MemberDTO)map.get("myinfo");
+		System.out.println("dto:" + dto);
+		System.out.println("dto m_pic:" + dto.getM_pic());
+		mypageMemberDTO.setM_pic(dto.getM_pic());
+		//================================================
+		ser = context.getBean("PBoardListService", PBoardListService.class);
+		ser.execute(model);
+		Map<String, Object> map2 = model.asMap();
+		list = (ArrayList<PostDTO>) map2.get("boardlist");
+		cnt=3;
+		
+		return "mypage";
+	}
+	//===========================회원정보 수정 후 리다이렉트================
+	@RequestMapping(value = "fix_myinfo" , method = RequestMethod.POST)
+	public String fix_myinfo(Model model, HttpServletRequest request){
+		model.addAttribute("info_fix",request);
+		ser = context.getBean("MInfoFixService", MInfoFixService.class);
+		ser.execute(model);
+		return "redirect:mypage";
+	}
+	//===========================내정보 리스트 받기===========================
+	@ResponseBody
+	@RequestMapping(value = "my_info")
+	public Map<String, Object> my_info(Model model, HttpSession session) {
+		String sessionid = (String)session.getAttribute("mid");
+		model.addAttribute("sessionid",sessionid);
+		ser = context.getBean("MMyInfoService", MMyInfoService.class);
+		ser.execute(model);   
+		//========================
+		Map<String, Object> map = model.asMap();
+		MemberDTO dto = (MemberDTO)map.get("myinfo");
+		//=====================
+		Map<String, Object> my_info = new HashMap<String, Object>();
+		my_info.put("memdto", dto);
+		return my_info;
+	}
+	//===========================유저 찾기===========================
+	@ResponseBody
+	@RequestMapping(value = "user_find")
+	public Map<String, Object> user_find(Model model, MemberDTO mdto) {
+		String user_friend = mdto.getM_id();
+		model.addAttribute("user_id", user_friend);
+
+		Map<String, Object> map = model.asMap();
+		ser = context.getBean("MUserFindService", MUserFindService.class);
+		ser.execute(model);   
+		MemberDTO dto = (MemberDTO)map.get("userinfo");
+		Map<String, Object> user_info = new HashMap<String, Object>();
+
+		if(dto==null) {
+			user_info.put("chk", 0);
+		}else if( dto!=null) {
+			user_info.put("chk", 1);
+			user_info.put("dto", dto);
+		}
+		return user_info;
+	}
+	
+	//===========================개시글 작성===========================
+	@RequestMapping(value = "write_board", method = RequestMethod.POST)
+	public RedirectView write_board(Model model, PostDTO pdto, HttpSession session, MultipartHttpServletRequest request, HttpServletResponse response, RedirectAttributes redir) throws IOException {
+		model.addAttribute("request", request);
+		String m_id = (String)session.getAttribute("mid");
+		
+		//======== John 수정 / Post Profile pic (12/5) ========
+		pdto.setM_id(m_id);
+		pdto.setM_pic(mypageMemberDTO.getM_pic());
+		//===================================================
+		model.addAttribute("write_board", pdto);
+		ser = context.getBean("PWriteBoardService", PWriteBoardService.class);
+		ser.execute(model);
+		Map<String, Object> map = model.asMap();
+		boolean result = (boolean) map.get("writeSuccess");
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		RedirectView redirectView = new RedirectView("mypage", true);
+		if (result) {
+			redir.addFlashAttribute("postSuccess", "1");
+			model.addAttribute("postSuccess", "1");
+			System.out.println("result:" + result);
+		} else {
+			redir.addFlashAttribute("postSuccess", "0");
+			model.addAttribute("postSuccess", "0");
+			System.out.println("result:" + result);
+		}
+		return redirectView;
+	}
+	//===========================개시글 리스트===========================
+	private int cnt=3;
+	@ResponseBody
+	@RequestMapping(value = "boardlist")
+	public Map<String, Object> boardlist(Model model, PostDTO podto) {
+		Map<String, Object> boardlist_map = new HashMap<String, Object>();
+
+		int i = cnt;
+
+		if(i<list.size()) {
+			boardlist_map.put("chk", "true");
+			boardlist_map.put("morePosts", true);
+			boardlist_map.put("post", list.get(i));
+			++cnt;
+			return boardlist_map;
+		}else if(list.size()==0){
+			boardlist_map.put("chk", "non");
+			return boardlist_map;
+		}else{
+			boardlist_map.put("chk", "false");
+			boardlist_map.put("morePosts", false);
+			return boardlist_map;
+		}
+	}
+	//===========================댓글 리스트===========================
+    @ResponseBody
+    @RequestMapping(value = "replylist")
+    public Map<String, Object> replylist(Model model, PostDTO pdto) {
+       model.addAttribute("idgroup", pdto.getP_idgroup());
+       ser = context.getBean("RReplyListService", RReplyListService.class);
+       ser.execute(model);
+       Map<String, Object> map = model.asMap();
+       replylist = (ArrayList<ReplyDTO>) map.get("replylist");
+       Map<String, Object> replylist_map = new HashMap<String, Object>();
+       replylist_map.put("replylist_1", replylist);
+       return replylist_map;
+    }
+    //===========================댓글 작성===========================
+    @ResponseBody
+    @RequestMapping(value = "reply_write")
+    public void reply_write(Model model, ReplyDTO rdto) {
+       model.addAttribute("reply_write", rdto);
+       ser = context.getBean("RReplyWriteService", RReplyWriteService.class);
+       ser.execute(model);
+    }
+    //===========================좋아요 값 올리기===========================
+    @ResponseBody
+    @RequestMapping(value = "like_up")
+    public Map<String, Object> like_up(Model model, PostDTO pdto) {
+       model.addAttribute("like_up", pdto);
+       ser = context.getBean("PLikeUpService", PLikeUpService.class);
+       ser.execute(model);
+       Map<String, Object> map = model.asMap();
+       int chk = (Integer)map.get("chk");
+       Map<String, Object> chk_map = new HashMap<String, Object>();
+       chk_map.put("chk", chk);
+       return chk_map;
+    }
+  //============버튼 태스트
+		@ResponseBody
+		@RequestMapping(value = "p_like_btn")
+		public Map<String, Object> p_like_btn(Model model, PostDTO pldto) {
+			model.addAttribute("like_chk", pldto);
+			ser = context.getBean("PLikeChkService", PLikeChkService.class);
+			ser.execute(model);
+			Map<String, Object> map = model.asMap();
+			Map<String, Object> chk_map = new HashMap<String, Object>();
+			int chk = (Integer)map.get("btnchk");
+			if(chk==1) {
+				int idgroup = (Integer)map.get("idgroup");
+				chk_map.put("chk", chk);
+				chk_map.put("idgroup", idgroup);
+			}else {
+				chk_map.put("chk", chk);
 			}
-         //===========================댓글 리스트===========================
-         @ResponseBody
-         @RequestMapping(value = "replylist")
-         public Map<String, Object> replylist(Model model, PostDTO pdto) {
-            model.addAttribute("idgroup", pdto.getP_idgroup());
-            ser = context.getBean("RReplyListService", RReplyListService.class);
-            ser.execute(model);
-            Map<String, Object> map = model.asMap();
-            replylist = (ArrayList<ReplyDTO>) map.get("replylist");
-            Map<String, Object> replylist_map = new HashMap<String, Object>();
-            replylist_map.put("replylist_1", replylist);
-            return replylist_map;
-         }
-         //===========================댓글 작성===========================
-         @ResponseBody
-         @RequestMapping(value = "reply_write")
-         public void reply_write(Model model, ReplyDTO rdto) {
-            model.addAttribute("reply_write", rdto);
-            ser = context.getBean("RReplyWriteService", RReplyWriteService.class);
-            ser.execute(model);
-         }
-         //===========================좋아요 값 올리기===========================
-         @ResponseBody
-         @RequestMapping(value = "like_up")
-         public Map<String, Object> like_up(Model model, PostDTO pdto) {
-            model.addAttribute("like_up", pdto);
-            ser = context.getBean("PLikeUpService", PLikeUpService.class);
-            ser.execute(model);
-            Map<String, Object> map = model.asMap();
-            int chk = (Integer)map.get("chk");
-            Map<String, Object> chk_map = new HashMap<String, Object>();
-            chk_map.put("chk", chk);
-            return chk_map;
-         }
-       //============버튼 태스트
+			return chk_map;
+	}
+	//리플 좋아요 버튼 테스트=====================
+		 @ResponseBody
+        @RequestMapping(value = "r_like_up")
+        public Map<String, Object> r_like_up(Model model, ReplyDTO rdto) {
+           model.addAttribute("r_like_up", rdto);
+           ser = context.getBean("RLikeUpService", RLikeUpService.class);
+           ser.execute(model);
+           Map<String, Object> map = model.asMap();
+           int chk = (Integer)map.get("chk");
+           Map<String, Object> chk_map = new HashMap<String, Object>();
+           chk_map.put("chk", chk);
+           return chk_map;
+        }
+      //============버튼 태스트
 			@ResponseBody
-			@RequestMapping(value = "p_like_btn")
-			public Map<String, Object> p_like_btn(Model model, PostDTO pldto) {
-				model.addAttribute("like_chk", pldto);
-				ser = context.getBean("PLikeChkService", PLikeChkService.class);
+			@RequestMapping(value = "r_like_btn")
+			public Map<String, Object> r_like_btn(Model model, ReplyDTO rdto) {
+				model.addAttribute("r_like_chk", rdto);
+				ser = context.getBean("RLikeChkService", RLikeChkService.class);
 				ser.execute(model);
 				Map<String, Object> map = model.asMap();
 				Map<String, Object> chk_map = new HashMap<String, Object>();
 				int chk = (Integer)map.get("btnchk");
 				if(chk==1) {
-					int idgroup = (Integer)map.get("idgroup");
+					int r_num = (Integer)map.get("r_num");
 					chk_map.put("chk", chk);
-					chk_map.put("idgroup", idgroup);
+					chk_map.put("r_num", r_num);
 				}else {
 					chk_map.put("chk", chk);
 				}
 				return chk_map;
-		}
-		//리플 좋아요 버튼 테스트=====================
-			 @ResponseBody
-	         @RequestMapping(value = "r_like_up")
-	         public Map<String, Object> r_like_up(Model model, ReplyDTO rdto) {
-	            model.addAttribute("r_like_up", rdto);
-	            ser = context.getBean("RLikeUpService", RLikeUpService.class);
-	            ser.execute(model);
-	            Map<String, Object> map = model.asMap();
-	            int chk = (Integer)map.get("chk");
-	            Map<String, Object> chk_map = new HashMap<String, Object>();
-	            chk_map.put("chk", chk);
-	            return chk_map;
-	         }
-	       //============버튼 태스트
-				@ResponseBody
-				@RequestMapping(value = "r_like_btn")
-				public Map<String, Object> r_like_btn(Model model, ReplyDTO rdto) {
-					model.addAttribute("r_like_chk", rdto);
-					ser = context.getBean("RLikeChkService", RLikeChkService.class);
-					ser.execute(model);
-					Map<String, Object> map = model.asMap();
-					Map<String, Object> chk_map = new HashMap<String, Object>();
-					int chk = (Integer)map.get("btnchk");
-					if(chk==1) {
-						int r_num = (Integer)map.get("r_num");
-						chk_map.put("chk", chk);
-						chk_map.put("r_num", r_num);
-					}else {
-						chk_map.put("chk", chk);
-					}
-					return chk_map;
-				}
-				//============글 지우기
-				@ResponseBody
-				@RequestMapping(value = "del_post")
-				public void del_post(Model model, PostDTO pdto) {
-					model.addAttribute("pdto", pdto);
-					ser = context.getBean("PDeleteService", PDeleteService.class);
-					ser.execute(model);
-				}
+			}
+			//============글 지우기
+			@ResponseBody
+			@RequestMapping(value = "del_post")
+			public void del_post(Model model, PostDTO pdto) {
+				model.addAttribute("pdto", pdto);
+				ser = context.getBean("PDeleteService", PDeleteService.class);
+				ser.execute(model);
+			}
+	////////////////////////////////////////////////////////////////
+
+	
+         
       ////////////////////////////////////////////////////////////////
          
          //댓글 추가
@@ -497,7 +554,6 @@ public class MainController {
          }
          
 }
-
 
 
 

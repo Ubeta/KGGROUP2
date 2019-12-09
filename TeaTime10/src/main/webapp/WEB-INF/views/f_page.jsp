@@ -183,6 +183,7 @@ $(function(){
 	     		    	var img = data[i].p_img;
 	     		    	var date = data[i].p_date;
 	     		    	var pnum = data[i].p_num;
+	     		    	var pp = data[i].m_pic;
 	   
 	     		    	$("#friendPage").append(
 	     		    	"<table border='1' class='postForm'><tr>"+
@@ -192,18 +193,16 @@ $(function(){
 	     	               "<th width='20%'>제목</th>"+
 	     	               "<td width='50%' align='center'>"+title+"</td>"+
 	     	           	"</tr>"+
-	     	           	"<tr height='40%'>"+
-	     	               "<td colspan='4' align='center'>"+content+"</td>"+
-	     	            "</tr>"+
-	     	            "<tr height='30%'>"+
-	     	               "<td colspan='4' align='center'>"+img+"</td>"+
-	     	            "</tr>"+
+	     	           	
+	     	           "<tbody height='40%' class='post-image"+pnum+"'></tbody>"+
+	     	            
 	     	            "<tr height='5%'>"+
 	     	               "<th>해시</th>"+
 	     	               "<td colspan='3'>"+hash+"</td>"+
 	     	            "<tr height='5%'>"+
 	     	              "<td><input type='button' value='좋아요'><label id='likeCount'>0</label></td>"+
-	     	              "<th colspan='2'>작성자</th>"+
+	     	              "<th colspan='1'>작성자</th>"+
+	     	             "<td colspan='1'><img src='img/"+pp+"' width='75px' height='75px'>"+
 	     	              "<td align='center'>"+id+"</td>"+
 	     	            "</tr>"+
 	     	            "<tr height='5%'>"+
@@ -223,6 +222,16 @@ $(function(){
  						"</table>"+
  						"</div><br>"
 	     				);
+	     		    	if (img != 'null') {
+							$(".post-image"+pnum).append("<tr height='40%'>"+
+									"<td height='40%' colspan='3' align='center'>"+content+"</td>"+
+									"<td height='40%' colspan='1' align='center'><img src='img/"+img+"' width='200px' height='200px'></td>"+
+								"</tr>");
+						} else {
+							$(".post-image"+pnum).append("<tr height='40%'>"+
+									"<td height='200px' colspan='4' align='center'>"+content+"</td>"+
+									"</tr>");
+						}
 			     		   
 	     		    	ctn+=1;
 	     		    	$(document).ready(function() {
@@ -386,19 +395,29 @@ $(function(){
                <th width="20%">제목</th>
                <td width="50%" align="center">${fPosts.p_title }</td>
             </tr>
-            <tr height="40%">
-               <td colspan="4" align="center">${fPosts.p_content }</td>
-            </tr>
-            <tr height="30%">
-               <td colspan="4" align="center">${fPosts.p_img}</td>
-            </tr>
+            <!-- ============ POST PICTURE PART ============ -->
+				<c:choose>
+				<c:when test="${fPosts.p_img != 'null'}">
+				<tr height="40%">
+					<td colspan="3" align="center">${fPosts.p_content }</td>
+					<td colspan="1" align="center"><img src="img/${fPosts.p_img }" width="200px" height="200px"></td>
+				</tr>
+				</c:when>
+				<c:otherwise>
+				<tr height="40%">
+					<td colspan="4" align="center">${fPosts.p_content }</td>
+				</tr>
+				</c:otherwise>
+				</c:choose>
+				<!-- =========================================== -->
             <tr height="5%">
                <th>해시</th>
                <td colspan="3">${fPosts.p_hash }</td>
             </tr>
             <tr height="5%">
                <td><input type='button' value='좋아요'><label id='likeCount'>0</label></td>
-               <th colspan="2">작성자</th>
+               <th colspan="1">작성자</th>
+               <td colspan="1" align="center"><img class="postpp" src="img/${fPosts.m_pic }" width="100px" height="70px"></td>
                <td align="center">${fPosts.m_id }</td>
             </tr>
             <tr height="5%">

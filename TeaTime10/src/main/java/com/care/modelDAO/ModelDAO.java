@@ -202,7 +202,6 @@ public class ModelDAO {
 		ArrayList<ReplyDTO> replies = new ArrayList<ReplyDTO>();
 		System.out.println("getPostReplyPackets DAO entered");
 		String driver = "oracle.jdbc.driver.OracleDriver";
-		
 		String url = "jdbc:oracle:thin:@localhost:1521:xe";
 		String uid = "jsp";
 		String upw = "1234";
