@@ -91,6 +91,7 @@ public class KakaoDAO {
 					dto.setP_scope(rs.getInt("p_scope"));
 					dto.setP_date(rs.getDate("p_date"));
 					dto.setP_like(rs.getInt("p_like"));
+					dto.setM_pic(rs.getString("m_pic"));
 					plist.add(dto);
 				}
 			} catch (Exception e) {

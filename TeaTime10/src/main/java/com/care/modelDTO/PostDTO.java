@@ -18,7 +18,14 @@ public class PostDTO {
 	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date p_date;
 	private int p_like;
+	private String m_pic;
 	
+	public String getM_pic() {
+		return m_pic;
+	}
+	public void setM_pic(String m_pic) {
+		this.m_pic = m_pic;
+	}
 	public String getM_id() {
 		return m_id;
 	}
