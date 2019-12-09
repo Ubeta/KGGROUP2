@@ -319,9 +319,17 @@ public class ModelDAO {
 				return sqlSession.selectList(namespace+".f_list", user_id);
 			}
 			
-			public void write_board(PostDTO pdto) {
-				sqlSession.insert(namespace+".write_board", pdto);
+			//============ John 수정 (12/9) ===========
+			public int write_board(PostDTO pdto) {
+				int result = 0;
+				try {
+					result = sqlSession.insert(namespace+".write_board", pdto);
+				} catch (Exception e) {
+					System.out.println("ModelDAO write_board catch");
+				}
+				return result;
 			}
+			//=======================================
 			public List<PostDTO> board_list(String sessionid) {
 				return sqlSession.selectList(namespace+".board_list", sessionid);
 			}

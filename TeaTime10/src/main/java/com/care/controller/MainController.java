@@ -1,5 +1,7 @@
 package com.care.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,10 +17,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.care.modelDTO.CountForm;
 import com.care.modelDTO.MemberDTO;
@@ -29,6 +31,7 @@ import com.care.service.FListService;
 import com.care.service.FPostListService;
 import com.care.service.FriendPostService;
 import com.care.service.GetCommentService;
+import com.care.service.IDchk;
 import com.care.service.IService;
 import com.care.service.IdSearch;
 import com.care.service.MCategoryService;
@@ -43,14 +46,13 @@ import com.care.service.PDeleteService;
 import com.care.service.PLikeChkService;
 import com.care.service.PLikeUpService;
 import com.care.service.PWriteBoardService;
-import com.care.service.RLikeChkService;
-import com.care.service.RLikeUpService;
 import com.care.service.PwChange;
 import com.care.service.PwSearch;
+import com.care.service.RLikeChkService;
+import com.care.service.RLikeUpService;
 import com.care.service.RReplyListService;
 import com.care.service.RReplyWriteService;
 import com.care.service.TotalSearch;
-import com.care.service.IDchk;
 @Controller
 public class MainController {
 
@@ -306,7 +308,7 @@ public class MainController {
 	ArrayList<PostDTO> list = new ArrayList<PostDTO>();
 	ArrayList<ReplyDTO> replylist = new ArrayList<ReplyDTO>();
 	@RequestMapping(value = "mypage")
-	public String mypage(Model model,HttpSession session){
+	public String mypage(Model model,HttpSession session, HttpServletResponse response) throws IOException{
 		String sessionid = (String)session.getAttribute("mid");
 		model.addAttribute("sessionid",sessionid);
 		//======== John 수정 / Post Profile pic (12/5) ========
@@ -323,6 +325,7 @@ public class MainController {
 		Map<String, Object> map2 = model.asMap();
 		list = (ArrayList<PostDTO>) map2.get("boardlist");
 		cnt=3;
+		
 		return "mypage";
 	}
 	//===========================회원정보 수정 후 리다이렉트================
@@ -373,7 +376,7 @@ public class MainController {
 	
 	//===========================개시글 작성===========================
 	@RequestMapping(value = "write_board", method = RequestMethod.POST)
-	public String write_board(Model model, PostDTO pdto, HttpSession session, MultipartHttpServletRequest request) {
+	public RedirectView write_board(Model model, PostDTO pdto, HttpSession session, MultipartHttpServletRequest request, HttpServletResponse response, RedirectAttributes redir) throws IOException {
 		model.addAttribute("request", request);
 		String m_id = (String)session.getAttribute("mid");
 		
@@ -384,7 +387,21 @@ public class MainController {
 		model.addAttribute("write_board", pdto);
 		ser = context.getBean("PWriteBoardService", PWriteBoardService.class);
 		ser.execute(model);
-		return "redirect:mypage";
+		Map<String, Object> map = model.asMap();
+		boolean result = (boolean) map.get("writeSuccess");
+		response.setContentType("text/html");
+		PrintWriter out = response.getWriter();
+		RedirectView redirectView = new RedirectView("mypage", true);
+		if (result) {
+			redir.addFlashAttribute("postSuccess", "1");
+			model.addAttribute("postSuccess", "1");
+			System.out.println("result:" + result);
+		} else {
+			redir.addFlashAttribute("postSuccess", "0");
+			model.addAttribute("postSuccess", "0");
+			System.out.println("result:" + result);
+		}
+		return redirectView;
 	}
 	//===========================개시글 리스트===========================
 	private int cnt=3;

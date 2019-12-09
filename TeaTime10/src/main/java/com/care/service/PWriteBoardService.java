@@ -38,13 +38,21 @@ public class PWriteBoardService implements IService{
 		
 		pdto.setP_img(storedFileName);
 		
-		try {
-			Files.copy(multipartFile.getInputStream(), Paths.get(filePath, storedFileName));
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (!storedFileName.equals("null")) {
+			try {
+				Files.copy(multipartFile.getInputStream(), Paths.get(filePath, storedFileName));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
-		mdao.write_board(pdto);
+		int result = 0;
+		result = mdao.write_board(pdto);
+		if (result == 1) {
+			model.addAttribute("writeSuccess", true);
+		} else {
+			model.addAttribute("writeSuccess", false);
+		}
 	}
 
 }
